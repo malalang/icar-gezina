@@ -12,6 +12,14 @@ export interface CarReview {
   date: string;
 }
 
+export interface Testimonial {
+  id: string;
+  author: string;
+  role: string;
+  content: string;
+  avatar: string;
+}
+
 export interface Car {
   id: string;
   make: string;

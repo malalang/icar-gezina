@@ -1,5 +1,5 @@
 import { getSupabase } from './supabase';
-import { mockCars, globalTestimonials, Car } from './mock-data';
+import { mockCars, globalTestimonials, Car, Testimonial } from './mock-data';
 
 export async function getCars(): Promise<Car[]> {
   const supabase = getSupabase();
@@ -115,7 +115,7 @@ export async function getLeads(): Promise<Lead[]> {
   return [];
 }
 
-export async function getTestimonials() {
+export async function getTestimonials(): Promise<Testimonial[]> {
   const supabase = getSupabase();
 
   if (supabase) {

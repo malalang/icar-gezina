@@ -21,7 +21,7 @@ export async function getCars(): Promise<Car[]> {
       
       if (data && data.length > 0) {
         // Map Supabase schema responses to our frontend `Car` interface
-        return data.map(car => ({
+        return data.map((car: any) => ({
           ...car,
           fuelType: car.fuel_type,
           bodyType: car.body_type,

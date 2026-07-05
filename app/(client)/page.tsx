@@ -13,7 +13,7 @@ export default async function Home() {
       <section className="relative w-full h-[600px] flex items-center justify-center overflow-hidden bg-slate-200">
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
         <Image 
-          src="https://picsum.photos/seed/hero-car-1/1920/1080" 
+          src="https://icargezina.co.za/wp-content/uploads/2025/06/iCAR-LOGO.png" 
           alt="Premium luxury car" 
           fill 
           className="object-cover"

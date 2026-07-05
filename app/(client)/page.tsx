@@ -21,7 +21,7 @@ export default async function Home() {
           priority
         />
         <div className="relative z-20 w-full max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
-          <h1 className="text-5xl md:text-7xl sm:mb-12 font-bold italic text-white mb-6">
+          <h1 className="text-5xl md:text-7xl  font-bold italic text-white mb-6">
             Find Your <span className="text-blue-500">Perfect</span> Drive
           </h1>
           <p className="text-xl text-slate-200 mb-10 max-w-2xl font-light">

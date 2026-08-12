@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Search, ShieldCheck, Wrench, ThumbsUp, ChevronRight, ArrowRight, BadgeCheck, Banknote } from 'lucide-react';
+import { Search, ShieldCheck, Wrench, ThumbsUp, ChevronRight } from 'lucide-react';
 import { getFeaturedCars, getTestimonials } from '@/lib/api';
 
 export default async function Home() {
@@ -9,91 +9,96 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Premium Hero Section */}
-      <section className="relative isolate min-h-[680px] lg:min-h-[760px] w-full overflow-hidden bg-slate-950 flex items-center">
+      {/* Hero — matched to the current ICar Gezina homepage */}
+      <section className="relative isolate min-h-[700px] lg:min-h-[780px] w-full overflow-hidden bg-slate-950 flex items-center">
         <Image
           src="https://icargezina.co.za/wp-content/uploads/2025/05/1003_14989_I1.jpg"
-          alt="Premium vehicle at ICar Gezina"
+          alt="ICar Gezina vehicles"
           fill
-          className="object-cover object-center scale-[1.02]"
-          referrerPolicy="no-referrer"
           priority
+          referrerPolicy="no-referrer"
+          className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-slate-950/55" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/55 to-slate-950/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/15" />
+        <div className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/35 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/20" />
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-14">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em] text-white backdrop-blur-md">
-              <BadgeCheck className="h-4 w-4 text-blue-400" />
-              ICar Gezina • Premium Vehicles
-            </div>
-
-            <h1 className="mt-6 text-5xl sm:text-6xl lg:text-8xl font-black italic tracking-[-0.045em] leading-[0.92] text-white">
-              Find Your
-              <span className="block text-blue-400">Perfect Drive.</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.02] text-white">
+              Find the car of your dreams at
+              <span className="block mt-1 text-blue-400">ICar Gezina</span>
             </h1>
 
-            <p className="mt-6 max-w-2xl text-base sm:text-lg lg:text-xl leading-relaxed text-white/80">
-              Quality pre-owned vehicles, professionally inspected and ready for the road. Discover a better way to buy your next car.
+            <p className="mt-6 max-w-2xl text-base sm:text-lg leading-7 text-white/90">
+              At ICar Gezina, we make car buying simple, affordable, and enjoyable. Explore our wide range of quality vehicles and take advantage of our easy, on-site finance options. With friendly service, expert advice, and a streamlined process, getting behind the wheel has never been easier.
             </p>
-
-            <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/cars"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-7 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-950/30 transition hover:bg-blue-500 hover:-translate-y-0.5"
-              >
-                Explore Inventory
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/finance"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-md transition hover:bg-white/20 hover:-translate-y-0.5"
-              >
-                <Banknote className="h-4 w-4" />
-                View Financing
-              </Link>
-            </div>
           </div>
 
-          {/* Floating Inventory Search */}
-          <div className="mt-12 lg:mt-16 max-w-5xl rounded-2xl border border-white/20 bg-white/95 p-4 sm:p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
-            <div className="flex flex-col lg:flex-row lg:items-end gap-4">
-              <div className="lg:w-1/3 text-left">
-                <label htmlFor="hero-make" className="mb-2 block text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">Make</label>
-                <select id="hero-make" className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
-                  <option value="">Any Make</option>
-                  <option value="Volkswagen">Volkswagen</option>
-                  <option value="Ford">Ford</option>
-                  <option value="Toyota">Toyota</option>
-                  <option value="Audi">Audi</option>
-                  <option value="BMW">BMW</option>
-                  <option value="Mercedes-Benz">Mercedes-Benz</option>
-                </select>
-              </div>
-              <div className="lg:w-1/3 text-left">
-                <label htmlFor="hero-price" className="mb-2 block text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">Maximum Price</label>
-                <select id="hero-price" className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
-                  <option value="">Any Price</option>
-                  <option value="200000">Up to R 200,000</option>
-                  <option value="400000">Up to R 400,000</option>
-                  <option value="600000">Up to R 600,000</option>
-                  <option value="800000">Up to R 800,000</option>
-                  <option value="1000000">R 1,000,000+</option>
-                </select>
-              </div>
-              <div className="lg:flex-1">
-                <Link href="/cars" className="h-12 w-full rounded-xl bg-slate-950 px-6 flex items-center justify-center gap-2 text-sm font-bold text-white transition hover:bg-blue-600">
-                  <Search className="h-4 w-4" />
-                  Search Inventory
-                </Link>
-              </div>
+          {/* Search panel — mirrors the live site's five-filter search */}
+          <div className="mt-10 max-w-6xl rounded-2xl bg-white p-4 sm:p-5 shadow-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              <select aria-label="Make" className="h-12 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+                <option value="">Make</option>
+                <option>Volkswagen</option>
+                <option>BMW</option>
+                <option>Mercedes-Benz</option>
+                <option>Audi</option>
+                <option>Toyota</option>
+                <option>Ford</option>
+                <option>Isuzu</option>
+                <option>Nissan</option>
+              </select>
+
+              <select aria-label="Model" className="h-12 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+                <option value="">Model</option>
+                <option>Golf</option>
+                <option>Polo</option>
+                <option>Ranger</option>
+                <option>Hilux</option>
+                <option>X3</option>
+                <option>Q3</option>
+              </select>
+
+              <select aria-label="Vehicle type" className="h-12 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+                <option value="">Vehicle Type</option>
+                <option>SUV</option>
+                <option>Coupe</option>
+                <option>Bakkie</option>
+                <option>Hatchback</option>
+                <option>Sedan</option>
+              </select>
+
+              <select aria-label="Price" className="h-12 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+                <option value="">Price</option>
+                <option>Under R200 000</option>
+                <option>R200 000 – R400 000</option>
+                <option>R400 000 – R600 000</option>
+                <option>R600 000 – R800 000</option>
+                <option>R800 000+</option>
+              </select>
+
+              <select aria-label="Transmission" className="h-12 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+                <option value="">Transmission</option>
+                <option>Automatic</option>
+                <option>Manual</option>
+              </select>
             </div>
-            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-200 pt-4 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">
-              <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-blue-600" /> 116-Point Inspection</span>
-              <span className="inline-flex items-center gap-1.5"><BadgeCheck className="h-4 w-4 text-blue-600" /> Quality Checked</span>
-              <span className="inline-flex items-center gap-1.5"><Banknote className="h-4 w-4 text-blue-600" /> Finance Available</span>
+
+            <div className="mt-3 flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/cars"
+                className="h-12 flex-1 rounded-lg bg-blue-600 px-6 flex items-center justify-center gap-2 text-sm font-bold text-white transition hover:bg-blue-700"
+              >
+                <Search className="h-4 w-4" />
+                Search
+              </Link>
+              <Link
+                href="/cars"
+                className="h-12 sm:w-44 rounded-lg border border-slate-200 bg-white px-5 flex items-center justify-center text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-600"
+              >
+                View Showroom
+              </Link>
             </div>
           </div>
         </div>

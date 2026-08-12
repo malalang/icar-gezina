@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 
@@ -14,14 +15,17 @@ export default function ClientLayout({children}: {children: React.ReactNode}) {
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-200 shadow-[0_2px_12px_rgba(15,23,42,0.06)]">
         <div className="max-w-7xl mx-auto h-[78px] px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-8">
-          {/* ICar Gezina brand */}
           <Link href="/" aria-label="ICar Gezina home" className="group shrink-0 flex items-center">
-            <span className="text-[27px] sm:text-[30px] font-black tracking-[-0.055em] leading-none text-slate-950">
-              ICar<span className="text-blue-600"> Gezina</span>
-            </span>
+            <Image
+              src="/iCAR-LOGO.png"
+              alt="ICar Gezina"
+              width={220}
+              height={60}
+              priority
+              className="h-auto w-[175px] sm:w-[200px] object-contain"
+            />
           </Link>
 
-          {/* Desktop navigation - mirrors the live ICar Gezina structure */}
           <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-8 xl:gap-10 h-full">
             {navigation.map(({href, label}) => (
               <Link
@@ -34,7 +38,6 @@ export default function ClientLayout({children}: {children: React.ReactNode}) {
             ))}
           </nav>
 
-          {/* Primary CTA */}
           <div className="hidden sm:flex items-center gap-3 shrink-0">
             <Link
               href="/cars"
@@ -44,7 +47,6 @@ export default function ClientLayout({children}: {children: React.ReactNode}) {
             </Link>
           </div>
 
-          {/* Mobile navigation without requiring client-side state */}
           <details className="lg:hidden relative">
             <summary className="list-none cursor-pointer rounded-md border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-600 [&::-webkit-details-marker]:hidden">
               Menu

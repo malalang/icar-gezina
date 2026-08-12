@@ -8,7 +8,7 @@ export default async function Home() {
   const globalTestimonials = await getTestimonials();
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F1F3F5]">
+    <div className="flex flex-col min-h-screen bg-[#282828]">
       {/* Hero */}
       <section className="relative w-full overflow-hidden bg-slate-900">
         <div className="relative min-h-[570px] sm:min-h-[600px] lg:min-h-[620px] flex items-center">
@@ -30,24 +30,23 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Vehicle filters — deliberately outside the hero stacking context so the following section can never cover it */}
+      {/* Vehicle filters — dark gray treatment matching the live ICar Gezina design */}
       <div className="relative z-50 -mt-8 sm:-mt-10 px-4 sm:px-6 lg:px-8">
-        <div className="relative z-50 max-w-6xl mx-auto rounded-xl bg-[#F1F3F5] p-2.5 sm:p-3 shadow-2xl border border-white/80">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] gap-2">
-            <select aria-label="Make" className="h-11 w-full rounded-md border border-slate-300 bg-[#F1F3F5] px-3 text-[13px] text-slate-700 outline-none focus:border-[#0072BC] focus:ring-2 focus:ring-[#E6F2F9]"><option value="">Make</option><option>Volkswagen</option><option>BMW</option><option>Mercedes-Benz</option><option>Audi</option><option>Toyota</option><option>Ford</option><option>Isuzu</option><option>Nissan</option></select>
-            <select aria-label="Model" className="h-11 w-full rounded-md border border-slate-300 bg-[#F1F3F5] px-3 text-[13px] text-slate-700 outline-none focus:border-[#0072BC] focus:ring-2 focus:ring-[#E6F2F9]"><option value="">Model</option><option>Golf</option><option>Polo</option><option>Ranger</option><option>Hilux</option><option>X3</option><option>Q3</option></select>
-            <select aria-label="Vehicle type" className="h-11 w-full rounded-md border border-slate-300 bg-[#F1F3F5] px-3 text-[13px] text-slate-700 outline-none focus:border-[#0072BC] focus:ring-2 focus:ring-[#E6F2F9]"><option value="">Vehicle Type</option><option>SUV</option><option>Coupe</option><option>Bakkie</option><option>Hatchback</option><option>Sedan</option></select>
-            <select aria-label="Price" className="h-11 w-full rounded-md border border-slate-300 bg-[#F1F3F5] px-3 text-[13px] text-slate-700 outline-none focus:border-[#0072BC] focus:ring-2 focus:ring-[#E6F2F9]"><option value="">Price</option><option>Under R200 000</option><option>R200 000 – R400 000</option><option>R400 000 – R600 000</option><option>R600 000 – R800 000</option><option>R800 000+</option></select>
-            <select aria-label="Transmission" className="h-11 w-full rounded-md border border-slate-300 bg-[#F1F3F5] px-3 text-[13px] text-slate-700 outline-none focus:border-[#0072BC] focus:ring-2 focus:ring-[#E6F2F9]"><option value="">Transmission</option><option>Automatic</option><option>Manual</option></select>
-            <Link href="/cars" className="h-11 min-w-[108px] rounded-md bg-[#0072BC] px-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-white transition hover:bg-[#005F9E]"><Search className="h-4 w-4" />Search</Link>
+        <div className="relative z-50 max-w-6xl mx-auto rounded-xl bg-[#282828] p-2.5 sm:p-3 shadow-2xl border border-white/35">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] gap-2 sm:gap-3">
+            <select aria-label="Make" className="h-11 w-full rounded-none border-0 border-b-2 border-[#E8751A] bg-transparent px-3 text-[13px] text-white/90 outline-none focus:border-[#F28A2E] focus:ring-0 [&>option]:bg-[#282828] [&>option]:text-white"><option value="">All Makes</option><option>Volkswagen</option><option>BMW</option><option>Mercedes-Benz</option><option>Audi</option><option>Toyota</option><option>Ford</option><option>Isuzu</option><option>Nissan</option></select>
+            <select aria-label="Model" className="h-11 w-full rounded-none border-0 border-b-2 border-[#E8751A] bg-transparent px-3 text-[13px] text-white/90 outline-none focus:border-[#F28A2E] focus:ring-0 [&>option]:bg-[#282828] [&>option]:text-white"><option value="">All Models</option><option>Golf</option><option>Polo</option><option>Ranger</option><option>Hilux</option><option>X3</option><option>Q3</option></select>
+            <select aria-label="Vehicle type" className="h-11 w-full rounded-none border-0 border-b-2 border-[#E8751A] bg-transparent px-3 text-[13px] text-white/90 outline-none focus:border-[#F28A2E] focus:ring-0 [&>option]:bg-[#282828] [&>option]:text-white"><option value="">Vehicle Type</option><option>SUV</option><option>Coupe</option><option>Bakkie</option><option>Hatchback</option><option>Sedan</option></select>
+            <select aria-label="Price" className="h-11 w-full rounded-none border-0 border-b-2 border-[#E8751A] bg-transparent px-3 text-[13px] text-white/90 outline-none focus:border-[#F28A2E] focus:ring-0 [&>option]:bg-[#282828] [&>option]:text-white"><option value="">Max Price</option><option>Under R200 000</option><option>R200 000 – R400 000</option><option>R400 000 – R600 000</option><option>R600 000 – R800 000</option><option>R800 000+</option></select>
+            <select aria-label="Transmission" className="h-11 w-full rounded-none border-0 border-b-2 border-[#E8751A] bg-transparent px-3 text-[13px] text-white/90 outline-none focus:border-[#F28A2E] focus:ring-0 [&>option]:bg-[#282828] [&>option]:text-white"><option value="">Transmission</option><option>Automatic</option><option>Manual</option></select>
+            <Link href="/cars" className="h-11 min-w-[108px] rounded-md bg-[#16A6B8] px-5 flex items-center justify-center gap-2 text-[13px] font-medium text-white transition hover:bg-[#1192A2]"><Search className="h-4 w-4" />Search</Link>
           </div>
         </div>
       </div>
 
-      {/* Breathing room below the floating search, matching the live site's hero-to-content rhythm */}
-      <div className="h-14 sm:h-16 lg:h-18 bg-[#F1F3F5]" />
+      <div className="h-14 sm:h-16 lg:h-18 bg-[#282828]" />
 
-      <section className="py-12 sm:py-14 lg:py-16 bg-[#F1F3F5]"><div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="py-12 sm:py-14 lg:py-16 bg-[#282828]"><div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-slate-200"><div className="w-16 h-16 bg-[#E6F2F9] text-[#0072BC] rounded flex items-center justify-center mb-4"><ShieldCheck className="w-8 h-8" /></div><h3 className="font-bold text-xl mb-2 text-slate-800 uppercase tracking-tight">Certified Quality</h3><p className="text-slate-600 text-sm">Every vehicle undergoes a rigorous 116-point inspection before hitting our floor.</p></div>
         <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-slate-200"><div className="w-16 h-16 bg-[#E6F2F9] text-[#0072BC] rounded flex items-center justify-center mb-4"><Wrench className="w-8 h-8" /></div><h3 className="font-bold text-xl mb-2 text-slate-800 uppercase tracking-tight">Transparent Parts View</h3><p className="text-slate-600 text-sm">See the exact condition of engine, brakes, and tires online before you visit us.</p></div>
         <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-slate-200"><div className="w-16 h-16 bg-[#E6F2F9] text-[#0072BC] rounded flex items-center justify-center mb-4"><ThumbsUp className="w-8 h-8" /></div><h3 className="font-bold text-xl mb-2 text-slate-800 uppercase tracking-tight">Hassle-Free Finance</h3><p className="text-slate-600 text-sm">We work with all major banks to ensure you get the best possible rate.</p></div>

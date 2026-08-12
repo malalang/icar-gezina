@@ -17,12 +17,6 @@ import {
 } from 'lucide-react';
 import { getCars, getTestimonials } from '@/lib/api';
 
-const PRIMARY_GRAY = '#282828';
-const PANEL_GRAY = '#303030';
-const DEEP_GRAY = '#202020';
-const TEAL = '#16A6B8';
-const ORANGE = '#E8751A';
-
 const filters: Array<[string, string[]]> = [
   ['Make', ['All Makes', 'Toyota', 'BMW', 'Volkswagen', 'Ford', 'Mercedes-Benz']],
   ['Model', ['All Models', 'Golf', 'Polo', 'Ranger', 'X3', 'D-Max']],
@@ -30,6 +24,13 @@ const filters: Array<[string, string[]]> = [
   ['Year', ['All Years', '2026', '2025', '2024', '2023', '2022']],
   ['Colour', ['All Colours', 'Black', 'White', 'Silver', 'Grey', 'Blue']],
   ['Max Price', ['Under R200 000', 'R200 000 – R400 000', 'R400 000 – R600 000', 'R600 000 – R800 000', 'R800 000+']],
+];
+
+const benefits = [
+  { Icon: BadgeCheck, title: 'Quality vehicles', copy: 'Carefully selected pre-owned stock' },
+  { Icon: Banknote, title: 'Finance made easy', copy: 'Simple, guided application support' },
+  { Icon: Headphones, title: 'Friendly service', copy: 'A team ready to help you buy with confidence' },
+  { Icon: CarFront, title: 'Wide selection', copy: 'Cars for city, family, work and adventure' },
 ];
 
 export default async function Home() {
@@ -73,7 +74,7 @@ export default async function Home() {
 
       <section className="bg-[#282828] py-20 sm:py-24 lg:py-28"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="mb-10 max-w-3xl sm:mb-12"><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F28A2E]">Find your style</p><h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">The right car for your lifestyle.</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-white/50 sm:text-base">From rugged bakkies and spacious SUVs to sporty coupes and practical hatchbacks, discover a vehicle built around the way you live.</p></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{categories.map(category => <Link href={`/cars?bodyType=${encodeURIComponent(category.type)}`} key={category.name} className="group relative min-h-[430px] overflow-hidden rounded-2xl bg-[#303030]">{category.image && <Image src={category.image} alt={category.name} fill unoptimized referrerPolicy="no-referrer" className="object-cover transition duration-700 group-hover:scale-110" />}<div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" /><div className="absolute bottom-0 left-0 right-0 p-6"><h3 className="text-2xl font-black">{category.name}</h3><p className="mt-2 text-sm leading-6 text-white/60">{category.copy}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#16A6B8]">Discover more <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></div></Link>)}</div></div></section>
 
-      <section className="border-y border-white/10 bg-[#242424]"><div className="mx-auto grid max-w-7xl divide-y divide-white/10 px-4 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4 lg:px-8">{[[BadgeCheck, 'Quality vehicles', 'Carefully selected pre-owned stock'], [Banknote, 'Finance made easy', 'Simple, guided application support'], [Headphones, 'Friendly service', 'A team ready to help you buy with confidence'], [CarFront, 'Wide selection', 'Cars for city, family, work and adventure']].map(([Icon, title, copy]) => { const IconComponent = Icon as typeof BadgeCheck; return <div key={String(title)} className="flex gap-4 px-4 py-7 sm:px-6 lg:px-8"><IconComponent className="mt-0.5 h-5 w-5 shrink-0 text-[#16A6B8]" /><div><h3 className="text-sm font-bold">{title}</h3><p className="mt-1 text-xs leading-5 text-white/40">{copy}</p></div></div>; })}</div></section>
+      <section className="border-y border-white/10 bg-[#242424]"><div className="mx-auto grid max-w-7xl divide-y divide-white/10 px-4 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4 lg:px-8">{benefits.map(({ Icon, title, copy }) => <div key={title} className="flex gap-4 px-4 py-7 sm:px-6 lg:px-8"><Icon className="mt-0.5 h-5 w-5 shrink-0 text-[#16A6B8]" /><div><h3 className="text-sm font-bold">{title}</h3><p className="mt-1 text-xs leading-5 text-white/40">{copy}</p></div></div>)}</div></section>
 
       <section className="bg-[#303030] py-20 sm:py-24"><div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8"><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F28A2E]">Browse by make</p><h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Explore our vehicles</h2><p className="mx-auto mt-3 max-w-xl text-sm text-white/45">Start with a make you know and discover the vehicles currently available.</p><div className="mt-9 flex flex-wrap justify-center gap-2.5">{Array.from(new Set(cars.map(car => car.make))).slice(0, 14).map(make => <Link key={make} href={`/cars?make=${encodeURIComponent(make)}`} className="rounded-full border border-white/10 bg-[#282828] px-5 py-3 text-xs font-semibold text-white/65 transition hover:border-[#16A6B8]/70 hover:text-[#16A6B8]">{make}</Link>)}</div><Link href="/cars" className="mt-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#16A6B8]">See all vehicles <ArrowRight className="h-4 w-4" /></Link></div></section>
 

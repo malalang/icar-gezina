@@ -37,21 +37,19 @@ export default async function Home() {
         <div className="absolute inset-0 bg-black/48" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-black/70" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#282828] to-transparent" />
-        <div className="relative z-10 mx-auto flex min-h-[650px] max-w-7xl items-center px-4 pb-28 pt-28 sm:min-h-[690px] sm:px-6 lg:min-h-[720px] lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/75">ICar Gezina</p>
-            <h1 className="mt-4 max-w-3xl text-5xl font-extrabold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-[72px]">Find the car of your dreams at <span className="block text-white">ICar Gezina</span></h1>
-            <p className="mt-6 max-w-2xl text-sm leading-7 text-white/80 sm:text-base">At ICar Gezina, we make car buying simple, affordable, and enjoyable. Explore our wide range of quality vehicles and take advantage of our easy, on-site finance options. With friendly service, expert advice, and a streamlined process, getting behind the wheel has never been easier.</p>
-            <div className="mt-7 flex flex-wrap gap-3"><Link href="/cars" className="inline-flex items-center gap-2 rounded-full bg-[#16A6B8] px-7 py-3.5 text-sm font-bold shadow-xl shadow-black/25 transition hover:-translate-y-0.5 hover:bg-[#1192A2]">Explore Our Showroom <ArrowRight className="h-4 w-4" /></Link><Link href="/finance" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/20 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/10">Get Finance</Link></div>
+        <div className="relative z-10 mx-auto flex min-h-[650px] max-w-7xl items-center justify-center px-4 pb-24 pt-28 text-center sm:min-h-[690px] sm:px-6 lg:min-h-[720px] lg:px-8">
+          <div className="max-w-5xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-white/75">ICar Gezina</p>
+            <h1 className="mt-4 text-5xl font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-[64px]">Find the car of your dreams at <span className="block">ICar Gezina</span></h1>
+            <p className="mx-auto mt-6 max-w-5xl text-sm leading-7 text-white/75 sm:text-base">At ICar Gezina, we make car buying simple, affordable, and enjoyable. Explore our wide range of quality vehicles and take advantage of our easy, on-site finance options. With friendly service, expert advice, and a streamlined process, getting behind the wheel has never been easier.</p>
           </div>
         </div>
 
         <section className="absolute inset-x-4 bottom-[-74px] z-30 sm:inset-x-6 lg:inset-x-8">
-          <div className="mx-auto max-w-7xl overflow-hidden rounded-xl border border-white/10 bg-[#242424]/95 shadow-[0_24px_70px_rgba(0,0,0,0.45)] backdrop-blur-xl">
-            <div className="border-b border-white/10 px-5 py-4 sm:px-6"><div className="flex items-center justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#F28A2E]">Vehicle search</p><h2 className="mt-1 text-lg font-bold sm:text-xl">Find your next vehicle</h2></div><Link href="/cars" className="hidden text-xs font-semibold text-white/45 transition hover:text-white sm:inline-flex">Advanced search <ArrowRight className="ml-1 h-3.5 w-3.5" /></Link></div></div>
+          <div className="mx-auto max-w-7xl overflow-hidden rounded-xl border border-white/15 bg-[#171717]/95 shadow-[0_24px_70px_rgba(0,0,0,0.45)] backdrop-blur-xl">
             <div className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-3 xl:grid-cols-[repeat(6,minmax(0,1fr))_auto]">
-              {filters.map(([label, options]) => <select key={label} aria-label={label} className="h-12 w-full rounded-lg border border-white/10 bg-[#303030] px-4 text-xs font-medium text-white/80 outline-none transition focus:border-[#16A6B8] focus:ring-1 focus:ring-[#16A6B8]/40 [&>option]:bg-[#303030] [&>option]:text-white"><option value="">{label}</option>{options.map(option => <option key={option} value={option}>{option}</option>)}</select>)}
-              <Link href="/cars" className="flex h-12 items-center justify-center gap-2 rounded-lg bg-[#16A6B8] px-6 text-xs font-bold transition hover:bg-[#1192A2]"><Search className="h-4 w-4" /> Search</Link>
+              {filters.map(([label, options]) => <select key={label} aria-label={label} className="h-12 w-full border-0 border-b border-[#E8751A]/70 bg-transparent px-4 text-xs font-medium text-white/75 outline-none transition focus:border-[#E8751A] focus:ring-0 [&>option]:bg-[#303030] [&>option]:text-white"><option value="">{label}</option>{options.map(option => <option key={option} value={option}>{option}</option>)}</select>)}
+              <Link href="/cars" className="flex h-12 items-center justify-center rounded-lg bg-[#16A6B8] px-7 text-xs font-semibold text-white transition hover:bg-[#1192A2]">Search</Link>
             </div>
           </div>
         </section>

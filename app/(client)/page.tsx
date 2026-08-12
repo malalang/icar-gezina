@@ -1,20 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  Search,
-  ChevronRight,
-  ArrowRight,
-  Play,
-  CarFront,
-  BadgeCheck,
-  Banknote,
-  Headphones,
-  ShieldCheck,
-  MapPin,
-  Phone,
-  Star,
-  Sparkles,
-} from 'lucide-react';
+import { Search, ChevronRight, ArrowRight, Play, CarFront, BadgeCheck, Banknote, Headphones, ShieldCheck, MapPin, Phone, Star } from 'lucide-react';
 import { getCars, getTestimonials } from '@/lib/api';
 
 const filters: Array<[string, string[]]> = [
@@ -37,7 +23,6 @@ export default async function Home() {
   const cars = await getCars();
   const globalTestimonials = await getTestimonials();
   const newArrivals = cars.slice(0, 6);
-
   const categories = [
     { name: 'SUVs', copy: 'A perfect blend of comfort, space, and presence for every lifestyle.', type: 'SUV', image: cars.find(c => c.bodyType === 'SUV')?.imageUrl },
     { name: 'Coupes', copy: 'Sleek, stylish, and built for speed with dynamic performance.', type: 'Coupe', image: cars.find(c => c.bodyType === 'Coupe')?.imageUrl },
@@ -47,26 +32,32 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#282828] text-white">
-      <section className="relative min-h-[690px] overflow-hidden bg-black sm:min-h-[730px] lg:min-h-[760px]">
+      <section className="relative min-h-[650px] overflow-visible bg-black sm:min-h-[690px] lg:min-h-[720px]">
         <Image src="https://icargezina.co.za/wp-content/uploads/2025/05/1003_14989_I1.jpg" alt="Vehicles inside the ICar Gezina showroom" fill priority referrerPolicy="no-referrer" className="object-cover object-center" />
-        <div className="absolute inset-0 bg-black/55" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-[#282828]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_40%,rgba(22,166,184,0.12),transparent_32%)]" />
-        <div className="relative z-10 mx-auto flex min-h-[690px] max-w-7xl items-center px-4 pb-24 pt-28 sm:min-h-[730px] sm:px-6 lg:min-h-[760px] lg:px-8">
-          <div className="grid w-full items-end gap-12 lg:grid-cols-[1.1fr_.9fr]">
-            <div className="max-w-3xl">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/25 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/80 backdrop-blur-md"><Sparkles className="h-3.5 w-3.5 text-[#F28A2E]" /> Quality pre-owned vehicles</div>
-              <h1 className="max-w-3xl text-5xl font-black leading-[0.98] tracking-[-0.045em] sm:text-6xl lg:text-7xl">Find the car<span className="block text-white/75">of your dreams.</span></h1>
-              <p className="mt-6 max-w-2xl text-sm leading-7 text-white/75 sm:text-base">At ICar Gezina, we make car buying simple, affordable, and enjoyable. Explore our quality vehicles, get expert advice and take advantage of convenient on-site finance.</p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/cars" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#16A6B8] px-7 py-3.5 text-sm font-bold text-white shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#1192A2]">Browse our vehicles <ArrowRight className="h-4 w-4" /></Link><Link href="/finance" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-md transition hover:bg-white/15">Get vehicle finance</Link></div>
-            </div>
-            <div className="hidden justify-end lg:flex"><div className="w-[330px] rounded-2xl border border-white/15 bg-black/35 p-5 backdrop-blur-xl"><div className="flex items-center gap-3 border-b border-white/10 pb-4"><div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E8751A]/15 text-[#F28A2E]"><BadgeCheck className="h-5 w-5" /></div><div><p className="text-sm font-bold">Buy with confidence</p><p className="text-xs text-white/45">Quality vehicles. Friendly service.</p></div></div><div className="grid grid-cols-2 gap-4 pt-4"><div><p className="text-2xl font-black">{cars.length || '—'}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Vehicles online</p></div><div><p className="text-2xl font-black">5★</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Customer focus</p></div></div></div></div>
+        <div className="absolute inset-0 bg-black/48" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-black/70" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#282828] to-transparent" />
+        <div className="relative z-10 mx-auto flex min-h-[650px] max-w-7xl items-center px-4 pb-28 pt-28 sm:min-h-[690px] sm:px-6 lg:min-h-[720px] lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/75">ICar Gezina</p>
+            <h1 className="mt-4 max-w-3xl text-5xl font-extrabold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-[72px]">Find the car of your dreams at <span className="block text-white">ICar Gezina</span></h1>
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-white/80 sm:text-base">At ICar Gezina, we make car buying simple, affordable, and enjoyable. Explore our wide range of quality vehicles and take advantage of our easy, on-site finance options. With friendly service, expert advice, and a streamlined process, getting behind the wheel has never been easier.</p>
+            <div className="mt-7 flex flex-wrap gap-3"><Link href="/cars" className="inline-flex items-center gap-2 rounded-full bg-[#16A6B8] px-7 py-3.5 text-sm font-bold shadow-xl shadow-black/25 transition hover:-translate-y-0.5 hover:bg-[#1192A2]">Explore Our Showroom <ArrowRight className="h-4 w-4" /></Link><Link href="/finance" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/20 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/10">Get Finance</Link></div>
           </div>
         </div>
-        <div className="absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 items-center gap-3 text-[9px] font-bold uppercase tracking-[0.25em] text-white/40 lg:flex"><span className="h-px w-10 bg-white/20" /> Scroll to explore <span className="h-px w-10 bg-white/20" /></div>
+
+        <section className="absolute inset-x-4 bottom-[-74px] z-30 sm:inset-x-6 lg:inset-x-8">
+          <div className="mx-auto max-w-7xl overflow-hidden rounded-xl border border-white/10 bg-[#242424]/95 shadow-[0_24px_70px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+            <div className="border-b border-white/10 px-5 py-4 sm:px-6"><div className="flex items-center justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#F28A2E]">Vehicle search</p><h2 className="mt-1 text-lg font-bold sm:text-xl">Find your next vehicle</h2></div><Link href="/cars" className="hidden text-xs font-semibold text-white/45 transition hover:text-white sm:inline-flex">Advanced search <ArrowRight className="ml-1 h-3.5 w-3.5" /></Link></div></div>
+            <div className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-3 xl:grid-cols-[repeat(6,minmax(0,1fr))_auto]">
+              {filters.map(([label, options]) => <select key={label} aria-label={label} className="h-12 w-full rounded-lg border border-white/10 bg-[#303030] px-4 text-xs font-medium text-white/80 outline-none transition focus:border-[#16A6B8] focus:ring-1 focus:ring-[#16A6B8]/40 [&>option]:bg-[#303030] [&>option]:text-white"><option value="">{label}</option>{options.map(option => <option key={option} value={option}>{option}</option>)}</select>)}
+              <Link href="/cars" className="flex h-12 items-center justify-center gap-2 rounded-lg bg-[#16A6B8] px-6 text-xs font-bold transition hover:bg-[#1192A2]"><Search className="h-4 w-4" /> Search</Link>
+            </div>
+          </div>
+        </section>
       </section>
 
-      <section className="relative z-20 -mt-10 px-4 sm:-mt-14 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl overflow-hidden rounded-2xl border border-white/10 bg-[#242424] shadow-[0_25px_80px_rgba(0,0,0,0.4)]"><div className="border-b border-white/10 px-5 py-5 sm:px-7"><div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#F28A2E]">Vehicle search</p><h2 className="mt-1 text-xl font-bold sm:text-2xl">Find your next vehicle</h2></div><Link href="/cars" className="text-xs font-semibold text-white/45 transition hover:text-[#16A6B8]">Advanced search <ArrowRight className="ml-1 inline h-3.5 w-3.5" /></Link></div></div><div className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-3 xl:grid-cols-[repeat(6,minmax(0,1fr))_auto]">{filters.map(([label, options]) => <select key={label} aria-label={label} className="h-12 w-full rounded-xl border border-white/10 bg-[#303030] px-4 text-xs font-medium text-white/80 outline-none transition focus:border-[#16A6B8] focus:ring-1 focus:ring-[#16A6B8]/40 [&>option]:bg-[#303030] [&>option]:text-white"><option value="">{label}</option>{options.map(option => <option key={option} value={option}>{option}</option>)}</select>)}<Link href="/cars" className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[#16A6B8] px-5 text-xs font-bold transition hover:bg-[#1192A2]"><Search className="h-4 w-4" /> Search</Link></div></div></section>
+      <div className="h-24 bg-[#282828]" />
 
       <section className="bg-[#282828] py-20 sm:py-24 lg:py-28"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="mb-10 flex items-end justify-between gap-6 sm:mb-12"><div><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F28A2E]">Latest stock</p><h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">New Arrivals</h2><p className="mt-3 max-w-xl text-sm text-white/45">Freshly added vehicles ready for their next owner.</p></div><Link href="/cars" className="hidden items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-xs font-bold sm:inline-flex hover:border-[#16A6B8] hover:text-[#16A6B8]">View all <ArrowRight className="h-3.5 w-3.5" /></Link></div><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{newArrivals.map(car => <Link href={`/cars/${car.id}`} key={car.id} className="group overflow-hidden rounded-2xl border border-white/10 bg-[#303030] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/20"><div className="relative aspect-[4/3] overflow-hidden bg-black"><Image src={car.imageUrl} alt={`${car.make} ${car.model}`} fill unoptimized referrerPolicy="no-referrer" className="object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" /><span className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider backdrop-blur">{car.year}</span><span className="absolute bottom-4 right-4 rounded-full bg-[#16A6B8] px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider">View vehicle</span></div><div className="p-5"><p className="text-[10px] font-semibold uppercase tracking-wider text-white/35">{car.mileage.toLocaleString()} km • {car.bodyType}</p><h3 className="mt-2 min-h-12 text-lg font-bold leading-tight">{car.make} {car.model}</h3><div className="mt-5 flex items-end justify-between gap-3 border-t border-white/10 pt-4"><span className="text-2xl font-black text-white">R {car.price.toLocaleString()}</span><ChevronRight className="h-5 w-5 text-[#16A6B8] transition group-hover:translate-x-1" /></div></div></Link>)}</div><div className="mt-8 text-center sm:hidden"><Link href="/cars" className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-xs font-bold">View all vehicles <ArrowRight className="h-4 w-4" /></Link></div></div></section>
 

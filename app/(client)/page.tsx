@@ -1,134 +1,87 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Search, ChevronRight, ArrowRight, Play, CarFront, BadgeCheck, Banknote, Headphones } from 'lucide-react';
+import {
+  Search,
+  ChevronRight,
+  ArrowRight,
+  Play,
+  CarFront,
+  BadgeCheck,
+  Banknote,
+  Headphones,
+  ShieldCheck,
+  MapPin,
+  Phone,
+  Star,
+  Sparkles,
+} from 'lucide-react';
 import { getCars, getTestimonials } from '@/lib/api';
 
 const PRIMARY_GRAY = '#282828';
+const PANEL_GRAY = '#303030';
+const DEEP_GRAY = '#202020';
 const TEAL = '#16A6B8';
 const ORANGE = '#E8751A';
+
+const filters: Array<[string, string[]]> = [
+  ['Make', ['All Makes', 'Toyota', 'BMW', 'Volkswagen', 'Ford', 'Mercedes-Benz']],
+  ['Model', ['All Models', 'Golf', 'Polo', 'Ranger', 'X3', 'D-Max']],
+  ['Vehicle Type', ['All Types', 'SUV', 'Sedan', 'Bakkie', 'Hatchback', 'Coupe']],
+  ['Year', ['All Years', '2026', '2025', '2024', '2023', '2022']],
+  ['Colour', ['All Colours', 'Black', 'White', 'Silver', 'Grey', 'Blue']],
+  ['Max Price', ['Under R200 000', 'R200 000 – R400 000', 'R400 000 – R600 000', 'R600 000 – R800 000', 'R800 000+']],
+];
 
 export default async function Home() {
   const cars = await getCars();
   const globalTestimonials = await getTestimonials();
   const newArrivals = cars.slice(0, 6);
+
   const categories = [
     { name: 'SUVs', copy: 'A perfect blend of comfort, space, and presence for every lifestyle.', type: 'SUV', image: cars.find(c => c.bodyType === 'SUV')?.imageUrl },
     { name: 'Coupes', copy: 'Sleek, stylish, and built for speed with dynamic performance.', type: 'Coupe', image: cars.find(c => c.bodyType === 'Coupe')?.imageUrl },
     { name: 'Bakkies', copy: 'Rugged durability and powerful capability, ready for work or weekend.', type: 'Bakkie', image: cars.find(c => c.bodyType === 'Bakkie')?.imageUrl },
     { name: 'Hatchbacks', copy: 'Convenient, efficient and fun to drive for everyday life.', type: 'Hatchback', image: cars.find(c => c.bodyType === 'Hatchback')?.imageUrl },
   ];
-const filters: Array<[string, string[]]> = [
-  ['Make', ['All Makes', 'Toyota', 'BMW', 'Volkswagen']],
-  ['Model', ['All Models', 'Golf', 'Polo', 'Ranger']],
-  ['Vehicle Type', ['All Types', 'SUV', 'Sedan', 'Bakkie', 'Hatchback']],
-  ['Year', ['All Years', '2026', '2025', '2024']],
-  ['Colour', ['All Colours', 'Black', 'White', 'Silver']],
-  ['Max Price', [
-    'Under R200 000',
-    'R200 000 – R400 000',
-    'R400 000 – R600 000',
-    'R600 000 – R800 000',
-    'R800 000+',
-  ]],
-];
+
   return (
-    <div className="min-h-screen bg-[#282828] text-white">
-      {/* Hero */}
-      <section className="relative w-full overflow-hidden bg-black">
-        <div className="relative min-h-[570px] sm:min-h-[600px] lg:min-h-[620px] flex items-center">
-          <Image src="https://icargezina.co.za/wp-content/uploads/2025/05/1003_14989_I1.jpg" alt="ICar Gezina vehicles" fill priority referrerPolicy="no-referrer" className="object-cover object-center" />
-          <div className="absolute inset-0 bg-black/45" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/65" />
-          <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-24 sm:pb-28">
-            <div className="max-w-5xl mx-auto text-center">
-              <h1 className="mx-auto max-w-4xl text-[1.95rem] sm:text-[2.35rem] lg:text-[2.85rem] font-extrabold tracking-tight leading-[1.05]">Find the car of your dreams at<span className="block">ICar Gezina</span></h1>
-              <p className="mx-auto mt-3 max-w-4xl text-[12px] sm:text-[13px] lg:text-[15px] leading-[1.45] text-white/90">At ICar Gezina, we make car buying simple, affordable, and enjoyable. Explore our wide range of quality vehicles and take advantage of our easy, on-site finance options. With friendly service, expert advice, and a streamlined process, getting behind the wheel has never been easier.</p>
+    <div className="min-h-screen overflow-hidden bg-[#282828] text-white">
+      <section className="relative min-h-[690px] overflow-hidden bg-black sm:min-h-[730px] lg:min-h-[760px]">
+        <Image src="https://icargezina.co.za/wp-content/uploads/2025/05/1003_14989_I1.jpg" alt="Vehicles inside the ICar Gezina showroom" fill priority referrerPolicy="no-referrer" className="object-cover object-center" />
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-[#282828]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_40%,rgba(22,166,184,0.12),transparent_32%)]" />
+        <div className="relative z-10 mx-auto flex min-h-[690px] max-w-7xl items-center px-4 pb-24 pt-28 sm:min-h-[730px] sm:px-6 lg:min-h-[760px] lg:px-8">
+          <div className="grid w-full items-end gap-12 lg:grid-cols-[1.1fr_.9fr]">
+            <div className="max-w-3xl">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/25 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/80 backdrop-blur-md"><Sparkles className="h-3.5 w-3.5 text-[#F28A2E]" /> Quality pre-owned vehicles</div>
+              <h1 className="max-w-3xl text-5xl font-black leading-[0.98] tracking-[-0.045em] sm:text-6xl lg:text-7xl">Find the car<span className="block text-white/75">of your dreams.</span></h1>
+              <p className="mt-6 max-w-2xl text-sm leading-7 text-white/75 sm:text-base">At ICar Gezina, we make car buying simple, affordable, and enjoyable. Explore our quality vehicles, get expert advice and take advantage of convenient on-site finance.</p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/cars" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#16A6B8] px-7 py-3.5 text-sm font-bold text-white shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#1192A2]">Browse our vehicles <ArrowRight className="h-4 w-4" /></Link><Link href="/finance" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-md transition hover:bg-white/15">Get vehicle finance</Link></div>
             </div>
+            <div className="hidden justify-end lg:flex"><div className="w-[330px] rounded-2xl border border-white/15 bg-black/35 p-5 backdrop-blur-xl"><div className="flex items-center gap-3 border-b border-white/10 pb-4"><div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E8751A]/15 text-[#F28A2E]"><BadgeCheck className="h-5 w-5" /></div><div><p className="text-sm font-bold">Buy with confidence</p><p className="text-xs text-white/45">Quality vehicles. Friendly service.</p></div></div><div className="grid grid-cols-2 gap-4 pt-4"><div><p className="text-2xl font-black">{cars.length || '—'}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Vehicles online</p></div><div><p className="text-2xl font-black">5★</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Customer focus</p></div></div></div></div>
           </div>
         </div>
+        <div className="absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 items-center gap-3 text-[9px] font-bold uppercase tracking-[0.25em] text-white/40 lg:flex"><span className="h-px w-10 bg-white/20" /> Scroll to explore <span className="h-px w-10 bg-white/20" /></div>
       </section>
 
-      {/* Search */}
-      <div className="relative z-50 -mt-8 sm:-mt-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto rounded-xl bg-[#282828] p-2.5 sm:p-3 shadow-2xl border border-white/30">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] gap-2 sm:gap-3">
-{filters.map(([label, options]) => (
-  <select
-    key={label}
-    aria-label={label}
-    className="h-11 w-full rounded-none border-0 border-b-2 border-[#E8751A] bg-transparent px-3 text-[13px] text-white/90 outline-none focus:border-[#F28A2E] focus:ring-0 [&>option]:bg-[#282828] [&>option]:text-white"
-  >
-    <option value="">{label}</option>
-    {options.map((option) => (
-      <option key={option} value={option}>
-        {option}
-      </option>
-    ))}
-  </select>
-))}
-            <Link href="/cars" className="h-11 min-w-[108px] rounded-md bg-[#16A6B8] px-5 flex items-center justify-center gap-2 text-[13px] font-medium transition hover:bg-[#1192A2]"><Search className="h-4 w-4" />Search</Link>
-          </div>
-        </div>
-      </div>
+      <section className="relative z-20 -mt-10 px-4 sm:-mt-14 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl overflow-hidden rounded-2xl border border-white/10 bg-[#242424] shadow-[0_25px_80px_rgba(0,0,0,0.4)]"><div className="border-b border-white/10 px-5 py-5 sm:px-7"><div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#F28A2E]">Vehicle search</p><h2 className="mt-1 text-xl font-bold sm:text-2xl">Find your next vehicle</h2></div><Link href="/cars" className="text-xs font-semibold text-white/45 transition hover:text-[#16A6B8]">Advanced search <ArrowRight className="ml-1 inline h-3.5 w-3.5" /></Link></div></div><div className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-3 xl:grid-cols-[repeat(6,minmax(0,1fr))_auto]">{filters.map(([label, options]) => <select key={label} aria-label={label} className="h-12 w-full rounded-xl border border-white/10 bg-[#303030] px-4 text-xs font-medium text-white/80 outline-none transition focus:border-[#16A6B8] focus:ring-1 focus:ring-[#16A6B8]/40 [&>option]:bg-[#303030] [&>option]:text-white"><option value="">{label}</option>{options.map(option => <option key={option} value={option}>{option}</option>)}</select>)}<Link href="/cars" className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[#16A6B8] px-5 text-xs font-bold transition hover:bg-[#1192A2]"><Search className="h-4 w-4" /> Search</Link></div></div></section>
 
-      {/* New Arrivals — mirrors the live homepage section */}
-      <section className="bg-[#282828] py-16 sm:py-20 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between gap-6 mb-8 sm:mb-10">
-            <div><p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E8751A] mb-2">Latest stock</p><h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">New Arrivals</h2></div>
-            <Link href="/cars" className="hidden sm:flex items-center gap-1 text-sm font-semibold text-white hover:text-[#16A6B8] transition">View All <ChevronRight className="w-4 h-4" /></Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-            {newArrivals.map(car => (
-              <Link href={`/cars/${car.id}`} key={car.id} className="group overflow-hidden bg-[#303030] border border-white/10 hover:border-white/25 transition rounded-sm">
-                <div className="relative aspect-[4/3] overflow-hidden bg-black"><Image src={car.imageUrl} alt={`${car.make} ${car.model}`} fill unoptimized referrerPolicy="no-referrer" className="object-cover group-hover:scale-105 transition-transform duration-500" /><div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent" /><span className="absolute left-4 bottom-4 text-xs font-bold uppercase tracking-wider text-white">{car.year}</span></div>
-                <div className="p-5"><div className="text-sm font-medium text-white/60">{car.mileage.toLocaleString()} Km</div><h3 className="mt-1 min-h-12 text-lg font-semibold uppercase leading-tight">{car.make} {car.model}</h3><div className="mt-4 text-2xl font-bold text-[#16A6B8]">R {car.price.toLocaleString()}</div></div>
-              </Link>
-            ))}
-          </div>
-          <div className="mt-8 flex justify-center sm:hidden"><Link href="/cars" className="inline-flex items-center gap-2 text-sm font-semibold">View All Vehicles <ArrowRight className="w-4 h-4" /></Link></div>
-        </div>
-      </section>
+      <section className="bg-[#282828] py-20 sm:py-24 lg:py-28"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="mb-10 flex items-end justify-between gap-6 sm:mb-12"><div><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F28A2E]">Latest stock</p><h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">New Arrivals</h2><p className="mt-3 max-w-xl text-sm text-white/45">Freshly added vehicles ready for their next owner.</p></div><Link href="/cars" className="hidden items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-xs font-bold sm:inline-flex hover:border-[#16A6B8] hover:text-[#16A6B8]">View all <ArrowRight className="h-3.5 w-3.5" /></Link></div><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{newArrivals.map(car => <Link href={`/cars/${car.id}`} key={car.id} className="group overflow-hidden rounded-2xl border border-white/10 bg-[#303030] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/20"><div className="relative aspect-[4/3] overflow-hidden bg-black"><Image src={car.imageUrl} alt={`${car.make} ${car.model}`} fill unoptimized referrerPolicy="no-referrer" className="object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" /><span className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider backdrop-blur">{car.year}</span><span className="absolute bottom-4 right-4 rounded-full bg-[#16A6B8] px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider">View vehicle</span></div><div className="p-5"><p className="text-[10px] font-semibold uppercase tracking-wider text-white/35">{car.mileage.toLocaleString()} km • {car.bodyType}</p><h3 className="mt-2 min-h-12 text-lg font-bold leading-tight">{car.make} {car.model}</h3><div className="mt-5 flex items-end justify-between gap-3 border-t border-white/10 pt-4"><span className="text-2xl font-black text-white">R {car.price.toLocaleString()}</span><ChevronRight className="h-5 w-5 text-[#16A6B8] transition group-hover:translate-x-1" /></div></div></Link>)}</div><div className="mt-8 text-center sm:hidden"><Link href="/cars" className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-xs font-bold">View all vehicles <ArrowRight className="h-4 w-4" /></Link></div></div></section>
 
-      {/* Showroom / finance split */}
-      <section className="bg-[#303030] py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-6">
-          <div className="relative min-h-[360px] overflow-hidden rounded-sm group"><Image src={newArrivals[0]?.imageUrl || 'https://picsum.photos/seed/showroom/1200/800'} alt="ICar Gezina showroom" fill unoptimized className="object-cover group-hover:scale-105 transition-transform duration-700" /><div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/10" /><div className="absolute left-7 right-7 bottom-7"><p className="text-xs uppercase tracking-[0.25em] text-[#E8751A] font-bold">WELCOME TO ICAR GEZINA</p><h2 className="mt-2 text-3xl sm:text-4xl font-bold">Explore Our Showroom</h2><p className="mt-3 max-w-xl text-sm text-white/75">Discover a wide selection of quality vehicles to suit every lifestyle, with fast and easy finance options available on-site.</p><Link href="/cars" className="mt-6 inline-flex items-center gap-2 rounded-sm bg-[#16A6B8] px-5 py-3 text-sm font-semibold hover:bg-[#1192A2] transition">View our Showroom <ArrowRight className="w-4 h-4" /></Link></div></div>
-          <div className="relative min-h-[360px] overflow-hidden rounded-sm bg-[#242424] border border-white/10 p-8 sm:p-10 flex flex-col justify-end"><div className="mb-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#16A6B8]/15 text-[#16A6B8]"><Banknote className="h-7 w-7" /></div><p className="text-xs uppercase tracking-[0.25em] text-[#E8751A] font-bold">Easy on-site finance</p><h2 className="mt-2 text-3xl sm:text-4xl font-bold">Get Finance</h2><p className="mt-3 max-w-xl text-sm text-white/70">Our streamlined finance application process makes it simple to get behind the wheel of your next car.</p><Link href="/finance" className="mt-6 inline-flex w-fit items-center gap-2 rounded-sm border border-white/30 px-5 py-3 text-sm font-semibold hover:bg-white/10 transition">Apply For Finance <ArrowRight className="w-4 h-4" /></Link></div>
-        </div>
-      </section>
+      <section className="bg-[#303030] py-20 sm:py-24"><div className="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-2 lg:px-8"><div className="group relative min-h-[460px] overflow-hidden rounded-2xl"><Image src={newArrivals[0]?.imageUrl || 'https://picsum.photos/seed/showroom/1200/800'} alt="ICar Gezina showroom" fill unoptimized referrerPolicy="no-referrer" className="object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/5" /><div className="absolute bottom-0 left-0 right-0 p-7 sm:p-9"><p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#F28A2E]">Welcome to ICar Gezina</p><h2 className="mt-2 text-3xl font-black sm:text-4xl">Explore our showroom</h2><p className="mt-3 max-w-lg text-sm leading-6 text-white/65">Discover a wide selection of quality vehicles. If we don't have what you're looking for, let our team know and we'll help find it.</p><Link href="/cars" className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#16A6B8] px-6 py-3 text-xs font-bold transition hover:bg-[#1192A2]">View showroom <ArrowRight className="h-4 w-4" /></Link></div></div><div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#242424] p-7 sm:p-9"><div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-[#16A6B8]/10 blur-3xl" /><div className="relative flex h-full flex-col"><div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#16A6B8]/15 text-[#16A6B8]"><Banknote className="h-7 w-7" /></div><div className="mt-auto pt-20"><p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#F28A2E]">Easy on-site finance</p><h2 className="mt-2 text-3xl font-black sm:text-4xl">Get behind the wheel sooner.</h2><p className="mt-4 max-w-lg text-sm leading-7 text-white/55">Our streamlined finance application process makes it simple to move from browsing to driving, with friendly guidance along the way.</p><div className="mt-7 grid grid-cols-3 gap-3 border-y border-white/10 py-5"><div><ShieldCheck className="h-4 w-4 text-[#16A6B8]" /><p className="mt-2 text-[10px] uppercase tracking-wider text-white/40">Guided</p></div><div><Banknote className="h-4 w-4 text-[#16A6B8]" /><p className="mt-2 text-[10px] uppercase tracking-wider text-white/40">Convenient</p></div><div><Headphones className="h-4 w-4 text-[#16A6B8]" /><p className="mt-2 text-[10px] uppercase tracking-wider text-white/40">Personal</p></div></div><Link href="/finance" className="mt-7 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-xs font-bold transition hover:border-[#16A6B8] hover:text-[#16A6B8]">Apply for finance <ArrowRight className="h-4 w-4" /></Link></div></div></div></div></section>
 
-      {/* Vehicle lifestyle categories */}
-      <section className="bg-[#282828] py-16 sm:py-20 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mb-10"><p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E8751A]">Find your style</p><h2 className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold">Find the Perfect Ride for Your Lifestyle</h2><p className="mt-4 text-sm sm:text-base text-white/65">From rugged bakkies and spacious SUVs to sporty coupes and compact hatchbacks, discover a vehicle built around the way you live.</p></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {categories.map(category => (
-              <Link href={`/cars?bodyType=${encodeURIComponent(category.type)}`} key={category.name} className="group relative min-h-[390px] overflow-hidden rounded-sm bg-[#303030]">
-                {category.image && <Image src={category.image} alt={category.name} fill unoptimized referrerPolicy="no-referrer" className="object-cover group-hover:scale-105 transition-transform duration-700" />}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                <div className="absolute left-5 right-5 bottom-5"><h3 className="text-2xl font-bold">{category.name}</h3><p className="mt-2 text-sm text-white/70 line-clamp-3">{category.copy}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#16A6B8]">Discover More <ChevronRight className="h-4 w-4" /></span></div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section className="bg-[#282828] py-20 sm:py-24 lg:py-28"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="mb-10 max-w-3xl sm:mb-12"><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F28A2E]">Find your style</p><h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">The right car for your lifestyle.</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-white/50 sm:text-base">From rugged bakkies and spacious SUVs to sporty coupes and practical hatchbacks, discover a vehicle built around the way you live.</p></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{categories.map(category => <Link href={`/cars?bodyType=${encodeURIComponent(category.type)}`} key={category.name} className="group relative min-h-[430px] overflow-hidden rounded-2xl bg-[#303030]">{category.image && <Image src={category.image} alt={category.name} fill unoptimized referrerPolicy="no-referrer" className="object-cover transition duration-700 group-hover:scale-110" />}<div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" /><div className="absolute bottom-0 left-0 right-0 p-6"><h3 className="text-2xl font-black">{category.name}</h3><p className="mt-2 text-sm leading-6 text-white/60">{category.copy}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#16A6B8]">Discover more <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></div></Link>)}</div></div></section>
 
-      {/* Explore vehicles */}
-      <section className="bg-[#303030] py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E8751A]">Browse by make</p><h2 className="mt-2 text-3xl sm:text-4xl font-bold">Explore Our Vehicles</h2><p className="mt-3 text-sm text-white/65">Filter by your favourite make and find your next vehicle.</p><div className="mt-8 flex flex-wrap justify-center gap-3">{Array.from(new Set(cars.map(car => car.make))).slice(0, 10).map(make => <Link key={make} href={`/cars?make=${encodeURIComponent(make)}`} className="rounded-full border border-white/15 bg-[#282828] px-5 py-2.5 text-sm text-white/80 hover:border-[#16A6B8] hover:text-[#16A6B8] transition">{make}</Link>)}</div></div>
-      </section>
+      <section className="border-y border-white/10 bg-[#242424]"><div className="mx-auto grid max-w-7xl divide-y divide-white/10 px-4 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4 lg:px-8">{[[BadgeCheck, 'Quality vehicles', 'Carefully selected pre-owned stock'], [Banknote, 'Finance made easy', 'Simple, guided application support'], [Headphones, 'Friendly service', 'A team ready to help you buy with confidence'], [CarFront, 'Wide selection', 'Cars for city, family, work and adventure']].map(([Icon, title, copy]) => { const IconComponent = Icon as typeof BadgeCheck; return <div key={String(title)} className="flex gap-4 px-4 py-7 sm:px-6 lg:px-8"><IconComponent className="mt-0.5 h-5 w-5 shrink-0 text-[#16A6B8]" /><div><h3 className="text-sm font-bold">{title}</h3><p className="mt-1 text-xs leading-5 text-white/40">{copy}</p></div></div>; })}</div></section>
 
-      {/* Testimonials */}
-      <section className="bg-[#282828] py-16 sm:py-20 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="max-w-2xl mb-10"><p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E8751A]">Happy customers</p><h2 className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold">What our Customers are saying</h2><p className="mt-4 text-sm text-white/65">Don't just take our word for it—hear real stories from customers who found their perfect vehicle at ICar Gezina.</p></div><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">{globalTestimonials.slice(0, 6).map(testimonial => <article key={testimonial.id} className="bg-[#303030] border border-white/10 p-6 rounded-sm"><div className="text-[#E8751A] tracking-widest">★★★★★</div><p className="mt-4 text-sm leading-7 text-white/75">&quot;{testimonial.content}&quot;</p><div className="mt-6 pt-5 border-t border-white/10"><div className="font-semibold">{testimonial.author}</div><div className="text-xs text-white/45 mt-1">{testimonial.role}</div></div></article>)}</div></div>
-      </section>
+      <section className="bg-[#303030] py-20 sm:py-24"><div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8"><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F28A2E]">Browse by make</p><h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Explore our vehicles</h2><p className="mx-auto mt-3 max-w-xl text-sm text-white/45">Start with a make you know and discover the vehicles currently available.</p><div className="mt-9 flex flex-wrap justify-center gap-2.5">{Array.from(new Set(cars.map(car => car.make))).slice(0, 14).map(make => <Link key={make} href={`/cars?make=${encodeURIComponent(make)}`} className="rounded-full border border-white/10 bg-[#282828] px-5 py-3 text-xs font-semibold text-white/65 transition hover:border-[#16A6B8]/70 hover:text-[#16A6B8]">{make}</Link>)}</div><Link href="/cars" className="mt-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#16A6B8]">See all vehicles <ArrowRight className="h-4 w-4" /></Link></div></section>
 
-      {/* Video / simple enjoyable */}
-      <section className="bg-[#303030] py-16 sm:py-20"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center"><div className="relative min-h-[330px] overflow-hidden bg-black rounded-sm"><Image src={newArrivals[1]?.imageUrl || newArrivals[0]?.imageUrl || 'https://picsum.photos/seed/icar/1200/800'} alt="ICar Gezina vehicle" fill unoptimized className="object-cover" /><div className="absolute inset-0 bg-black/35" /><div className="absolute inset-0 flex items-center justify-center"><div className="h-16 w-16 rounded-full bg-[#16A6B8] flex items-center justify-center shadow-xl"><Play className="h-7 w-7 fill-white" /></div></div></div><div><p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E8751A]">Our experience</p><h2 className="mt-2 text-3xl sm:text-4xl font-bold">Simple, Affordable, Enjoyable</h2><p className="mt-4 text-sm leading-7 text-white/65">Watch how we make car buying easier, more affordable, and surprisingly enjoyable. From vehicle tips to customer stories, discover why ICar Gezina is the smart choice for your journey.</p><Link href="/articles" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-[#16A6B8]">View Articles <ArrowRight className="h-4 w-4" /></Link></div></div></section>
+      <section className="bg-[#282828] py-20 sm:py-24 lg:py-28"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="mb-10 flex flex-col justify-between gap-5 sm:mb-12 sm:flex-row sm:items-end"><div><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F28A2E]">Happy customers</p><h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">What our customers say</h2></div><div className="flex items-center gap-2 text-xs text-white/40"><Star className="h-4 w-4 fill-[#F28A2E] text-[#F28A2E]" /> Real customer experiences</div></div><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{globalTestimonials.slice(0, 6).map(testimonial => <article key={testimonial.id} className="rounded-2xl border border-white/10 bg-[#303030] p-6 transition hover:border-white/20"><div className="flex gap-1 text-[#F28A2E]">{[...Array(5)].map((_, i) => <Star key={i} className="h-3.5 w-3.5 fill-current" />)}</div><p className="mt-5 text-sm leading-7 text-white/65">“{testimonial.content}”</p><div className="mt-6 border-t border-white/10 pt-4"><p className="text-sm font-bold">{testimonial.author}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/35">{testimonial.role}</p></div></article>)}</div></div></section>
 
-      {/* Support CTA */}
-      <section className="bg-[#282828] py-16 sm:py-20"><div className="max-w-5xl mx-auto px-4 text-center"><div className="mx-auto h-14 w-14 rounded-full bg-[#16A6B8]/15 text-[#16A6B8] flex items-center justify-center"><Headphones className="h-7 w-7" /></div><p className="mt-5 text-xs font-semibold uppercase tracking-[0.25em] text-[#E8751A]">ICar Gezina support</p><h2 className="mt-2 text-3xl sm:text-4xl font-bold">After Sales Customer Care</h2><p className="mt-4 max-w-2xl mx-auto text-sm leading-7 text-white/65">We value your support and feedback. Our team is committed to providing excellent ongoing service and total customer satisfaction.</p><div className="mt-7 flex flex-col sm:flex-row justify-center gap-3"><Link href="/contact" className="inline-flex items-center justify-center gap-2 bg-[#16A6B8] px-6 py-3 text-sm font-semibold rounded-sm hover:bg-[#1192A2] transition">Contact Us <ArrowRight className="w-4 h-4" /></Link><Link href="/cars" className="inline-flex items-center justify-center gap-2 border border-white/25 px-6 py-3 text-sm font-semibold rounded-sm hover:bg-white/10 transition">Browse Cars</Link></div></div></section>
+      <section className="bg-[#303030] py-20 sm:py-24"><div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.15fr_.85fr] lg:px-8"><div className="relative min-h-[390px] overflow-hidden rounded-2xl bg-black"><Image src={newArrivals[1]?.imageUrl || newArrivals[0]?.imageUrl || 'https://picsum.photos/seed/icar/1200/800'} alt="ICar Gezina vehicle" fill unoptimized referrerPolicy="no-referrer" className="object-cover" /><div className="absolute inset-0 bg-black/35" /><div className="absolute inset-0 flex items-center justify-center"><div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#16A6B8] shadow-2xl shadow-black/30"><Play className="ml-1 h-8 w-8 fill-white" /></div></div><div className="absolute bottom-5 left-5 rounded-full border border-white/15 bg-black/45 px-4 py-2 text-[9px] font-bold uppercase tracking-[0.18em] backdrop-blur">The ICar Gezina experience</div></div><div><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F28A2E]">Simple. Affordable. Enjoyable.</p><h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">More than buying a car.</h2><p className="mt-5 text-sm leading-7 text-white/50">We believe buying a vehicle should feel straightforward and personal. From your first search to finance, delivery and after-sales support, our team is here to make the journey easier.</p><div className="mt-7 grid grid-cols-2 gap-3"><div className="rounded-xl border border-white/10 bg-[#282828] p-4"><MapPin className="h-4 w-4 text-[#16A6B8]" /><p className="mt-3 text-xs font-bold">Visit us in Gezina</p></div><div className="rounded-xl border border-white/10 bg-[#282828] p-4"><Phone className="h-4 w-4 text-[#16A6B8]" /><p className="mt-3 text-xs font-bold">Talk to our team</p></div></div><Link href="/contact" className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold text-[#282828] transition hover:bg-white/90">Contact ICar Gezina <ArrowRight className="h-4 w-4" /></Link></div></div></section>
+
+      <section className="relative overflow-hidden bg-[#E8751A] py-16 sm:py-20"><div className="absolute -right-20 -top-32 h-80 w-80 rounded-full bg-white/10 blur-3xl" /><div className="relative mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8"><div><p className="text-[10px] font-bold uppercase tracking-[0.25em] text-black/45">Looking for your next vehicle?</p><h2 className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl">Let's get you moving.</h2><p className="mt-4 max-w-xl text-sm leading-7 text-white/75">Explore our current stock or speak with our team about finding the right vehicle for you.</p><div className="mt-7 flex flex-wrap gap-3"><Link href="/cars" className="inline-flex items-center gap-2 rounded-full bg-[#282828] px-6 py-3 text-xs font-bold text-white">Browse showroom <ArrowRight className="h-4 w-4" /></Link><Link href="/contact" className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-xs font-bold text-white">Contact us</Link></div></div><div className="rounded-2xl border border-white/20 bg-black/10 p-6 sm:p-7"><p className="text-[10px] font-bold uppercase tracking-[0.22em] text-black/45">Want to sell or trade?</p><h3 className="mt-2 text-2xl font-black text-white">We can help with that too.</h3><p className="mt-3 text-sm leading-6 text-white/70">Talk to ICar Gezina about your current vehicle and explore your options for selling or trading in.</p><Link href="/contact" className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-white underline decoration-white/40 underline-offset-4">Start a conversation <ArrowRight className="h-4 w-4" /></Link></div></div></section>
     </div>
   );
 }

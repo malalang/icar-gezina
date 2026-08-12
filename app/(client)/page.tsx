@@ -52,20 +52,12 @@ const filters: Array<[string, string[]]> = [
       <div className="relative z-50 -mt-8 sm:-mt-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto rounded-xl bg-[#282828] p-2.5 sm:p-3 shadow-2xl border border-white/30">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] gap-2 sm:gap-3">
-            {[
-              ['All Makes', ['Volkswagen','BMW','Mercedes-Benz','Audi','Toyota','Ford','Isuzu','Nissan']],
-              ['All Models', ['Golf','Polo','Ranger','Hilux','X3','Q3']],
-              ['All Years', ['2026','2025','2024','2023','2022','2021','2020']],
-              ['All Colours', ['Black','White','Silver','Grey','Blue','Red']],
-              ['Max Price', ['Under R200 000','R200 000 – R400 000','R400 000 – R600 000','R600 000 – R800 000','R800 000+']],
-            ].map(([label, options]) => (
-              <select key={label} aria-label={label} className="h-11 w-full rounded-none border-0 border-b-2 border-[#E8751A] bg-transparent px-3 text-[13px] text-white/90 outline-none focus:border-[#F28A2E] focus:ring-0 [&>option]:bg-[#282828] [&>option]:text-white">
-                <option value="">{label}</option>
-                {(options as string[]).map(option => <option key={option}>{option}</option>)}
-              </select>
-            ))}
-            {filters.map(([label, options]) => (
-  <select key={label} aria-label={label}>
+{filters.map(([label, options]) => (
+  <select
+    key={label}
+    aria-label={label}
+    className="h-11 w-full rounded-none border-0 border-b-2 border-[#E8751A] bg-transparent px-3 text-[13px] text-white/90 outline-none focus:border-[#F28A2E] focus:ring-0 [&>option]:bg-[#282828] [&>option]:text-white"
+  >
     <option value="">{label}</option>
     {options.map((option) => (
       <option key={option} value={option}>

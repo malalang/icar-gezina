@@ -17,7 +17,20 @@ export default async function Home() {
     { name: 'Bakkies', copy: 'Rugged durability and powerful capability, ready for work or weekend.', type: 'Bakkie', image: cars.find(c => c.bodyType === 'Bakkie')?.imageUrl },
     { name: 'Hatchbacks', copy: 'Convenient, efficient and fun to drive for everyday life.', type: 'Hatchback', image: cars.find(c => c.bodyType === 'Hatchback')?.imageUrl },
   ];
-
+const filters: Array<[string, string[]]> = [
+  ['Make', ['All Makes', 'Toyota', 'BMW', 'Volkswagen']],
+  ['Model', ['All Models', 'Golf', 'Polo', 'Ranger']],
+  ['Vehicle Type', ['All Types', 'SUV', 'Sedan', 'Bakkie', 'Hatchback']],
+  ['Year', ['All Years', '2026', '2025', '2024']],
+  ['Colour', ['All Colours', 'Black', 'White', 'Silver']],
+  ['Max Price', [
+    'Under R200 000',
+    'R200 000 – R400 000',
+    'R400 000 – R600 000',
+    'R600 000 – R800 000',
+    'R800 000+',
+  ]],
+];
   return (
     <div className="min-h-screen bg-[#282828] text-white">
       {/* Hero */}
@@ -51,6 +64,16 @@ export default async function Home() {
                 {(options as string[]).map(option => <option key={option}>{option}</option>)}
               </select>
             ))}
+            {filters.map(([label, options]) => (
+  <select key={label} aria-label={label}>
+    <option value="">{label}</option>
+    {options.map((option) => (
+      <option key={option} value={option}>
+        {option}
+      </option>
+    ))}
+  </select>
+))}
             <Link href="/cars" className="h-11 min-w-[108px] rounded-md bg-[#16A6B8] px-5 flex items-center justify-center gap-2 text-[13px] font-medium transition hover:bg-[#1192A2]"><Search className="h-4 w-4" />Search</Link>
           </div>
         </div>

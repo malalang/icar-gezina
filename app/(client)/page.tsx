@@ -9,9 +9,9 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero — faithful recreation of the live ICar Gezina homepage */}
+      {/* Hero — balanced spacing and sizing to closely match the live ICar Gezina homepage */}
       <section className="relative isolate w-full overflow-hidden bg-slate-900">
-        <div className="relative min-h-[650px] lg:min-h-[720px] flex items-center">
+        <div className="relative min-h-[600px] sm:min-h-[640px] lg:min-h-[680px] flex items-center">
           <Image
             src="https://icargezina.co.za/wp-content/uploads/2025/05/1003_14989_I1.jpg"
             alt="ICar Gezina vehicles"
@@ -21,42 +21,41 @@ export default async function Home() {
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/35" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/55" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/55" />
 
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-36 lg:pt-32 lg:pb-44">
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-32 sm:pb-36 lg:pb-40">
             <div className="max-w-3xl text-center mx-auto">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
+              <h1 className="text-[2.35rem] sm:text-5xl lg:text-[3.6rem] font-extrabold tracking-[-0.025em] leading-[1.08] text-white">
                 Find the car of your dreams at
-                <span className="block">ICar Gezina</span>
+                <span className="block mt-1">ICar Gezina</span>
               </h1>
-              <p className="mt-5 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg leading-7 text-white/95">
+              <p className="mt-4 sm:mt-5 max-w-2xl mx-auto text-[13px] sm:text-sm lg:text-base leading-6 sm:leading-7 text-white/95">
                 At ICar Gezina, we make car buying simple, affordable, and enjoyable. Explore our wide range of quality vehicles and take advantage of our easy, on-site finance options. With friendly service, expert advice, and a streamlined process, getting behind the wheel has never been easier.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Search bar sits across the lower edge of the hero, like the live site */}
+        {/* Compact overlapping search bar */}
         <div className="absolute left-0 right-0 bottom-0 z-20 px-4 sm:px-6 lg:px-8 translate-y-1/2">
-          <div className="max-w-6xl mx-auto rounded-xl bg-white p-3 sm:p-4 shadow-2xl border border-slate-100">
+          <div className="max-w-6xl mx-auto rounded-xl bg-white p-2.5 sm:p-3 shadow-xl border border-slate-100">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] gap-2">
-              <select aria-label="Make" className="h-12 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
-                <option value="">Make</option>
-                <option>Volkswagen</option><option>BMW</option><option>Mercedes-Benz</option><option>Audi</option><option>Toyota</option><option>Ford</option><option>Isuzu</option><option>Nissan</option>
+              <select aria-label="Make" className="h-11 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+                <option value="">Make</option><option>Volkswagen</option><option>BMW</option><option>Mercedes-Benz</option><option>Audi</option><option>Toyota</option><option>Ford</option><option>Isuzu</option><option>Nissan</option>
               </select>
-              <select aria-label="Model" className="h-12 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+              <select aria-label="Model" className="h-11 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
                 <option value="">Model</option><option>Golf</option><option>Polo</option><option>Ranger</option><option>Hilux</option><option>X3</option><option>Q3</option>
               </select>
-              <select aria-label="Vehicle type" className="h-12 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+              <select aria-label="Vehicle type" className="h-11 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
                 <option value="">Vehicle Type</option><option>SUV</option><option>Coupe</option><option>Bakkie</option><option>Hatchback</option><option>Sedan</option>
               </select>
-              <select aria-label="Price" className="h-12 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+              <select aria-label="Price" className="h-11 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
                 <option value="">Price</option><option>Under R200 000</option><option>R200 000 – R400 000</option><option>R400 000 – R600 000</option><option>R600 000 – R800 000</option><option>R800 000+</option>
               </select>
-              <select aria-label="Transmission" className="h-12 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+              <select aria-label="Transmission" className="h-11 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
                 <option value="">Transmission</option><option>Automatic</option><option>Manual</option>
               </select>
-              <Link href="/cars" className="h-12 min-w-[120px] rounded-md bg-blue-600 px-5 flex items-center justify-center gap-2 text-sm font-semibold text-white transition hover:bg-blue-700">
+              <Link href="/cars" className="h-11 min-w-[108px] rounded-md bg-blue-600 px-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-white transition hover:bg-blue-700">
                 <Search className="h-4 w-4" />
                 Search
               </Link>
@@ -65,8 +64,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Spacer for overlapping search panel */}
-      <div className="h-24 sm:h-20 bg-white" />
+      <div className="h-20 sm:h-18 bg-white" />
 
       {/* Trust Factors */}
       <section className="py-16 bg-white">

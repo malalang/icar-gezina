@@ -1,0 +1,1 @@
+export async function readCars() { const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/cars?select=*`, { headers: { apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}` }, cache: 'no-store' }); if (!response.ok) throw new Error('Unable to read inventory'); return response.json(); }

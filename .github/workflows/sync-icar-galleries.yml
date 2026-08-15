@@ -1,0 +1,37 @@
+name: Sync iCar Gezina vehicle galleries
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/sync-icar-galleries.mjs'
+      - '.github/workflows/sync-icar-galleries.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: icar-gallery-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Sync direct iCar Gezina galleries
+        env:
+          SUPABASE_URL: https://srlnoxhqudgvskntekze.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          DELAY_MS: 350
+        run: node scripts/sync-icar-galleries.mjs

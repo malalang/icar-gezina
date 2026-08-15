@@ -1,0 +1,2 @@
+import Link from 'next/link'
+export default function UnauthorizedPage(){return <main style={{minHeight:'100vh',display:'grid',placeItems:'center',padding:24}}><section className="panel" style={{maxWidth:520,width:'100%'}}><div className="panel-body"><h1>Access denied</h1><p>Your Supabase account is authenticated but is not marked as an ICar Gezina administrator.</p><Link href="/admin/login" className="button">Back to sign in</Link></div></section></main>}

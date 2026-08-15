@@ -19,7 +19,7 @@ function decodeHtml(value: string) {
     .replaceAll('&amp;', '&')
 }
 
-function normalizeImageUrl(value: string) {
+function normalizeImageUrl(value: string): string | null {
   try {
     const url = new URL(value)
     url.search = ''
@@ -37,7 +37,12 @@ function extractGallery(html: string) {
     /https?:\/\/icargezina\.co\.za\/wp-content\/uploads\/[^"'<>\s]+?\.jpe?g(?:\?[^"'<>\s]*)?/gi,
   ) || []
 
-  const urls = [...new Set(matches.map(normalizeImageUrl).filter(Boolean))]
+  const urls: string[] = []
+  for (const match of matches) {
+    const normalized = normalizeImageUrl(match)
+    if (normalized && !urls.includes(normalized)) urls.push(normalized)
+  }
+
   const numbered = urls
     .map((url) => {
       const match = url.match(/_I(10|[1-9])\.jpe?g$/i)

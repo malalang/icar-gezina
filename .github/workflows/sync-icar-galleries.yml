@@ -1,20 +1,9 @@
 name: Sync iCar Gezina vehicle galleries
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
-    paths:
-      - 'scripts/sync-icar-galleries.mjs'
-      - '.github/workflows/sync-icar-galleries.yml'
-
-permissions:
-  contents: read
-
-concurrency:
-  group: icar-gallery-sync
-  cancel-in-progress: false
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -24,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
           node-version: 22

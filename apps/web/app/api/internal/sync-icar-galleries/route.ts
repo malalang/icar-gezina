@@ -4,8 +4,8 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const SYNC_TOKEN = 'FNVwKKs_Pl9abDIw5Zp4yOAqIPgFyOzjIAheCK7g-T4'
-const SUPABASE_URL = (process.env.SUPABASE_URL || 'https://srlnoxhqudgvskntekze.supabase.co').replace(/\/$/, '')
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
+const SUPABASE_URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://srlnoxhqudgvskntekze.supabase.co').replace(/\/$/, '')
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -68,7 +68,7 @@ function sourceUrlFromPlaceholder(imageUrl: string) {
 }
 
 async function supabaseFetch(path: string, init: RequestInit = {}) {
-  if (!SUPABASE_SERVICE_ROLE_KEY) throw new Error('SUPABASE_SERVICE_ROLE_KEY is not configured')
+  if (!SUPABASE_SERVICE_ROLE_KEY) throw new Error('No server-side Supabase secret is configured')
 
   const response = await fetch(`${SUPABASE_URL}${path}`, {
     ...init,
@@ -93,6 +93,13 @@ export async function GET(request: Request) {
   if (token !== SYNC_TOKEN) return new NextResponse('Not found', { status: 404 })
 
   try {
+    if (!SUPABASE_SERVICE_ROLE_KEY) {
+      const configuredSupabaseKeys = Object.keys(process.env)
+        .filter((key) => key.toUpperCase().includes('SUPABASE'))
+        .sort()
+      return NextResponse.json({ ok: false, error: 'No server-side Supabase secret is configured', configuredSupabaseKeys }, { status: 500 })
+    }
+
     const params = new URLSearchParams({
       select: 'id,make,model,year,image_url',
       image_url: 'like.*image.thum.io*',

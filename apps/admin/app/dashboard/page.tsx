@@ -1,53 +1,23 @@
 import Link from 'next/link'
-import { ArrowUpRight, CarFront, Inbox, Plus, TrendingUp, Users } from 'lucide-react'
+import { CarFront, Eye, Plus, TrendingUp } from 'lucide-react'
+import { redirect } from 'next/navigation'
+import { requireAdmin } from '@icar-gezina/supabase/server'
 
-const activities = [
-  { title: 'Vehicle enquiry received', subtitle: 'BMW X3 xDrive20d M Sport', time: '12 min ago', icon: Inbox },
-  { title: 'Inventory updated', subtitle: 'Mercedes-Benz C200 AMG Line', time: '42 min ago', icon: CarFront },
-  { title: 'New customer lead', subtitle: 'Finance application · Pretoria', time: '1 hr ago', icon: Users },
-]
-
-export default function DashboardPage() {
-  return (
-    <>
-      <div className="page-header">
-        <div>
-          <h1>Dashboard</h1>
-          <p>Keep track of your showroom, customer enquiries and dealership activity.</p>
-        </div>
-        <Link href="/inventory/new" className="button"><Plus size={16} /> Add vehicle</Link>
-      </div>
-
-      <section className="stats" aria-label="Dealership overview">
-        <article className="stat-card"><div className="stat-label">Active vehicles</div><div className="stat-value">—</div><div className="stat-meta"><strong>Live inventory</strong> · connected to Supabase</div></article>
-        <article className="stat-card"><div className="stat-label">New leads</div><div className="stat-value">—</div><div className="stat-meta">Awaiting database connection</div></article>
-        <article className="stat-card"><div className="stat-label">Vehicles sold</div><div className="stat-value">—</div><div className="stat-meta">Reporting will use dealership data</div></article>
-        <article className="stat-card"><div className="stat-label">Conversion rate</div><div className="stat-value">—</div><div className="stat-meta"><TrendingUp size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />Analytics ready</div></article>
-      </section>
-
-      <div className="dashboard-grid">
-        <section className="panel">
-          <div className="panel-header"><h2>Recent activity</h2><Link href="/leads">View all <ArrowUpRight size={12} style={{ verticalAlign: 'middle' }} /></Link></div>
-          <div className="panel-body">
-            {activities.map(({ title, subtitle, time, icon: Icon }) => (
-              <div className="activity-row" key={title}>
-                <div className="activity-icon"><Icon size={17} /></div>
-                <div><div className="activity-title">{title}</div><div className="activity-subtitle">{subtitle}</div></div>
-                <div className="activity-time">{time}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="panel">
-          <div className="panel-header"><h2>Quick actions</h2></div>
-          <div className="panel-body quick-actions">
-            <Link href="/inventory/new" className="quick-action"><CarFront size={18} /><div><strong>Add vehicle</strong><span>Create a new showroom listing</span></div></Link>
-            <Link href="/leads" className="quick-action"><Inbox size={18} /><div><strong>Review leads</strong><span>Follow up customer enquiries</span></div></Link>
-            <Link href="/articles" className="quick-action"><TrendingUp size={18} /><div><strong>Manage content</strong><span>Keep the dealership site current</span></div></Link>
-          </div>
-        </section>
-      </div>
-    </>
-  )
+export default async function DashboardPage() {
+  const { supabase, user, profile } = await requireAdmin()
+  if (!user) redirect('/admin/login')
+  if (!profile) redirect('/admin/unauthorized')
+  const { data: cars } = await supabase.from('cars').select('id, make, model, year, price, created_at').order('created_at', { ascending: false })
+  const vehicles = cars ?? []
+  const inventoryValue = vehicles.reduce((total, car) => total + (car.price ?? 0), 0)
+  return <>
+    <div className="page-header"><div><h1>Dashboard</h1><p>Current ICar Gezina showroom overview.</p></div><Link href="/inventory/new" className="button"><Plus size={16} /> Add vehicle</Link></div>
+    <section className="stats" aria-label="Dealership overview">
+      <article className="stat-card"><div className="stat-label">Total vehicles</div><div className="stat-value">{vehicles.length}</div><div className="stat-meta"><CarFront size={12} style={{verticalAlign:'middle',marginRight:4}}/>Live from Supabase PHB</div></article>
+      <article className="stat-card"><div className="stat-label">Inventory value</div><div className="stat-value">R {inventoryValue.toLocaleString('en-ZA')}</div><div className="stat-meta"><TrendingUp size={12} style={{verticalAlign:'middle',marginRight:4}}/>Current listed value</div></article>
+      <article className="stat-card"><div className="stat-label">Live inventory</div><div className="stat-value">{vehicles.length}</div><div className="stat-meta"><Eye size={12} style={{verticalAlign:'middle',marginRight:4}}/>Public catalogue records</div></article>
+      <article className="stat-card"><div className="stat-label">Admin access</div><div className="stat-value">ON</div><div className="stat-meta">Authenticated administrator</div></article>
+    </section>
+    <section className="panel"><div className="panel-header"><div><h2>Recent vehicles</h2><p>Latest records from the PHB cars table.</p></div><Link href="/inventory">View all</Link></div><div className="table-wrap"><table><thead><tr><th>Vehicle</th><th>Year</th><th>Price</th><th>Added</th></tr></thead><tbody>{vehicles.slice(0,5).map(car=><tr key={car.id}><td><strong>{car.make} {car.model}</strong></td><td>{car.year}</td><td>R {car.price.toLocaleString('en-ZA')}</td><td>{new Date(car.created_at).toLocaleDateString('en-ZA')}</td></tr>)}{!vehicles.length&&<tr><td colSpan={4}>No vehicles found.</td></tr>}</tbody></table></div></section>
+  </>
 }

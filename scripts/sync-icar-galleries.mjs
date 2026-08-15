@@ -43,7 +43,7 @@ function normalizeImageUrl(value) {
 function extractGallery(html) {
   const decoded = decodeHtml(html)
   const matches = decoded.match(
-    /https?:\\/\\/icargezina\\.co\\.za\\/wp-content\\/uploads\\/[^"'<>\\s\\]+?\\.jpe?g(?:\\?[^"'<>\\s\\]*)?/gi,
+    /https?:\/\/icargezina\.co\.za\/wp-content\/uploads\/[^"'<>\s]+?\.jpe?g(?:\?[^"'<>\s]*)?/gi,
   ) || []
 
   const urls = [...new Set(matches.map(normalizeImageUrl).filter(Boolean))]
@@ -100,15 +100,11 @@ async function updateVehicle(vehicle, imageUrl, galleryUrls) {
   if (DRY_RUN) return
 
   const params = new URLSearchParams({ id: `eq.${vehicle.id}` })
-  const response = await supabaseFetch(`/rest/v1/cars?${params}`, {
+  await supabaseFetch(`/rest/v1/cars?${params}`, {
     method: 'PATCH',
     headers: { Prefer: 'return=minimal' },
     body: JSON.stringify({ image_url: imageUrl, gallery_urls: galleryUrls }),
   })
-
-  if (!response.ok) {
-    throw new Error(`Update failed for ${vehicle.id}: ${response.status}`)
-  }
 }
 
 async function fetchVehiclePage(sourceUrl) {

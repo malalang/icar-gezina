@@ -6,8 +6,6 @@ export async function getCars(): Promise<Car[]> {
   
   if (supabase) {
     try {
-      // Fetch cars along with related parts and reviews
-      // Assumes we have `cars`, `car_parts`, and `car_reviews` tables in Supabase
       const { data, error } = await supabase
         .from('cars')
         .select(`
@@ -20,7 +18,6 @@ export async function getCars(): Promise<Car[]> {
       if (error) throw error;
       
       if (data && data.length > 0) {
-        // Map Supabase schema responses to our frontend `Car` interface
         return data.map((car: any) => ({
           ...car,
           fuelType: car.fuel_type,
@@ -34,13 +31,11 @@ export async function getCars(): Promise<Car[]> {
     }
   }
   
-  // Fallback to mock data if supabase isn't connected or query fails
   return mockCars;
 }
 
 export async function getFeaturedCars(): Promise<Car[]> {
   const cars = await getCars();
-  // Assuming the first 3 are featured, or filter by a specific 'isFeatured' flag
   return cars.slice(0, 3);
 }
 
@@ -59,7 +54,7 @@ export async function getCarById(id: string): Promise<Car | undefined> {
         .eq('id', id)
         .single();
 
-      if (error && error.code !== 'PGRST116') throw error; // Ignore not-found error
+      if (error && error.code !== 'PGRST116') throw error;
       if (data) {
         return {
           ...data,
@@ -74,7 +69,6 @@ export async function getCarById(id: string): Promise<Car | undefined> {
     }
   }
 
-  // Fallback to mock data
   return mockCars.find(c => c.id === id);
 }
 
@@ -115,22 +109,27 @@ export async function getLeads(): Promise<Lead[]> {
   return [];
 }
 
+/**
+ * Public testimonials are database content. The homepage must not silently
+ * fall back to demo testimonials: Supabase PHB is the source of truth.
+ */
 export async function getTestimonials(): Promise<Testimonial[]> {
   const supabase = getSupabase();
-
-  if (supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .order('created_at', { descending: true });
-
-      if (error) throw error;
-      if (data && data.length > 0) return data;
-    } catch (e: any) {
-      console.warn(`Supabase fetch failed (testimonials): ${e.message || 'Unknown error'}. Falling back to mock data.`);
-    }
+  if (!supabase) {
+    console.warn('Supabase is not configured; returning no testimonials.');
+    return [];
   }
 
-  return globalTestimonials;
+  try {
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('id, author, role, content, avatar, created_at')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return (data ?? []) as Testimonial[];
+  } catch (e: any) {
+    console.warn(`Supabase fetch failed (testimonials): ${e.message || 'Unknown error'}.`);
+    return [];
+  }
 }

@@ -1,3 +1,9 @@
-import { Car, TrendingUp, Users } from 'lucide-react';
-import { getCars, getTestimonials, getLeads } from '@/lib/api';
-export default async function AdminDashboard() { const cars = await getCars(); const testimonials = await getTestimonials(); const leads = await getLeads(); const activeLeads = leads.filter(l => l.status === 'New' || l.status === 'Contacted'); return <div><h1 className="text-2xl font-bold text-slate-900 mb-6">Overview Snapshot</h1><div className="grid grid-cols-1 md:grid-cols-3 gap-6"><div className="bg-white p-6 rounded-xl"><Car /><span>Total Inventory</span><strong>{cars.length}</strong></div><div className="bg-white p-6 rounded-xl"><Users /><span>Active Leads</span><strong>{activeLeads.length}</strong></div><div className="bg-white p-6 rounded-xl"><TrendingUp /><span>Testimonials</span><strong>{testimonials.length}</strong></div></div></div> }
+import { redirect } from 'next/navigation'
+import { requireAdmin } from '@icar-gezina/supabase/server'
+
+export default async function AdminHomePage() {
+  const { user, profile } = await requireAdmin()
+  if (!user) redirect('/admin/login')
+  if (!profile) redirect('/admin/unauthorized')
+  redirect('/dashboard')
+}

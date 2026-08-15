@@ -2,18 +2,25 @@
   "name": "icar-gezina",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20.18.0 <23"
+  },
   "scripts": {
-    "dev": "pnpm --filter @icar-gezina/web dev",
-    "build": "pnpm --filter @icar-gezina/web build",
-    "start": "pnpm --filter @icar-gezina/web start",
-    "lint": "pnpm --filter @icar-gezina/web lint",
-    "typecheck": "pnpm --filter @icar-gezina/web typecheck",
-    "clean": "pnpm --filter @icar-gezina/web clean",
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build --concurrency=1",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
     "dev:web": "pnpm --filter @icar-gezina/web dev",
+    "dev:admin": "pnpm --filter @icar-gezina/admin dev",
     "build:web": "pnpm --filter @icar-gezina/web build",
+    "build:admin": "pnpm --filter @icar-gezina/admin build",
     "lint:web": "pnpm --filter @icar-gezina/web lint",
-    "typecheck:web": "pnpm --filter @icar-gezina/web typecheck"
+    "lint:admin": "pnpm --filter @icar-gezina/admin lint",
+    "typecheck:web": "pnpm --filter @icar-gezina/web typecheck",
+    "typecheck:admin": "pnpm --filter @icar-gezina/admin typecheck"
   },
   "devDependencies": {
     "turbo": "^2.5.6"

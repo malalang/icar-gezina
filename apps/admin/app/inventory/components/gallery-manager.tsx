@@ -15,7 +15,7 @@ export function GalleryManager({ value, onChange }: GalleryManagerProps) {
   function add() {
     const url = draft.trim()
     if (!url) return
-    if (!/^https?:\\/\\//i.test(url)) {
+    if (!/^https?:\/\//i.test(url)) {
       setError('Use a full http:// or https:// image URL.')
       return
     }

@@ -17,7 +17,7 @@ async function client(resource: string) {
   return ctx.supabase
 }
 
-function payload(resource: string, fd: FormData) {
+function payload(resource: string, fd: FormData): Record<string, unknown> {
   if (resource === 'leads') return { car_id: nullable(fd,'car_id'), type: text(fd,'type'), name: text(fd,'name'), email: text(fd,'email'), phone: text(fd,'phone'), preferred_date: nullable(fd,'preferred_date'), message: nullable(fd,'message'), status: text(fd,'status') || 'New' }
   if (resource === 'reviews') return { car_id: text(fd,'car_id'), author: text(fd,'author'), rating: Math.max(1, Math.min(5, int(fd,'rating'))), comment: text(fd,'comment'), date: text(fd,'date') || null }
   if (resource === 'testimonials') return { author: text(fd,'author'), role: text(fd,'role'), content: text(fd,'content'), avatar: text(fd,'avatar') }
@@ -28,7 +28,7 @@ function payload(resource: string, fd: FormData) {
 export async function createRecord(formData: FormData) {
   const resource = text(formData,'resource')
   const supabase = await client(resource)
-  const { data, error } = await supabase.from(tableFor(resource)).insert(payload(resource, formData)).select('id').single()
+  const { data, error } = await supabase.from(tableFor(resource)).insert(payload(resource, formData) as any).select('id').single()
   if (error) throw new Error(error.message)
   redirect(`/${resource}/${data.id}`)
 }
@@ -37,7 +37,7 @@ export async function updateRecord(formData: FormData) {
   const resource = text(formData,'resource')
   const id = text(formData,'id')
   const supabase = await client(resource)
-  const { error } = await supabase.from(tableFor(resource)).update(payload(resource, formData)).eq('id', id)
+  const { error } = await supabase.from(tableFor(resource)).update(payload(resource, formData) as any).eq('id', id)
   if (error) throw new Error(error.message)
   redirect(`/${resource}/${id}`)
 }

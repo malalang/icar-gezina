@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { ArrowLeft, Check, Image as ImageIcon, Save, Sparkles, X } from 'lucide-react'
+import { ArrowLeft, Check, GripVertical, Image as ImageIcon, Plus, Save, Sparkles, X } from 'lucide-react'
 import Link from 'next/link'
 
 export type VehicleFormValues = { id?: string; make: string; model: string; year: number; price: number; mileage: number; fuelType: string; transmission: string; bodyType: string; color: string; imageUrl: string; galleryUrls: string[]; description: string; features: string[] }
@@ -18,16 +18,42 @@ function isNextRedirect(error: unknown) {
 
 export function VehicleForm({ values, action, submitLabel }: VehicleFormProps) {
   const [imageUrl, setImageUrl] = useState(values.imageUrl)
-  const [galleryText, setGalleryText] = useState(values.galleryUrls.join('\n'))
+  const [gallery, setGallery] = useState(values.galleryUrls)
+  const [galleryDraft, setGalleryDraft] = useState('')
   const [featuresText, setFeaturesText] = useState(values.features.join('\n'))
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
-  const gallery = useMemo(() => galleryText.split('\n').map(v => v.trim()).filter(Boolean), [galleryText])
-  const checklist = [['Vehicle identity', Boolean(values.id)], ['Pricing', Number(values.price) > 0], ['Specifications', Boolean(values.year && values.make && values.model)], ['Cover image', Boolean(imageUrl)]] as const
+  const checklist = [['Vehicle identity', Boolean(values.id)], ['Pricing', Number(values.price) > 0], ['Specifications', Boolean(values.year && values.make && values.model)], ['Cover image', Boolean(imageUrl)], ['Gallery', gallery.length > 0]] as const
+
+  function addGalleryUrl() {
+    const url = galleryDraft.trim()
+    if (!url) return
+    if (!/^https?:\/\//i.test(url)) { setError('Gallery image URLs must start with http:// or https://.'); return }
+    if (gallery.includes(url)) { setError('That gallery image URL is already added.'); return }
+    setGallery(current => [...current, url])
+    setGalleryDraft('')
+    setError('')
+  }
+
+  function removeGalleryUrl(index: number) {
+    setGallery(current => current.filter((_, i) => i !== index))
+  }
+
+  function moveGalleryUrl(index: number, direction: -1 | 1) {
+    const next = index + direction
+    if (next < 0 || next >= gallery.length) return
+    setGallery(current => {
+      const copy = [...current]
+      const [item] = copy.splice(index, 1)
+      copy.splice(next, 0, item)
+      return copy
+    })
+  }
 
   async function submit(formData: FormData) {
     setSaving(true); setSaved(false); setError('')
+    formData.set('galleryUrls', gallery.join('\n'))
     try {
       await action(formData)
       setSaved(true)
@@ -47,7 +73,11 @@ export function VehicleForm({ values, action, submitLabel }: VehicleFormProps) {
       <section className="editor-card"><div className="editor-card-header"><div><h3>Vehicle details</h3><p>Core information shown to customers.</p></div><Sparkles size={18} /></div><div className="form-grid"><Field label="Make" name="make" defaultValue={values.make} required placeholder="e.g. BMW" /><Field label="Model" name="model" defaultValue={values.model} required placeholder="e.g. X3 xDrive20d" /><Field label="Year" name="year" type="number" min="1900" max="2100" defaultValue={values.year} required /><Field label="Price" name="price" type="number" min="0" step="1" defaultValue={values.price} required prefix="R" /><Field label="Mileage" name="mileage" type="number" min="0" step="1" defaultValue={values.mileage} required suffix="km" /><SelectField label="Fuel type" name="fuelType" defaultValue={values.fuelType} options={fuelTypes} /><SelectField label="Transmission" name="transmission" defaultValue={values.transmission} options={transmissions} /><SelectField label="Body type" name="bodyType" defaultValue={values.bodyType} options={bodyTypes} /><Field label="Colour" name="color" defaultValue={values.color} placeholder="e.g. Alpine White" /></div></section>
       <section className="editor-card"><div className="editor-card-header"><div><h3>Description</h3><p>Give the sales team a polished vehicle summary.</p></div></div><label className="field field-wide"><span className="field-label">Vehicle description</span><textarea className="input field-textarea" name="description" defaultValue={values.description} rows={9} placeholder="Describe condition, specification, service history and standout features…" /></label></section>
       <section className="editor-card"><div className="editor-card-header"><div><h3>Features & extras</h3><p>One feature per line. These are displayed as vehicle highlights.</p></div></div><label className="field field-wide"><span className="field-label">Features</span><textarea className="input field-textarea" name="features" value={featuresText} onChange={e => setFeaturesText(e.target.value)} rows={9} placeholder={'M Sport package\nPanoramic roof\nLeather interior'} /></label></section>
-      <section className="editor-card"><div className="editor-card-header"><div><h3>Gallery</h3><p>One image URL per line. The cover image is kept separately.</p></div></div><label className="field field-wide"><span className="field-label">Gallery image URLs <span className="field-hint">{gallery.length} image{gallery.length === 1 ? '' : 's'}</span></span><textarea className="input field-textarea" name="galleryUrls" value={galleryText} onChange={e => setGalleryText(e.target.value)} rows={8} placeholder="https://example.com/vehicle-front.jpg\nhttps://example.com/vehicle-side.jpg" /></label>{gallery.length > 0 && <div className="gallery-mini-grid">{gallery.slice(0, 8).map((url, index) => <div className="gallery-mini" key={`${url}-${index}`}><img src={url} alt={`Gallery ${index + 1}`} /><span>{index + 1}</span></div>)}</div>}</section>
+      <section className="editor-card gallery-editor"><div className="editor-card-header"><div><h3>Gallery image URLs</h3><p>Add, preview, remove and reorder the customer-facing vehicle gallery. The first image is the gallery lead.</p></div><span className="gallery-count">{gallery.length} {gallery.length === 1 ? 'IMAGE' : 'IMAGES'}</span></div>
+        <div className="gallery-add-row"><input className="input" value={galleryDraft} onChange={e => setGalleryDraft(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addGalleryUrl() } }} placeholder="https://example.com/vehicle-front.jpg" aria-label="Gallery image URL" /><button type="button" className="button" onClick={addGalleryUrl}><Plus size={15} /> Add image</button></div>
+        <input type="hidden" name="galleryUrls" value={gallery.join('\n')} readOnly />
+        {gallery.length === 0 ? <div className="gallery-empty"><ImageIcon size={24}/><strong>No gallery images</strong><span>Add the vehicle photography URLs above.</span></div> : <div className="gallery-manager">{gallery.map((url, index) => <div className="gallery-row" key={`${url}-${index}`}><div className="gallery-thumb"><img src={url} alt={`Vehicle gallery ${index + 1}`} loading="lazy" onError={e => { e.currentTarget.style.display = 'none' }} /><span>{index + 1}</span></div><div className="gallery-url"><span className="gallery-index">{index === 0 ? 'LEAD IMAGE' : `IMAGE ${String(index + 1).padStart(2, '0')}`}</span><code>{url}</code></div><div className="gallery-actions"><button type="button" aria-label={`Move image ${index + 1} up`} disabled={index === 0} onClick={() => moveGalleryUrl(index, -1)}>↑</button><button type="button" aria-label={`Move image ${index + 1} down`} disabled={index === gallery.length - 1} onClick={() => moveGalleryUrl(index, 1)}>↓</button><button type="button" aria-label={`Remove image ${index + 1}`} onClick={() => removeGalleryUrl(index)}><X size={15}/></button></div></div>)}</div>}
+      </section>
     </div><aside className="editor-side">
       <section className="editor-card"><div className="editor-card-header"><div><h3>Cover image</h3><p>Primary image used across the showroom.</p></div></div><div className="image-preview large">{imageUrl ? <img src={imageUrl} alt={`${values.make} ${values.model} cover preview`} onError={e => { e.currentTarget.style.display = 'none' }} /> : <div><ImageIcon size={30}/><span>No cover image</span></div>}</div><label className="field"><span className="field-label">Image URL</span><input className="input" name="imageUrl" value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="https://…" /></label>{imageUrl && <button type="button" className="image-clear" onClick={() => setImageUrl('')}><X size={13} /> Remove cover image</button>}</section>
       <section className="editor-card"><div className="editor-card-header"><div><h3>Publishing checklist</h3><p>Quick quality check before saving.</p></div></div><div className="checklist">{checklist.map(([label, ok]) => <span className={ok ? 'check-ok' : 'check-missing'} key={label}>{ok ? <Check size={14}/> : <span className="check-dot"/>}{label}</span>)}</div></section>

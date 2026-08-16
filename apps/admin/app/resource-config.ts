@@ -1,6 +1,6 @@
 export type ResourceKey = 'leads' | 'reviews' | 'testimonials' | 'car-parts' | 'articles'
 
-type Field = { name:string; label:string; type?:'text'|'email'|'number'|'date'|'textarea'|'checkbox'|'select'; required?:boolean; options?:string[] }
+type Field = { name:string; label:string; type?:'text'|'email'|'number'|'date'|'datetime-local'|'textarea'|'checkbox'|'select'; required?:boolean; options?:string[] }
 
 export const resources: Record<ResourceKey,{table:string; label:string; description:string; columns:string[]; fields:Field[]}> = {
   leads: { table:'leads', label:'Leads', description:'Vehicle enquiries and finance/contact leads.', columns:['name','type','email','phone','status','created_at'], fields:[

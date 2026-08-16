@@ -11,3 +11,45 @@
 .detail-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:18px}.detail-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}.detail-fields>div{padding:15px 20px;border-bottom:1px solid #f0f1f3;display:grid;gap:5px}.detail-fields span{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#8a929d;font-weight:700}.detail-fields strong{font-size:12px;font-weight:700}.empty-state{padding:32px;text-align:center;color:#7b8490;font-size:12px}.feature-list{display:flex;flex-wrap:wrap;gap:8px;padding:20px;margin:0;list-style:none}.feature-list li{border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:10px;color:#59616d}
 @media(max-width:1000px){.sidebar{width:74px;padding:18px 10px}.brand{justify-content:center;padding-inline:0}.brand>div:last-child,.sidebar-section-label,.nav-item span,.admin-badge div{display:none}.nav-item{justify-content:center;padding:0}.admin-badge{justify-content:center;padding:10px 0}.admin-main{width:calc(100% - 74px);margin-left:74px}.stats{grid-template-columns:repeat(2,1fr)}.dashboard-grid,.detail-grid{grid-template-columns:1fr}.editor-layout{grid-template-columns:1fr}.editor-side{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.topbar{padding:0 18px}.topbar-link{display:none}.content{padding:22px 16px}.page-header{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr}.editor-toolbar{align-items:flex-start;flex-direction:column}.editor-actions{width:100%}.editor-actions .button{flex:1}.form-grid{grid-template-columns:1fr}.field-wide{grid-column:1}.detail-fields{grid-template-columns:1fr}.editor-side{grid-template-columns:1fr}.gallery-mini-grid{grid-template-columns:repeat(3,1fr)}.vehicle-summary{margin-bottom:15px}}
+
+/* ICar Gezina automotive editor layer — inspired by the measured automotive patterns in awesome-design-md/BMW. */
+.editor-automotive{--editor-blue:#e65b1f;--editor-dark:#18212b;--editor-dark-2:#26313d;--editor-ink:#20262d;--editor-muted:#68727d;--editor-line:#dfe3e7;--editor-soft:#f7f8f9}
+.editor-automotive .editor-toolbar{padding:20px 0 18px;background:rgba(247,248,249,.96);border-bottom:1px solid var(--editor-line)}
+.editor-automotive .editor-kicker{display:block;color:#7b858f;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.editor-automotive .editor-toolbar h2{font-size:30px;line-height:1.08;font-weight:800;letter-spacing:-.035em;color:var(--editor-ink)}
+.editor-automotive .editor-toolbar p{font-size:12px;color:var(--editor-muted)}
+.editor-automotive .editor-actions .button{height:46px;border-radius:0;padding:0 22px;text-transform:uppercase;letter-spacing:.08em;font-size:11px}
+.editor-automotive .editor-actions .button:not(.secondary){background:var(--editor-blue);color:#fff}
+.editor-automotive .editor-actions .button:not(.secondary):hover{background:#c94c17}
+.editor-automotive .editor-actions .button.secondary{border:1px solid #bfc6cd;background:#fff;color:var(--editor-ink)}
+.editor-automotive .vehicle-summary{gap:0;margin:0 0 22px;border-bottom:1px solid var(--editor-line);padding-bottom:18px}
+.editor-automotive .vehicle-summary span{border:0;border-right:1px solid var(--editor-line);border-radius:0;background:transparent;padding:0 18px;color:#56616c;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.editor-automotive .vehicle-summary span:first-child{padding-left:0}
+.editor-automotive .vehicle-summary span:last-child{border-right:0}
+.editor-automotive .vehicle-summary svg{color:var(--editor-blue)}
+.editor-automotive .editor-layout{grid-template-columns:minmax(0,1fr) 350px;gap:24px}
+.editor-automotive .editor-main,.editor-automotive .editor-side{gap:24px}
+.editor-automotive .editor-card{border-radius:0;border:1px solid var(--editor-line);box-shadow:none;padding:24px;background:#fff}
+.editor-automotive .editor-card-header{margin-bottom:22px;padding-bottom:15px;border-bottom:1px solid #edf0f2}
+.editor-automotive .editor-card-header h3{font-size:16px;font-weight:800;letter-spacing:-.01em;color:var(--editor-ink)}
+.editor-automotive .editor-card-header p{font-size:11px;line-height:1.5;color:var(--editor-muted)}
+.editor-automotive .editor-card-header>svg{color:var(--editor-blue)}
+.editor-automotive .field-label{text-transform:uppercase;letter-spacing:.11em;font-size:9px;color:#59646f}
+.editor-automotive .field-hint{letter-spacing:0;text-transform:none;color:#8b949e}
+.editor-automotive .input{min-height:48px;border-radius:0;border:1px solid #cfd5da;padding:13px 14px;font-size:13px;color:var(--editor-ink)}
+.editor-automotive .input:hover{border-color:#aeb7bf}
+.editor-automotive .input:focus{border-color:var(--editor-ink);box-shadow:inset 0 0 0 1px var(--editor-ink),0 0 0 3px rgba(24,33,43,.06)}
+.editor-automotive .input-affix{border-radius:0!important;background:var(--editor-soft);border-color:#cfd5da;color:#65707a}
+.editor-automotive .field-textarea{min-height:150px}
+.editor-automotive .image-preview{border-radius:0;background:#eef1f3;border:0;height:260px;margin-bottom:16px}
+.editor-automotive .image-preview.large{height:260px}
+.editor-automotive .gallery-mini{border-radius:0;border-color:#d6dbe0}
+.editor-automotive .gallery-mini span{border-radius:0;background:rgba(24,33,43,.9);width:22px;height:22px}
+.editor-automotive .checklist span{font-size:11px}
+.editor-automotive .help-card{background:var(--editor-dark);border-color:var(--editor-dark);padding:24px}
+.editor-automotive .help-card h3{font-size:16px;font-weight:800}
+.editor-automotive .help-card p{font-size:11px;line-height:1.65;color:#c0c8d0}
+.editor-automotive .text-link{color:#fff;text-transform:uppercase;letter-spacing:.1em}
+.editor-automotive .form-error{border-radius:0;border-left:3px solid #c53b32;background:#fff7f6}
+@media(max-width:1000px){.editor-automotive .editor-layout{grid-template-columns:1fr}.editor-automotive .editor-side{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.editor-automotive .editor-toolbar h2{font-size:25px}.editor-automotive .vehicle-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px}.editor-automotive .vehicle-summary span{border-right:0;padding:0!important}.editor-automotive .editor-card{padding:18px}.editor-automotive .editor-side{grid-template-columns:1fr}.editor-automotive .editor-actions{gap:0}.editor-automotive .editor-actions .button{padding:0 14px}}

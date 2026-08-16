@@ -3,7 +3,8 @@
 import { redirect } from 'next/navigation'
 import { requireAdmin } from '@icar-gezina/supabase/server'
 
-const allowed = new Set(['leads','reviews','testimonials','car-parts','articles'])
+const tableFor = (resource:string) => ({leads:'leads',reviews:'car_reviews',testimonials:'testimonials','car-parts':'car_parts',articles:'articles'} as Record<string,string>)[resource]
+const allowed = new Set(Object.keys({leads:'leads',reviews:'car_reviews',testimonials:'testimonials','car-parts':'car_parts',articles:'articles'}))
 const text = (fd: FormData, name: string) => String(fd.get(name) ?? '').trim()
 const nullable = (fd: FormData, name: string) => text(fd, name) || null
 const bool = (fd: FormData, name: string) => fd.get(name) === 'on' || fd.get(name) === 'true'
@@ -27,7 +28,7 @@ function payload(resource: string, fd: FormData) {
 export async function createRecord(formData: FormData) {
   const resource = text(formData,'resource')
   const supabase = await client(resource)
-  const { data, error } = await supabase.from(resource).insert(payload(resource, formData)).select('id').single()
+  const { data, error } = await supabase.from(tableFor(resource)).insert(payload(resource, formData)).select('id').single()
   if (error) throw new Error(error.message)
   redirect(`/${resource}/${data.id}`)
 }
@@ -36,7 +37,7 @@ export async function updateRecord(formData: FormData) {
   const resource = text(formData,'resource')
   const id = text(formData,'id')
   const supabase = await client(resource)
-  const { error } = await supabase.from(resource).update(payload(resource, formData)).eq('id', id)
+  const { error } = await supabase.from(tableFor(resource)).update(payload(resource, formData)).eq('id', id)
   if (error) throw new Error(error.message)
   redirect(`/${resource}/${id}`)
 }
@@ -45,7 +46,7 @@ export async function deleteRecord(formData: FormData) {
   const resource = text(formData,'resource')
   const id = text(formData,'id')
   const supabase = await client(resource)
-  const { error } = await supabase.from(resource).delete().eq('id', id)
+  const { error } = await supabase.from(tableFor(resource)).delete().eq('id', id)
   if (error) throw new Error(error.message)
   redirect(`/${resource}`)
 }

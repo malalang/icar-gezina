@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import './globals.css'
 import './automotive-editor.css'
+import './vehicle-detail.css'
 import { AdminShell } from './admin-shell'
 
 export const metadata: Metadata = {

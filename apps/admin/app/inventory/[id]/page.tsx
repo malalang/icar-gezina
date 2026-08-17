@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { ArrowLeft, CalendarDays, CarFront, CheckCircle2, ChevronRight, CircleGauge, Fuel, Gauge, Pencil, Settings2, Tag, Trash2 } from 'lucide-react'
+import { ArrowLeft, CalendarDays, CarFront, CheckCircle2, ChevronRight, CircleGauge, ExternalLink, Fuel, Gauge, Pencil, Settings2, Tag, Trash2 } from 'lucide-react'
 import { requireAdmin } from '@icar-gezina/supabase/server'
 import { getCarById } from '../../../lib/api'
 import { deleteVehicle } from '../actions'
@@ -26,24 +26,45 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
   const gallery = Array.from(new Set([car.image_url, ...(Array.isArray(car.gallery_urls) ? car.gallery_urls : [])].filter(Boolean))) as string[]
   const features = Array.isArray(car.features) ? car.features.filter(Boolean) : []
   const title = `${display(car.make, '')} ${display(car.model, '')}`.trim() || 'Vehicle'
+  const publicUrl = `/cars/${id}`
 
   return <div className="editor-automotive vehicle-detail-page">
+    <div className="vehicle-detail-topline">
+      <Link href="/inventory" className="back-link"><ArrowLeft size={15} /> Inventory</Link>
+      <span className="detail-breadcrumb">Vehicle / {title}</span>
+    </div>
+
     <div className="page-header">
-      <div><Link href="/inventory" className="back-link"><ArrowLeft size={15} /> Back to inventory</Link><div className="editor-kicker">Inventory / Vehicle</div><h1>{title}</h1><p>{display(car.year)} · {Number(car.mileage || 0).toLocaleString('en-ZA')} km · {money(car.price)}</p></div>
-      <div className="detail-actions"><Link href={`/inventory/${id}/edit`} className="button"><Pencil size={16} /> Edit vehicle</Link><form action={deleteVehicle}><input type="hidden" name="id" value={id} /><button className="button danger" type="submit"><Trash2 size={16} /> Delete</button></form></div>
+      <div>
+        <div className="detail-status-row"><span className="detail-status"><span /> Inventory listing</span><span className="detail-id">ID {id}</span></div>
+        <h1>{title}</h1>
+        <p>{display(car.year)} · {Number(car.mileage || 0).toLocaleString('en-ZA')} km · {display(car.body_type)} · {display(car.color)}</p>
+      </div>
+      <div className="detail-actions">
+        <Link href={publicUrl} target="_blank" className="button secondary"><ExternalLink size={15} /> View showroom</Link>
+        <Link href={`/inventory/${id}/edit`} className="button"><Pencil size={16} /> Edit vehicle</Link>
+        <form action={deleteVehicle}><input type="hidden" name="id" value={id} /><button className="button danger" type="submit"><Trash2 size={16} /> Delete</button></form>
+      </div>
     </div>
 
-    <div className="vehicle-hero-grid">
-      <section className="panel vehicle-hero-card"><div className="vehicle-hero-image">{car.image_url ? <img src={car.image_url} alt={title} /> : <div className="empty-state"><CarFront size={34} /><span>No primary image</span></div>}</div><div className="vehicle-hero-copy"><div><span className="editor-kicker">Showroom listing</span><h2>{title}</h2><p>{display(car.description, 'No description has been added for this vehicle yet.')}</p></div><strong className="vehicle-price">{money(car.price)}</strong></div></section>
-      <section className="panel spec-panel"><div className="panel-header"><div><h2>Key specifications</h2><p>Live data from Supabase.</p></div><Settings2 size={19} /></div><div className="spec-grid">
-        <div><CalendarDays size={17} /><span>Year</span><strong>{display(car.year)}</strong></div><div><Gauge size={17} /><span>Mileage</span><strong>{Number(car.mileage || 0).toLocaleString('en-ZA')} km</strong></div><div><Fuel size={17} /><span>Fuel</span><strong>{display(car.fuel_type)}</strong></div><div><CircleGauge size={17} /><span>Transmission</span><strong>{display(car.transmission)}</strong></div><div><Tag size={17} /><span>Body type</span><strong>{display(car.body_type)}</strong></div><div><CarFront size={17} /><span>Colour</span><strong>{display(car.color)}</strong></div>
-      </div></section>
+    <div className="vehicle-detail-hero">
+      <section className="vehicle-hero-card">
+        <div className="vehicle-hero-image">{car.image_url ? <img src={car.image_url} alt={title} /> : <div className="empty-state"><CarFront size={34} /><span>No primary image</span></div>}<span className="hero-image-label">Primary image</span></div>
+        <div className="vehicle-hero-copy"><div><span className="editor-kicker">Showroom listing</span><h2>{title}</h2><p>{display(car.description, 'No description has been added for this vehicle yet.')}</p></div><div className="hero-price-block"><span>Asking price</span><strong>{money(car.price)}</strong></div></div>
+      </section>
+
+      <section className="spec-panel">
+        <div className="panel-header"><div><span className="panel-kicker">Vehicle profile</span><h2>Key specifications</h2><p>Live data from Supabase.</p></div><Settings2 size={19} /></div>
+        <div className="spec-grid">
+          <div><CalendarDays size={17} /><span>Year</span><strong>{display(car.year)}</strong></div><div><Gauge size={17} /><span>Mileage</span><strong>{Number(car.mileage || 0).toLocaleString('en-ZA')} km</strong></div><div><Fuel size={17} /><span>Fuel</span><strong>{display(car.fuel_type)}</strong></div><div><CircleGauge size={17} /><span>Transmission</span><strong>{display(car.transmission)}</strong></div><div><Tag size={17} /><span>Body type</span><strong>{display(car.body_type)}</strong></div><div><CarFront size={17} /><span>Colour</span><strong>{display(car.color)}</strong></div>
+        </div>
+      </section>
     </div>
 
-    <section className="panel detail-panel"><div className="panel-header"><div><h2>Gallery</h2><p>{gallery.length} image{gallery.length === 1 ? '' : 's'} attached to this vehicle.</p></div><Link href={`/inventory/${id}/edit`} className="button secondary">Manage gallery <ChevronRight size={15} /></Link></div>{gallery.length ? <div className="vehicle-gallery">{gallery.map((url, index) => <a href={url} target="_blank" rel="noreferrer" key={`${url}-${index}`} className={index === 0 ? 'gallery-item gallery-featured' : 'gallery-item'}><img src={url} alt={`${title} gallery image ${index + 1}`} loading={index > 1 ? 'lazy' : 'eager'} />{index === 0 && <span className="gallery-badge">Primary</span>}</a>)}</div> : <div className="empty-state">No gallery images have been added. Use Edit vehicle to add image URLs.</div>}</section>
+    <section className="panel detail-panel"><div className="panel-header"><div><span className="panel-kicker">Vehicle media</span><h2>Gallery</h2><p>{gallery.length} image{gallery.length === 1 ? '' : 's'} attached to this vehicle.</p></div><Link href={`/inventory/${id}/edit`} className="button secondary">Manage gallery <ChevronRight size={15} /></Link></div>{gallery.length ? <div className="vehicle-gallery">{gallery.map((url, index) => <a href={url} target="_blank" rel="noreferrer" key={`${url}-${index}`} className={index === 0 ? 'gallery-item gallery-featured' : 'gallery-item'}><img src={url} alt={`${title} gallery image ${index + 1}`} loading={index > 1 ? 'lazy' : 'eager'} />{index === 0 && <span className="gallery-badge">Primary</span>}</a>)}</div> : <div className="empty-state">No gallery images have been added. Use Edit vehicle to add image URLs.</div>}</section>
 
-    <div className="detail-grid detail-lower"><section className="panel"><div className="panel-header"><div><h2>Description</h2><p>Customer-facing vehicle copy.</p></div></div><p className="description-copy">{display(car.description, 'No description has been added.')}</p></section><section className="panel"><div className="panel-header"><div><h2>Features</h2><p>{features.length} feature{features.length === 1 ? '' : 's'} listed.</p></div></div>{features.length ? <ul className="feature-list">{features.map((feature: string) => <li key={feature}><CheckCircle2 size={16} />{feature}</li>)}</ul> : <p>No features have been added.</p>}</section></div>
+    <div className="detail-grid detail-lower"><section className="panel"><div className="panel-header"><div><span className="panel-kicker">Customer-facing content</span><h2>Description</h2><p>Sales copy displayed on the showroom.</p></div></div><p className="description-copy">{display(car.description, 'No description has been added.')}</p></section><section className="panel"><div className="panel-header"><div><span className="panel-kicker">Equipment</span><h2>Features & extras</h2><p>{features.length} feature{features.length === 1 ? '' : 's'} listed.</p></div></div>{features.length ? <ul className="feature-list">{features.map((feature: string) => <li key={feature}><CheckCircle2 size={16} />{feature}</li>)}</ul> : <p className="empty-inline">No features have been added.</p>}</section></div>
 
-    <section className="panel vehicle-meta-panel"><div><span>Vehicle ID</span><strong>{id}</strong></div><div><span>Created</span><strong>{car.created_at ? new Date(car.created_at).toLocaleString('en-ZA') : '—'}</strong></div><div><span>Last updated</span><strong>{car.updated_at ? new Date(car.updated_at).toLocaleString('en-ZA') : '—'}</strong></div></section>
+    <section className="vehicle-meta-panel"><div><span>Vehicle ID</span><strong>{id}</strong></div><div><span>Created</span><strong>{car.created_at ? new Date(car.created_at).toLocaleString('en-ZA') : '—'}</strong></div><div><span>Last updated</span><strong>{car.updated_at ? new Date(car.updated_at).toLocaleString('en-ZA') : '—'}</strong></div></section>
   </div>
 }

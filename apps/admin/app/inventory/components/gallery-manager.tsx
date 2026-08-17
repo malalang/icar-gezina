@@ -3,90 +3,17 @@
 import { Image as ImageIcon, Plus, X } from 'lucide-react'
 import { useState } from 'react'
 
-type GalleryManagerProps = {
-  value: string[]
-  onChange: (value: string[]) => void
-}
+type GalleryManagerProps = { value: string[]; onChange: (value: string[]) => void }
 
 export function GalleryManager({ value, onChange }: GalleryManagerProps) {
   const [draft, setDraft] = useState('')
   const [error, setError] = useState('')
-
-  function add() {
-    const url = draft.trim()
-    if (!url) return
-    if (!/^https?:\/\//i.test(url)) {
-      setError('Use a full http:// or https:// image URL.')
-      return
-    }
-    if (value.includes(url)) {
-      setError('That image is already in the gallery.')
-      return
-    }
-    onChange([...value, url])
-    setDraft('')
-    setError('')
-  }
-
-  function move(index: number, direction: -1 | 1) {
-    const target = index + direction
-    if (target < 0 || target >= value.length) return
-    const next = [...value]
-    const [item] = next.splice(index, 1)
-    next.splice(target, 0, item)
-    onChange(next)
-  }
-
-  return (
-    <div className="gallery-manager-component">
-      <div className="gallery-add-row">
-        <input
-          className="input"
-          value={draft}
-          onChange={(event) => setDraft(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault()
-              add()
-            }
-          }}
-          placeholder="https://example.com/vehicle-front.jpg"
-          aria-label="Gallery image URL"
-        />
-        <button type="button" className="button" onClick={add}>
-          <Plus size={15} /> Add image
-        </button>
-      </div>
-      {error && <p className="gallery-validation" role="alert">{error}</p>}
-
-      {value.length === 0 ? (
-        <div className="gallery-empty">
-          <ImageIcon size={24} />
-          <strong>No gallery images</strong>
-          <span>Add the vehicle photography URLs above.</span>
-        </div>
-      ) : (
-        <div className="gallery-manager">
-          {value.map((url, index) => (
-            <div className="gallery-row" key={`${url}-${index}`}>
-              <div className="gallery-thumb">
-                <img src={url} alt={`Vehicle gallery ${index + 1}`} loading="lazy" />
-                <span>{index + 1}</span>
-              </div>
-              <div className="gallery-url">
-                <span className="gallery-index">{index === 0 ? 'LEAD IMAGE' : `IMAGE ${String(index + 1).padStart(2, '0')}`}</span>
-                <code title={url}>{url}</code>
-              </div>
-              <div className="gallery-actions">
-                <button type="button" aria-label={`Move image ${index + 1} up`} disabled={index === 0} onClick={() => move(index, -1)}>↑</button>
-                <button type="button" aria-label={`Move image ${index + 1} down`} disabled={index === value.length - 1} onClick={() => move(index, 1)}>↓</button>
-                <button type="button" aria-label={`Remove image ${index + 1}`} onClick={() => onChange(value.filter((_, itemIndex) => itemIndex !== index))}><X size={15} /></button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-      <input type="hidden" name="galleryUrls" value={value.join('\n')} readOnly />
-    </div>
-  )
+  function add() { const url = draft.trim(); if (!url) return; if (!/^https?:\/\//i.test(url)) { setError('Use a full http:// or https:// image URL.'); return }; if (value.includes(url)) { setError('That image is already in the gallery.'); return }; onChange([...value, url]); setDraft(''); setError('') }
+  function move(index: number, direction: -1 | 1) { const target = index + direction; if (target < 0 || target >= value.length) return; const next = [...value]; const [item] = next.splice(index, 1); next.splice(target, 0, item); onChange(next) }
+  return <div>
+    <div className="flex flex-col gap-3 sm:flex-row"><input className="h-12 min-w-0 flex-1 border border-[#e6e6e6] bg-white px-4 text-sm font-light outline-none placeholder:text-[#9a9a9a] focus:border-[#262626]" value={draft} onChange={e => setDraft(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add() } }} placeholder="https://example.com/vehicle-front.jpg" aria-label="Gallery image URL" /><button type="button" className="inline-flex h-12 shrink-0 items-center justify-center gap-2 bg-[#1c69d4] px-5 text-xs font-bold tracking-[0.5px] text-white hover:bg-[#0653b6]" onClick={add}><Plus size={15} /> Add image</button></div>
+    {error && <p className="mt-3 border border-[#dc2626]/30 bg-[#fff7f7] px-4 py-3 text-sm text-[#dc2626]" role="alert">{error}</p>}
+    {value.length === 0 ? <div className="mt-5 flex flex-col items-center gap-2 border border-dashed border-[#cccccc] bg-[#fafafa] px-6 py-12 text-center"><ImageIcon size={24} className="text-[#9a9a9a]" /><strong className="text-sm">No gallery images</strong><span className="text-sm font-light text-[#6b6b6b]">Add the vehicle photography URLs above.</span></div> : <div className="mt-5 divide-y divide-[#e6e6e6] border-y border-[#e6e6e6]">{value.map((url, index) => <div className="grid gap-4 py-4 sm:grid-cols-[112px_minmax(0,1fr)_auto] sm:items-center" key={`${url}-${index}`}><div className="relative aspect-[4/3] overflow-hidden bg-[#fafafa]"><img src={url} alt={`Vehicle gallery ${index + 1}`} loading="lazy" className="h-full w-full object-cover" /><span className="absolute left-2 top-2 bg-[#1a2129] px-2 py-1 text-[10px] font-bold text-white">{index + 1}</span></div><div className="min-w-0"><span className="block text-[11px] font-bold uppercase tracking-[1.5px] text-[#6b6b6b]">{index === 0 ? 'Lead image' : `Image ${String(index + 1).padStart(2, '0')}`}</span><code title={url} className="mt-2 block truncate text-xs text-[#3c3c3c]">{url}</code></div><div className="flex items-center gap-1 sm:justify-end"><button type="button" className="h-9 min-w-9 border border-[#cccccc] bg-white text-sm disabled:opacity-30" aria-label={`Move image ${index + 1} up`} disabled={index === 0} onClick={() => move(index, -1)}>↑</button><button type="button" className="h-9 min-w-9 border border-[#cccccc] bg-white text-sm disabled:opacity-30" aria-label={`Move image ${index + 1} down`} disabled={index === value.length - 1} onClick={() => move(index, 1)}>↓</button><button type="button" className="h-9 min-w-9 border border-[#cccccc] bg-white text-[#dc2626]" aria-label={`Remove image ${index + 1}`} onClick={() => onChange(value.filter((_, itemIndex) => itemIndex !== index))}><X size={15} className="mx-auto" /></button></div></div>)}</div>}
+    <input type="hidden" name="galleryUrls" value={value.join('\n')} readOnly />
+  </div>
 }

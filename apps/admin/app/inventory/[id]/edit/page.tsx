@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, CalendarDays, Gauge, Fuel, Tag, CarFront } from 'lucide-react'
+import { ArrowLeft, CalendarDays, ExternalLink, Gauge, Fuel, Tag, CarFront } from 'lucide-react'
 import { requireAdmin } from '@icar-gezina/supabase/server'
 import { updateVehicle } from '../../actions'
 import { VehicleForm } from '../../vehicle-form'
@@ -16,20 +16,22 @@ export default async function EditVehiclePage({ params }: { params: Promise<{ id
 
   const galleryUrls = Array.isArray(car.gallery_urls) ? car.gallery_urls.filter(Boolean) : []
   const features = Array.isArray(car.features) ? car.features.filter(Boolean) : []
+  const title = `${car.make ?? ''} ${car.model ?? ''}`.trim() || 'Vehicle'
 
   return (
-    <>
-      <div className="page-header">
+    <div className="inventory-edit-page">
+      <div className="edit-page-context">
         <div>
-          <Link href={`/inventory/${car.id}`} className="back-link"><ArrowLeft size={15} /> Back to vehicle</Link>
-          <h1>Edit vehicle</h1>
-          <p>Update the complete showroom listing, specifications, pricing and media.</p>
+          <div className="edit-breadcrumb"><Link href="/inventory"><ArrowLeft size={14} /> Inventory</Link><span>/</span><span>{title}</span></div>
+          <span className="editor-kicker">Inventory / Vehicle editor</span>
+          <h1>Edit {title}</h1>
+          <p>Keep the dealership listing accurate across pricing, specifications, photography and customer-facing copy.</p>
         </div>
-        <Link href="/inventory" className="button secondary"><CarFront size={15} /> All vehicles</Link>
+        <Link href={`/cars/${id}`} target="_blank" className="button secondary"><ExternalLink size={15} /> View public listing</Link>
       </div>
 
       <div className="vehicle-summary">
-        <span><CalendarDays size={14} /> {car.year}</span>
+        <span><CalendarDays size={14} /> {car.year || 'Year not set'}</span>
         <span><Gauge size={14} /> {Number(car.mileage || 0).toLocaleString('en-ZA')} km</span>
         <span><Fuel size={14} /> {car.fuel_type || 'Fuel not set'}</span>
         <span><Tag size={14} /> R {Number(car.price || 0).toLocaleString('en-ZA')}</span>
@@ -51,6 +53,6 @@ export default async function EditVehiclePage({ params }: { params: Promise<{ id
         description: car.description ?? '',
         features,
       }} action={updateVehicle} submitLabel="Save changes" />
-    </>
+    </div>
   )
 }

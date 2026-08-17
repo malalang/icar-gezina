@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, CalendarDays, ExternalLink, Gauge, Fuel, Tag, CarFront } from 'lucide-react'
+import { CalendarDays, ExternalLink, Gauge, Fuel, Tag } from 'lucide-react'
 import { requireAdmin } from '@icar-gezina/supabase/server'
 import { updateVehicle } from '../../actions'
 import { VehicleForm } from '../../vehicle-form'
@@ -20,12 +20,9 @@ export default async function EditVehiclePage({ params }: { params: Promise<{ id
 
   return (
     <div className="inventory-edit-page">
-      <div className="edit-page-context">
+      <div className="edit-page-context edit-page-context-compact">
         <div>
-          <div className="edit-breadcrumb"><Link href="/inventory"><ArrowLeft size={14} /> Inventory</Link><span>/</span><span>{title}</span></div>
-          <span className="editor-kicker">Inventory / Vehicle editor</span>
-          <h1>Edit {title}</h1>
-          <p>Keep the dealership listing accurate across pricing, specifications, photography and customer-facing copy.</p>
+          <div className="edit-breadcrumb"><Link href="/inventory">Inventory</Link><span>/</span><span>{title}</span><span>/</span><strong>Edit</strong></div>
         </div>
         <Link href={`/cars/${id}`} target="_blank" className="button secondary"><ExternalLink size={15} /> View public listing</Link>
       </div>

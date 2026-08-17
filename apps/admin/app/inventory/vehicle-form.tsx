@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { ReactNode } from 'react'
-import { ArrowLeft, Check, Image as ImageIcon, Save, Sparkles, X } from 'lucide-react'
+import { Check, Image as ImageIcon, Save, X } from 'lucide-react'
 import Link from 'next/link'
 import { GalleryManager } from './components/gallery-manager'
 import { FeatureManager } from './components/feature-manager'
@@ -15,9 +14,6 @@ const transmissions = ['Automatic', 'Manual', 'CVT', 'DCT', 'Other']
 
 function isNextRedirect(error: unknown) { if (!error || typeof error !== 'object') return false; const digest = 'digest' in error ? (error as { digest?: unknown }).digest : undefined; return typeof digest === 'string' && digest.startsWith('NEXT_REDIRECT') }
 function validImageUrl(url: string) { return /^https?:\/\/[^\s]+$/i.test(url.trim()) }
-
-const inputClass = 'h-12 w-full border border-[#e6e6e6] bg-white px-4 text-base font-light text-[#262626] outline-none transition placeholder:text-[#9a9a9a] focus:border-[#262626]'
-const labelClass = 'mb-2 block text-[11px] font-bold uppercase tracking-[1.5px] text-[#6b6b6b]'
 
 export function VehicleForm({ values, action, submitLabel }: VehicleFormProps) {
   const [imageUrl, setImageUrl] = useState(values.imageUrl)
@@ -33,16 +29,73 @@ export function VehicleForm({ values, action, submitLabel }: VehicleFormProps) {
     try { await action(formData); setSaved(true) } catch (err) { if (isNextRedirect(err)) throw err; setError(err instanceof Error ? err.message : 'Unable to save vehicle.') } finally { setSaving(false) }
   }
 
-  return <form action={submit} className="bg-white">
+  return <form action={submit} className="vehicle-editor">
     {values.id && <input type="hidden" name="id" value={values.id} />}
-    <div className="border-b border-[#e6e6e6] bg-white"><div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12"><div className="min-w-0"><Link href={values.id ? `/inventory/${values.id}` : '/inventory'} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[1.5px] text-[#6b6b6b] transition hover:text-[#262626]"><ArrowLeft size={14} /> {values.id ? 'Vehicle details' : 'Vehicles'}</Link></div><div className="flex shrink-0 items-center gap-2"><Link href={values.id ? `/inventory/${values.id}` : '/inventory'} className="hidden h-12 items-center border border-[#cccccc] px-5 text-xs font-bold tracking-[0.5px] sm:inline-flex">Cancel</Link><button className="inline-flex h-12 items-center gap-2 bg-[#1c69d4] px-6 text-xs font-bold tracking-[0.5px] text-white transition hover:bg-[#0653b6] disabled:bg-[#d6d6d6] disabled:text-[#6b6b6b]" type="submit" disabled={saving}><Save size={15} /> {saving ? 'Saving…' : saved ? 'Saved' : submitLabel}</button></div></div></div>
-    {error && <div className="mx-auto max-w-[1440px] px-5 pt-6 sm:px-8 lg:px-12"><div className="border border-[#dc2626]/30 bg-[#fff7f7] px-5 py-4 text-sm text-[#dc2626]" role="alert">{error}</div></div>}
-    <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-10 sm:px-8 sm:py-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-12 lg:py-16"><div className="min-w-0 space-y-8"><EditorSection title="Vehicle details" description="Core information shown to customers." icon={<Sparkles size={18} />}><div className="grid gap-x-6 gap-y-6 sm:grid-cols-2"><Field label="Make" name="make" defaultValue={values.make} required placeholder="e.g. BMW" /><Field label="Model" name="model" defaultValue={values.model} required placeholder="e.g. X3 xDrive20d" /><Field label="Year" name="year" type="number" min="1900" max="2100" defaultValue={values.year} required /><Field label="Price" name="price" type="number" min="0" step="1" defaultValue={values.price} required prefix="R" /><Field label="Mileage" name="mileage" type="number" min="0" step="1" defaultValue={values.mileage} required suffix="km" /><SelectField label="Fuel type" name="fuelType" defaultValue={values.fuelType} options={fuelTypes} /><SelectField label="Transmission" name="transmission" defaultValue={values.transmission} options={transmissions} /><SelectField label="Body type" name="bodyType" defaultValue={values.bodyType} options={bodyTypes} /><Field label="Colour" name="color" defaultValue={values.color} placeholder="e.g. Alpine White" /></div></EditorSection><EditorSection title="Description" description="Give the sales team a polished vehicle summary."><label><span className={labelClass}>Vehicle description</span><textarea className="min-h-56 w-full resize-y border border-[#e6e6e6] bg-white px-4 py-4 text-base font-light leading-[1.55] text-[#262626] outline-none transition placeholder:text-[#9a9a9a] focus:border-[#262626]" name="description" defaultValue={values.description} placeholder="Describe condition, specification, service history and standout features…" /></label></EditorSection><EditorSection title="Features & extras" description="Add individual equipment items. They are saved one feature per line." badge={`${features.length} ${features.length === 1 ? 'FEATURE' : 'FEATURES'}`}><FeatureManager value={features} onChange={setFeatures} /></EditorSection><EditorSection title="Vehicle media" description="Add, preview, remove and reorder customer-facing vehicle photography. The first image is the gallery lead." badge={`${gallery.length} ${gallery.length === 1 ? 'IMAGE' : 'IMAGES'}`}><GalleryManager value={gallery} onChange={setGallery} /></EditorSection></div><aside className="space-y-8"><section className="border border-[#e6e6e6] bg-[#fafafa] p-6"><div className="mb-5 flex items-start justify-between gap-4"><div><p className="text-[13px] font-bold uppercase tracking-[1.5px] text-[#6b6b6b]">Primary media</p><h2 className="mt-2 text-xl font-bold">Cover image</h2><p className="mt-1 text-sm font-light leading-6 text-[#6b6b6b]">Used across the showroom.</p></div><ImageIcon size={19} className="text-[#1c69d4]" /></div><div className="aspect-[4/3] overflow-hidden border border-[#e6e6e6] bg-white">{imageUrl && validImageUrl(imageUrl) ? <img src={imageUrl} alt={`${values.make} ${values.model} cover preview`} className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} /> : <div className="flex h-full flex-col items-center justify-center gap-3 text-center text-[#9a9a9a]"><ImageIcon size={30}/><span className="text-sm font-light">{imageUrl ? 'Enter a valid image URL' : 'No cover image'}</span></div>}</div><label className="mt-5 block"><span className={labelClass}>Image URL</span><input className={inputClass} name="imageUrl" value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="https://…" /></label>{imageUrl && <button type="button" className="mt-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[1.2px] text-[#6b6b6b] hover:text-[#262626]" onClick={() => setImageUrl('')}><X size={13} /> Remove cover image</button>}</section><section className="border border-[#e6e6e6] bg-white p-6"><p className="text-[13px] font-bold uppercase tracking-[1.5px] text-[#6b6b6b]">Publishing checklist</p><h2 className="mt-2 text-xl font-bold">Ready to publish</h2><p className="mt-1 text-sm font-light leading-6 text-[#6b6b6b]">Quick quality check before saving.</p><div className="mt-5 divide-y divide-[#e6e6e6] border-y border-[#e6e6e6]">{checklist.map(([label, ok]) => <div key={label} className="flex items-center justify-between gap-4 py-3 text-sm"><span className="font-light text-[#3c3c3c]">{label}</span>{ok ? <Check size={16} className="text-[#22c55e]" /> : <span className="h-2 w-2 bg-[#f59e0b]" />}</div>)}</div></section><section className="bg-[#1a2129] p-6 text-white"><p className="text-[13px] font-bold uppercase tracking-[1.5px] text-[#bbbbbb]">Save safely</p><h2 className="mt-2 text-xl font-bold">Verify the listing</h2><p className="mt-3 text-sm font-light leading-6 text-[#bbbbbb]">Save your changes, then use the vehicle detail page to verify the final customer-facing listing.</p><Link href={values.id ? `/inventory/${values.id}` : '/inventory'} className="mt-5 inline-flex text-[13px] font-bold uppercase tracking-[1.5px] text-white hover:text-[#1c69d4]">View vehicle →</Link></section></aside></div>
+    <div className="editor-toolbar">
+      <div><span className="eyebrow">Inventory / Edit vehicle</span><h2>{values.make} {values.model}</h2><p>Update the customer-facing listing, specifications and media.</p></div>
+      <div className="editor-actions"><Link href={values.id ? `/inventory/${values.id}` : '/inventory'} className="button secondary">Cancel</Link><button className="button" type="submit" disabled={saving}><Save size={15} /> {saving ? 'Saving…' : saved ? 'Saved' : submitLabel}</button></div>
+    </div>
+    {error && <div className="form-error" role="alert">{error}</div>}
+    <div className="editor-layout">
+      <div className="editor-main">
+        <section className="editor-card">
+          <div className="editor-card-header"><div><h3>Vehicle details</h3><p>Core information displayed across the showroom and vehicle page.</p></div></div>
+          <div className="form-grid">
+            <Field label="Make" name="make" defaultValue={values.make} required placeholder="e.g. BMW" />
+            <Field label="Model" name="model" defaultValue={values.model} required placeholder="e.g. X3 xDrive20d" />
+            <Field label="Year" name="year" type="number" min="1900" max="2100" defaultValue={values.year} required />
+            <Field label="Price" name="price" type="number" min="0" step="1" defaultValue={values.price} required prefix="R" />
+            <Field label="Mileage" name="mileage" type="number" min="0" step="1" defaultValue={values.mileage} required suffix="km" />
+            <SelectField label="Fuel type" name="fuelType" defaultValue={values.fuelType} options={fuelTypes} />
+            <SelectField label="Transmission" name="transmission" defaultValue={values.transmission} options={transmissions} />
+            <SelectField label="Body type" name="bodyType" defaultValue={values.bodyType} options={bodyTypes} />
+            <Field label="Colour" name="color" defaultValue={values.color} placeholder="e.g. Alpine White" />
+          </div>
+        </section>
+
+        <section className="editor-card">
+          <div className="editor-card-header"><div><h3>Description</h3><p>Keep the customer-facing vehicle summary clear and useful.</p></div></div>
+          <div className="field field-wide"><label className="field-label" htmlFor="description">Vehicle description</label><textarea id="description" className="input field-textarea" name="description" defaultValue={values.description} placeholder="Describe condition, specification, service history and standout features…" /></div>
+        </section>
+
+        <section className="editor-card">
+          <div className="editor-card-header"><div><h3>Features & extras</h3><p>Add individual equipment items. Each item is saved separately.</p></div><span className="field-hint">{features.length} {features.length === 1 ? 'feature' : 'features'}</span></div>
+          <FeatureManager value={features} onChange={setFeatures} />
+        </section>
+
+        <section className="editor-card">
+          <div className="editor-card-header"><div><h3>Vehicle media</h3><p>Add, preview, remove and reorder customer-facing photography. The first image is the gallery lead.</p></div><span className="field-hint">{gallery.length} {gallery.length === 1 ? 'image' : 'images'}</span></div>
+          <GalleryManager value={gallery} onChange={setGallery} />
+        </section>
+      </div>
+
+      <aside className="editor-side">
+        <section className="editor-card">
+          <div className="editor-card-header"><div><h3>Cover image</h3><p>Primary image used across the showroom.</p></div><ImageIcon size={18} /></div>
+          <div className="image-preview large">{imageUrl && validImageUrl(imageUrl) ? <img src={imageUrl} alt={`${values.make} ${values.model} cover preview`} onError={e => { e.currentTarget.style.display = 'none' }} /> : <div><ImageIcon size={26}/><span>{imageUrl ? 'Invalid image URL' : 'No cover image'}</span></div>}</div>
+          <div className="field"><label className="field-label" htmlFor="imageUrl">Image URL</label><input id="imageUrl" className="input" name="imageUrl" value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="https://…" /></div>
+          {imageUrl && <button type="button" className="image-clear" onClick={() => setImageUrl('')}><X size={13}/> Remove cover image</button>}
+        </section>
+
+        <section className="editor-card">
+          <div className="editor-card-header"><div><h3>Publishing checklist</h3><p>Quick quality check before saving.</p></div></div>
+          <div className="checklist">{checklist.map(([label, ok]) => <span key={label} className={ok ? 'check-ok' : 'check-missing'}>{ok ? <Check size={14}/> : <i className="check-dot"/>}{label}</span>)}</div>
+        </section>
+
+        <section className="editor-card help-card">
+          <h3>Verify the listing</h3>
+          <p>Save your changes, then open the vehicle details page to confirm the final customer-facing listing.</p>
+          <Link href={values.id ? `/inventory/${values.id}` : '/inventory'} className="text-link">View vehicle →</Link>
+        </section>
+      </aside>
+    </div>
   </form>
 }
 
-function EditorSection({ title, description, icon, badge, children }: { title: string; description: string; icon?: ReactNode; badge?: string; children: ReactNode }) { return <section className="border border-[#e6e6e6] bg-white p-6 sm:p-8"><div className="mb-7 flex items-start justify-between gap-5 border-b border-[#e6e6e6] pb-6"><div><div className="flex items-center gap-3">{icon && <span className="text-[#1c69d4]">{icon}</span>}<h2 className="text-2xl font-bold">{title}</h2></div><p className="mt-2 text-sm font-light leading-6 text-[#6b6b6b]">{description}</p></div>{badge && <span className="shrink-0 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6b6b6b]">{badge}</span>}</div>{children}</section> }
+function Field({ label, name, defaultValue, type = 'text', required = false, placeholder, min, max, step, prefix, suffix }: { label: string; name: string; defaultValue: string | number; type?: string; required?: boolean; placeholder?: string; min?: string; max?: string; step?: string; prefix?: string; suffix?: string }) {
+  return <label className="field"><span className="field-label">{label}</span><div className="input-wrap">{prefix && <span className="input-affix">{prefix}</span>}<input className="input" name={name} type={type} defaultValue={defaultValue} required={required} placeholder={placeholder} min={min} max={max} step={step} />{suffix && <span className="input-affix">{suffix}</span>}</div></label>
+}
 
-function Field({ label, name, defaultValue, type = 'text', required = false, placeholder, min, max, step, prefix, suffix }: { label: string; name: string; defaultValue: string | number; type?: string; required?: boolean; placeholder?: string; min?: string; max?: string; step?: string; prefix?: string; suffix?: string }) { return <label className="block"><span className={labelClass}>{label}</span><div className="relative">{prefix && <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[#6b6b6b]">{prefix}</span>}<input className={`${inputClass} ${prefix ? 'pl-9' : ''} ${suffix ? 'pr-12' : ''}`} name={name} type={type} defaultValue={defaultValue} required={required} placeholder={placeholder} min={min} max={max} step={step} />{suffix && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#6b6b6b]">{suffix}</span>}</div></label> }
-
-function SelectField({ label, name, defaultValue, options }: { label: string; name: string; defaultValue: string; options: string[] }) { return <label className="block"><span className={labelClass}>{label}</span><select className={inputClass} name={name} defaultValue={defaultValue}><option value="">Select {label.toLowerCase()}</option>{options.map(option => <option value={option} key={option}>{option}</option>)}</select></label> }
+function SelectField({ label, name, defaultValue, options }: { label: string; name: string; defaultValue: string; options: string[] }) {
+  return <label className="field"><span className="field-label">{label}</span><select className="input" name={name} defaultValue={defaultValue}><option value="">Select {label.toLowerCase()}</option>{options.map(option => <option value={option} key={option}>{option}</option>)}</select></label>
+}

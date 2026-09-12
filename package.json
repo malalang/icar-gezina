@@ -10,8 +10,11 @@
     "dev": "turbo run dev --parallel",
     "build": "turbo run build --concurrency=1",
     "start": "turbo run start",
-    "lint": "turbo run lint",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
     "typecheck": "turbo run typecheck",
+    "gen:types": "pnpm --filter @icar-gezina/supabase supabase:types",
     "clean": "turbo run clean",
     "dev:web": "pnpm --filter @icar-gezina/web dev",
     "dev:admin": "pnpm --filter @icar-gezina/admin dev",
@@ -23,6 +26,7 @@
     "typecheck:admin": "pnpm --filter @icar-gezina/admin typecheck"
   },
   "devDependencies": {
-    "turbo": "^2.5.6"
+    "@biomejs/biome": "catalog:",
+    "turbo": "^2.9.14"
   }
 }

@@ -7,9 +7,12 @@
     "./server": "./src/server.ts",
     "./admin": "./src/admin.ts"
   },
+  "scripts": {
+    "supabase:types": "supabase gen types typescript --local > src/supabaseType.ts"
+  },
   "dependencies": {
-    "@supabase/ssr": "^0.10.2",
-    "@supabase/supabase-js": "^2.104.0",
-    "next": "^15.4.9"
+    "@supabase/ssr": "catalog:",
+    "@supabase/supabase-js": "catalog:",
+    "next": "catalog:"
   }
 }

@@ -1,7 +1,5 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import {
   BarChart3,
   CarFront,
@@ -13,21 +11,23 @@ import {
   ShieldCheck,
   Users,
   Wrench,
-} from 'lucide-react'
-import type { ReactNode } from 'react'
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 
 const navigation = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/inventory', label: 'Vehicles', icon: CarFront },
-  { href: '/leads', label: 'Leads', icon: Inbox },
-  { href: '/reviews', label: 'Reviews', icon: MessageSquareQuote },
-  { href: '/testimonials', label: 'Testimonials', icon: Users },
-  { href: '/car-parts', label: 'Car Parts', icon: Wrench },
-  { href: '/articles', label: 'Articles', icon: FileText },
-]
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/inventory", label: "Vehicles", icon: CarFront },
+  { href: "/leads", label: "Leads", icon: Inbox },
+  { href: "/reviews", label: "Reviews", icon: MessageSquareQuote },
+  { href: "/testimonials", label: "Testimonials", icon: Users },
+  { href: "/car-parts", label: "Car Parts", icon: Wrench },
+  { href: "/articles", label: "Articles", icon: FileText },
+];
 
 export function AdminShell({ children }: { children: ReactNode }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <div className="admin-app">
@@ -43,19 +43,26 @@ export function AdminShell({ children }: { children: ReactNode }) {
         <div className="sidebar-section-label">Operations</div>
         <nav className="nav-list" aria-label="Admin navigation">
           {navigation.map(({ href, label, icon: Icon }) => {
-            const active = pathname === href || pathname.startsWith(`${href}/`)
+            const active = pathname === href || pathname.startsWith(`${href}/`);
             return (
-              <Link key={href} href={href} className={`nav-item ${active ? 'active' : ''}`}>
+              <Link
+                key={href}
+                href={href}
+                className={`nav-item ${active ? "active" : ""}`}
+              >
                 <Icon size={18} strokeWidth={1.9} />
                 <span>{label}</span>
               </Link>
-            )
+            );
           })}
         </nav>
 
         <div className="sidebar-spacer" />
         <div className="sidebar-section-label">System</div>
-        <Link href="/settings" className={`nav-item ${pathname.startsWith('/settings') ? 'active' : ''}`}>
+        <Link
+          href="/settings"
+          className={`nav-item ${pathname.startsWith("/settings") ? "active" : ""}`}
+        >
           <Settings size={18} strokeWidth={1.9} />
           <span>Settings</span>
         </Link>
@@ -75,12 +82,14 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <span className="topbar-title">Dealership workspace</span>
           </div>
           <div className="topbar-actions">
-            <Link href="/inventory" className="topbar-link">View showroom</Link>
+            <Link href="/inventory" className="topbar-link">
+              View showroom
+            </Link>
             <div className="avatar">A</div>
           </div>
         </header>
         <main className="content">{children}</main>
       </div>
     </div>
-  )
+  );
 }

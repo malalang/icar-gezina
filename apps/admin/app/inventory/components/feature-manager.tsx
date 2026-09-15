@@ -1,47 +1,105 @@
-'use client'
+"use client";
 
-import { Check, Plus, Search, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { Check, Plus, Search, X } from "lucide-react";
+import { useMemo, useState } from "react";
 
-type FeatureManagerProps = { value: string[]; onChange: (value: string[]) => void }
+type FeatureManagerProps = {
+  value: string[];
+  onChange: (value: string[]) => void;
+};
 
-type Group = { label: string; items: string[] }
+type Group = { label: string; items: string[] };
 
 const GROUPS: Group[] = [
-  { label: 'Comfort', items: ['Air conditioning', 'Climate control', 'Leather interior', 'Electric windows', 'Keyless entry', 'Heated seats', 'Electric seats', 'Central locking'] },
-  { label: 'Technology', items: ['Bluetooth', 'Apple CarPlay', 'Android Auto', 'Navigation system', 'USB connectivity', 'Wireless charging', 'Digital instrument cluster', 'Premium sound system'] },
-  { label: 'Safety', items: ['Parking sensors', 'Reverse camera', 'Blind spot monitoring', 'Lane departure warning', 'Adaptive cruise control', 'ABS', 'Traction control', 'Tyre pressure monitoring'] },
-  { label: 'Exterior', items: ['Alloy wheels', 'LED headlights', 'Panoramic glass roof', 'Roof rails', 'Tow bar', 'Daytime running lights', 'Sunroof', 'Fog lights'] },
-]
+  {
+    label: "Comfort",
+    items: [
+      "Air conditioning",
+      "Climate control",
+      "Leather interior",
+      "Electric windows",
+      "Keyless entry",
+      "Heated seats",
+      "Electric seats",
+      "Central locking",
+    ],
+  },
+  {
+    label: "Technology",
+    items: [
+      "Bluetooth",
+      "Apple CarPlay",
+      "Android Auto",
+      "Navigation system",
+      "USB connectivity",
+      "Wireless charging",
+      "Digital instrument cluster",
+      "Premium sound system",
+    ],
+  },
+  {
+    label: "Safety",
+    items: [
+      "Parking sensors",
+      "Reverse camera",
+      "Blind spot monitoring",
+      "Lane departure warning",
+      "Adaptive cruise control",
+      "ABS",
+      "Traction control",
+      "Tyre pressure monitoring",
+    ],
+  },
+  {
+    label: "Exterior",
+    items: [
+      "Alloy wheels",
+      "LED headlights",
+      "Panoramic glass roof",
+      "Roof rails",
+      "Tow bar",
+      "Daytime running lights",
+      "Sunroof",
+      "Fog lights",
+    ],
+  },
+];
 
 export function FeatureManager({ value, onChange }: FeatureManagerProps) {
-  const [activeGroup, setActiveGroup] = useState('Comfort')
-  const [query, setQuery] = useState('')
-  const [custom, setCustom] = useState('')
+  const [activeGroup, setActiveGroup] = useState("Comfort");
+  const [query, setQuery] = useState("");
+  const [custom, setCustom] = useState("");
 
-  const selected = useMemo(() => new Set(value), [value])
-  const active = GROUPS.find(group => group.label === activeGroup) ?? GROUPS[0]
-  const searchable = GROUPS.flatMap(group => group.items)
-  const source = query.trim() ? searchable : active.items
+  const selected = useMemo(() => new Set(value), [value]);
+  const active =
+    GROUPS.find((group) => group.label === activeGroup) ?? GROUPS[0];
+  const searchable = GROUPS.flatMap((group) => group.items);
+  const source = query.trim() ? searchable : active.items;
   const items = useMemo(() => {
-    const term = query.trim().toLowerCase()
-    return term ? source.filter(item => item.toLowerCase().includes(term)) : source
-  }, [query, source])
+    const term = query.trim().toLowerCase();
+    return term
+      ? source.filter((item) => item.toLowerCase().includes(term))
+      : source;
+  }, [query, source]);
 
   function toggle(item: string) {
-    onChange(selected.has(item) ? value.filter(feature => feature !== item) : [...value, item])
+    onChange(
+      selected.has(item)
+        ? value.filter((feature) => feature !== item)
+        : [...value, item],
+    );
   }
 
   function addCustom() {
-    const item = custom.trim()
-    if (!item || selected.has(item)) return
-    onChange([...value, item])
-    setCustom('')
+    const item = custom.trim();
+    if (!item || selected.has(item)) return;
+    onChange([...value, item]);
+    setCustom("");
   }
 
   function selectVisible() {
-    const additions = items.filter(item => !selected.has(item))
-    if (additions.length) onChange([...value, ...additions])
+    const additions = items.filter((item) => !selected.has(item));
+    if (additions.length) onChange([...value, ...additions]);
   }
 
   return (
@@ -50,55 +108,106 @@ export function FeatureManager({ value, onChange }: FeatureManagerProps) {
         <div>
           <span className="eyebrow">Vehicle equipment</span>
           <h3>Features &amp; extras</h3>
-          <p>Select the equipment that is genuinely present on this vehicle. These items are published to the customer-facing listing.</p>
+          <p>
+            Select the equipment that is genuinely present on this vehicle.
+            These items are published to the customer-facing listing.
+          </p>
         </div>
-        <div className="feature-count"><strong>{value.length}</strong><span>selected</span></div>
+        <div className="feature-count">
+          <strong>{value.length}</strong>
+          <span>selected</span>
+        </div>
       </div>
 
       <div className="feature-editor-toolbar">
         <div className="feature-search">
           <Search size={14} />
-          <input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search equipment…" aria-label="Search equipment" />
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search equipment…"
+            aria-label="Search equipment"
+          />
         </div>
-        <button type="button" className="feature-select-all" onClick={selectVisible}>
+        <button
+          type="button"
+          className="feature-select-all"
+          onClick={selectVisible}
+        >
           <Check size={13} /> Select visible
         </button>
       </div>
 
-      <div className="feature-tabs" role="tablist" aria-label="Equipment categories">
-        {GROUPS.map(group => {
-          const count = group.items.filter(item => selected.has(item)).length
-          const activeTab = !query && group.label === activeGroup
+      <div
+        className="feature-tabs"
+        role="tablist"
+        aria-label="Equipment categories"
+      >
+        {GROUPS.map((group) => {
+          const count = group.items.filter((item) => selected.has(item)).length;
+          const activeTab = !query && group.label === activeGroup;
           return (
-            <button key={group.label} type="button" role="tab" aria-selected={activeTab} className={activeTab ? 'feature-tab active' : 'feature-tab'} onClick={() => { setActiveGroup(group.label); setQuery('') }}>
+            <button
+              key={group.label}
+              type="button"
+              role="tab"
+              aria-selected={activeTab}
+              className={activeTab ? "feature-tab active" : "feature-tab"}
+              onClick={() => {
+                setActiveGroup(group.label);
+                setQuery("");
+              }}
+            >
               <span>{group.label}</span>
               {count > 0 && <b>{count}</b>}
             </button>
-          )
+          );
         })}
       </div>
 
       <div className="feature-canvas">
         <div className="feature-canvas-head">
           <div>
-            <span className="feature-label">{query ? 'Search results' : activeGroup}</span>
-            <span className="feature-meta">{items.length} available · {items.filter(item => selected.has(item)).length} selected</span>
+            <span className="feature-label">
+              {query ? "Search results" : activeGroup}
+            </span>
+            <span className="feature-meta">
+              {items.length} available ·{" "}
+              {items.filter((item) => selected.has(item)).length} selected
+            </span>
           </div>
-          {query && <button type="button" onClick={() => setQuery('')} className="feature-clear-search">Clear search</button>}
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              className="feature-clear-search"
+            >
+              Clear search
+            </button>
+          )}
         </div>
 
         <div className="feature-grid">
-          {items.map(item => {
-            const isSelected = selected.has(item)
+          {items.map((item) => {
+            const isSelected = selected.has(item);
             return (
-              <button key={item} type="button" onClick={() => toggle(item)} className={isSelected ? 'feature-option selected' : 'feature-option'}>
+              <button
+                key={item}
+                type="button"
+                onClick={() => toggle(item)}
+                className={
+                  isSelected ? "feature-option selected" : "feature-option"
+                }
+              >
                 <span className="feature-option-copy">
                   <strong>{item}</strong>
-                  <small>{query ? 'Equipment' : activeGroup}</small>
+                  <small>{query ? "Equipment" : activeGroup}</small>
                 </span>
-                <span className="feature-check">{isSelected && <Check size={13} />}</span>
+                <span className="feature-check">
+                  {isSelected && <Check size={13} />}
+                </span>
               </button>
-            )
+            );
           })}
         </div>
 
@@ -114,36 +223,69 @@ export function FeatureManager({ value, onChange }: FeatureManagerProps) {
         <div className="feature-selected-head">
           <div>
             <span className="feature-label">Selected equipment</span>
-            <span className="feature-meta">Review before saving this vehicle</span>
+            <span className="feature-meta">
+              Review before saving this vehicle
+            </span>
           </div>
-          {value.length > 0 && <button type="button" onClick={() => onChange([])} className="feature-remove-all">Remove all</button>}
+          {value.length > 0 && (
+            <button
+              type="button"
+              onClick={() => onChange([])}
+              className="feature-remove-all"
+            >
+              Remove all
+            </button>
+          )}
         </div>
 
         {value.length ? (
           <div className="feature-chips">
-            {value.map(item => (
-              <button key={item} type="button" className="feature-chip" onClick={() => toggle(item)} title={`Remove ${item}`}>
+            {value.map((item) => (
+              <button
+                key={item}
+                type="button"
+                className="feature-chip"
+                onClick={() => toggle(item)}
+                title={`Remove ${item}`}
+              >
                 <Check size={11} /> <span>{item}</span> <X size={11} />
               </button>
             ))}
           </div>
         ) : (
-          <div className="feature-selected-empty">No equipment selected yet.</div>
+          <div className="feature-selected-empty">
+            No equipment selected yet.
+          </div>
         )}
       </div>
 
       <div className="feature-custom">
         <div>
           <span className="feature-label">Custom extra</span>
-          <span className="feature-meta">Use this for an item not covered by the categories above.</span>
+          <span className="feature-meta">
+            Use this for an item not covered by the categories above.
+          </span>
         </div>
         <div className="feature-custom-row">
-          <input value={custom} onChange={event => setCustom(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); addCustom() } }} placeholder="e.g. Harman Kardon sound system" aria-label="Custom vehicle extra" />
-          <button type="button" onClick={addCustom}><Plus size={13} /> Add</button>
+          <input
+            value={custom}
+            onChange={(event) => setCustom(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                addCustom();
+              }
+            }}
+            placeholder="e.g. Harman Kardon sound system"
+            aria-label="Custom vehicle extra"
+          />
+          <button type="button" onClick={addCustom}>
+            <Plus size={13} /> Add
+          </button>
         </div>
       </div>
 
-      <input type="hidden" name="features" value={value.join('\n')} readOnly />
+      <input type="hidden" name="features" value={value.join("\n")} readOnly />
 
       <style jsx>{`
         .feature-editor{background:#fff;border:1px solid #dfe3e7;border-radius:9px;overflow:hidden;color:#111827}
@@ -195,5 +337,5 @@ export function FeatureManager({ value, onChange }: FeatureManagerProps) {
         @media(max-width:640px){.feature-editor-head{padding:18px;}.feature-editor-toolbar{padding:12px 18px;}.feature-tabs{padding:0 18px}.feature-canvas{padding:14px 18px 18px}.feature-grid{grid-template-columns:1fr}.feature-custom{grid-template-columns:1fr;padding:16px 18px}.feature-count{display:none}.feature-select-all{display:none}}
       `}</style>
     </div>
-  )
+  );
 }

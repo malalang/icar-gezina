@@ -1,83 +1,116 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { CarFront, ExternalLink, Gauge, Fuel, Palette, Settings2 } from 'lucide-react'
+import {
+  CarFront,
+  ExternalLink,
+  Fuel,
+  Gauge,
+  Palette,
+  Settings2,
+} from "lucide-react";
+import Link from "next/link";
 
 type LeadVehicle = {
-  id: string
-  make?: string | null
-  model?: string | null
-  year?: number | null
-  price?: number | null
-  mileage?: number | null
-  fuel_type?: string | null
-  transmission?: string | null
-  body_type?: string | null
-  color?: string | null
-  image_url?: string | null
-}
+  id: string;
+  make?: string | null;
+  model?: string | null;
+  year?: number | null;
+  price?: number | null;
+  mileage?: number | null;
+  fuel_type?: string | null;
+  transmission?: string | null;
+  body_type?: string | null;
+  color?: string | null;
+  image_url?: string | null;
+};
 
 function money(value: unknown) {
-  const amount = Number(value)
-  return Number.isFinite(amount) && amount > 0 ? `R ${amount.toLocaleString('en-ZA')}` : '—'
+  const amount = Number(value);
+  return Number.isFinite(amount) && amount > 0
+    ? `R ${amount.toLocaleString("en-ZA")}`
+    : "—";
 }
 
 function number(value: unknown) {
-  const amount = Number(value)
-  return Number.isFinite(amount) && amount > 0 ? `${amount.toLocaleString('en-ZA')} km` : '—'
+  const amount = Number(value);
+  return Number.isFinite(amount) && amount > 0
+    ? `${amount.toLocaleString("en-ZA")} km`
+    : "—";
 }
 
-export function LeadVehicleDetails({ vehicle }: { vehicle?: LeadVehicle | null }) {
+export function LeadVehicleDetails({
+  vehicle,
+}: {
+  vehicle?: LeadVehicle | null;
+}) {
   if (!vehicle) {
     return (
       <section className="lead-vehicle-card lead-vehicle-empty">
-        <div className="lead-vehicle-empty-icon"><CarFront size={20} /></div>
+        <div className="lead-vehicle-empty-icon">
+          <CarFront size={20} />
+        </div>
         <div>
           <span className="lead-vehicle-kicker">Vehicle details</span>
           <h3>No vehicle linked</h3>
-          <p>This lead is not currently associated with a vehicle in the inventory.</p>
+          <p>
+            This lead is not currently associated with a vehicle in the
+            inventory.
+          </p>
         </div>
       </section>
-    )
+    );
   }
 
-  const title = `${vehicle.year ?? ''} ${vehicle.make ?? ''} ${vehicle.model ?? ''}`.replace(/\s+/g, ' ').trim()
+  const title =
+    `${vehicle.year ?? ""} ${vehicle.make ?? ""} ${vehicle.model ?? ""}`
+      .replace(/\s+/g, " ")
+      .trim();
 
   const specs = [
-    [Gauge, 'Mileage', number(vehicle.mileage)],
-    [Settings2, 'Transmission', vehicle.transmission || '—'],
-    [Fuel, 'Fuel', vehicle.fuel_type || '—'],
-    [CarFront, 'Body type', vehicle.body_type || '—'],
-    [Palette, 'Colour', vehicle.color || '—'],
-  ] as const
+    [Gauge, "Mileage", number(vehicle.mileage)],
+    [Settings2, "Transmission", vehicle.transmission || "—"],
+    [Fuel, "Fuel", vehicle.fuel_type || "—"],
+    [CarFront, "Body type", vehicle.body_type || "—"],
+    [Palette, "Colour", vehicle.color || "—"],
+  ] as const;
 
   return (
     <section className="lead-vehicle-card">
       <div className="lead-vehicle-top">
         <div className="lead-vehicle-photo">
-          {vehicle.image_url ? <img src={vehicle.image_url} alt="" /> : <CarFront size={28} />}
+          {vehicle.image_url ? (
+            <img src={vehicle.image_url} alt="" />
+          ) : (
+            <CarFront size={28} />
+          )}
         </div>
         <div className="lead-vehicle-main">
           <span className="lead-vehicle-kicker">Vehicle details</span>
-          <h3>{title || 'Vehicle'}</h3>
+          <h3>{title || "Vehicle"}</h3>
           <div className="lead-vehicle-price">{money(vehicle.price)}</div>
         </div>
-        <Link href={`/inventory/${vehicle.id}`} className="lead-vehicle-open">Open vehicle <ExternalLink size={13} /></Link>
+        <Link href={`/inventory/${vehicle.id}`} className="lead-vehicle-open">
+          Open vehicle <ExternalLink size={13} />
+        </Link>
       </div>
       <div className="lead-vehicle-specs">
         {specs.map(([Icon, label, value]) => (
           <div className="lead-vehicle-spec" key={label}>
             <Icon size={14} />
-            <div><span>{label}</span><strong>{value}</strong></div>
+            <div>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
           </div>
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 export function LeadVehicleDetailsStyles() {
-  return <style jsx global>{`
+  return (
+    <style jsx global>{`
     .lead-vehicle-card{margin:18px 0;background:#fff;border:1px solid #e5e7eb;border-radius:9px;overflow:hidden}
     .lead-vehicle-top{display:flex;align-items:center;gap:16px;padding:18px 20px;background:#18212b;color:#fff}
     .lead-vehicle-photo{width:88px;height:64px;flex:0 0 88px;background:#26313d;display:grid;place-items:center;color:#7f8a97;overflow:hidden}
@@ -97,4 +130,5 @@ export function LeadVehicleDetailsStyles() {
     @media(max-width:900px){.lead-vehicle-specs{grid-template-columns:repeat(2,minmax(0,1fr))}.lead-vehicle-spec:nth-child(2n){border-right:0}.lead-vehicle-open{display:none}}
     @media(max-width:640px){.lead-vehicle-top{align-items:flex-start}.lead-vehicle-photo{width:72px;height:54px;flex-basis:72px}.lead-vehicle-main h3{font-size:14px}.lead-vehicle-specs{grid-template-columns:1fr}.lead-vehicle-spec{border-right:0;border-bottom:1px solid #eef0f2}.lead-vehicle-spec:last-child{border-bottom:0}}
   `}</style>
+  );
 }

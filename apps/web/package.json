@@ -15,6 +15,8 @@
   "dependencies": {
     "@google/genai": "catalog:",
     "@hookform/resolvers": "catalog:",
+    "@icar-gezina/contracts": "workspace:*",
+    "@icar-gezina/supabase": "workspace:*",
     "@supabase/ssr": "catalog:",
     "@supabase/supabase-js": "catalog:",
     "autoprefixer": "catalog:",

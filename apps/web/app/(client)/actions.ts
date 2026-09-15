@@ -1,38 +1,43 @@
-'use server';
+"use server";
 
-import { createClient } from '@/utils/supabase/server';
+import type { ActionResult } from "@icar-gezina/contracts/actionResult";
+import { leadInputSchema } from "@icar-gezina/contracts/lead";
+import { submitLead as submitLeadMutation } from "@icar-gezina/supabase/Mutations/leads";
 
-export async function submitLead(formData: FormData) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  if (!supabaseUrl || supabaseUrl === 'YOUR_SUPABASE_URL' || supabaseUrl === '""') {
-    // If running with mock data, just fake standard success.
-    await new Promise(r => setTimeout(r, 800));
-    return { success: true };
-  }
-
-  const supabase = await createClient();
-  const type = formData.get('type') as string;
-  const name = formData.get('name') as string;
-  const email = formData.get('email') as string;
-  const phone = formData.get('phone') as string;
-  const message = formData.get('message') as string;
-  const carId = formData.get('carId') as string | null;
-  const preferredDate = formData.get('preferredDate') as string | null;
-
-  const { error } = await supabase.from('leads').insert({
-    type,
-    name,
-    email,
-    phone,
-    message,
-    car_id: carId || null,
-    preferred_date: preferredDate || null,
+export async function submitLead(formData: FormData): Promise<ActionResult> {
+  const parsed = leadInputSchema.safeParse({
+    type: formData.get("type"),
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    message: formData.get("message") || undefined,
+    carId: formData.get("carId") || undefined,
+    preferredDate: formData.get("preferredDate") || undefined,
   });
 
-  if (error) {
-    console.error('Failed to submit lead:', error);
-    return { success: false, error: error.message };
+  if (!parsed.success) {
+    const fieldErrors: Record<string, string[]> = {};
+    for (const issue of parsed.error.issues) {
+      const key = String(issue.path[0] ?? "message");
+      fieldErrors[key] = [issue.message];
+    }
+    return {
+      ok: false,
+      error: "Please check your details and try again.",
+      fieldErrors,
+    };
   }
 
-  return { success: true };
+  try {
+    await submitLeadMutation(parsed.data);
+  } catch (error) {
+    console.error("Failed to submit lead:", error);
+    return { ok: false, error: "Something went wrong. Please try again." };
+  }
+
+  return {
+    ok: true,
+    message:
+      "Thanks! We have received your enquiry and will be in touch shortly.",
+  };
 }

@@ -1,0 +1,22 @@
+{
+  "name": "@icar-gezina/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./car": "./src/car.ts",
+    "./lead": "./src/lead.ts",
+    "./testimonial": "./src/testimonial.ts",
+    "./article": "./src/article.ts",
+    "./actionResult": "./src/actionResult.ts",
+    "./revalidation": "./src/revalidation.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

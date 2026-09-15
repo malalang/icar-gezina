@@ -1,7 +1,8 @@
-'use client'
+"use client";
 
 export function LeadEditStyles() {
-  return <style jsx global>{`
+  return (
+    <style jsx global>{`
     .lead-edit-shell{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:20px;align-items:start}
     .lead-edit-context{display:grid;gap:20px;position:sticky;top:92px}
     .lead-edit-form-card{padding:0;overflow:hidden}
@@ -21,4 +22,5 @@ export function LeadEditStyles() {
     @media(max-width:1000px){.lead-edit-shell{grid-template-columns:1fr}.lead-edit-context{position:static;grid-template-columns:1fr 1fr}}
     @media(max-width:640px){.lead-edit-context{grid-template-columns:1fr}.lead-edit-heading{padding:18px;flex-direction:column}.lead-edit-form-card :global(.form-grid){padding:18px}.lead-edit-form-card :global(.form-actions){padding:12px 18px}.lead-edit-form-card :global(.form-actions .button){width:100%}}
   `}</style>
+  );
 }

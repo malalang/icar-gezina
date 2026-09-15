@@ -1,12 +1,12 @@
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
-import './globals.css'
-import { AdminShell } from './admin-shell'
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import "./globals.css";
+import { AdminShell } from "./admin-shell";
 
 export const metadata: Metadata = {
-  title: 'ICar Gezina Admin',
-  description: 'ICar Gezina dealership administration workspace',
-}
+  title: "ICar Gezina Admin",
+  description: "ICar Gezina dealership administration workspace",
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,5 +15,5 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <AdminShell>{children}</AdminShell>
       </body>
     </html>
-  )
+  );
 }

@@ -1,98 +1,346 @@
-'use client'
+"use client";
 
-import { ArrowDown, ArrowUp, GripVertical, Image as ImageIcon, ImagePlus, Link2, Plus, Star, Trash2, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import {
+  ArrowDown,
+  ArrowUp,
+  GripVertical,
+  Image as ImageIcon,
+  ImagePlus,
+  Link2,
+  Plus,
+  Star,
+  Trash2,
+  X,
+} from "lucide-react";
+import { useMemo, useState } from "react";
 
-type GalleryManagerProps = { value: string[]; onChange: (value: string[]) => void }
+type GalleryManagerProps = {
+  value: string[];
+  onChange: (value: string[]) => void;
+};
 
-function isValidUrl(url: string) { return /^https?:\/\/[^\s]+$/i.test(url.trim()) }
+function isValidUrl(url: string) {
+  return /^https?:\/\/[^\s]+$/i.test(url.trim());
+}
 
 const MEDIA_GUIDE = [
-  { label: '01', title: 'Lead', hint: 'Best exterior angle' },
-  { label: '02', title: 'Walkaround', hint: 'Front, rear & sides' },
-  { label: '03', title: 'Cabin', hint: 'Interior & dashboard' },
-  { label: '04', title: 'Details', hint: 'Wheels, trim & extras' },
-]
+  { label: "01", title: "Lead", hint: "Best exterior angle" },
+  { label: "02", title: "Walkaround", hint: "Front, rear & sides" },
+  { label: "03", title: "Cabin", hint: "Interior & dashboard" },
+  { label: "04", title: "Details", hint: "Wheels, trim & extras" },
+];
 
 export function GalleryManager({ value, onChange }: GalleryManagerProps) {
-  const [draft, setDraft] = useState('')
-  const [error, setError] = useState('')
-  const [failedImages, setFailedImages] = useState<string[]>([])
-  const [preview, setPreview] = useState<string | null>(null)
+  const [draft, setDraft] = useState("");
+  const [error, setError] = useState("");
+  const [failedImages, setFailedImages] = useState<string[]>([]);
+  const [preview, setPreview] = useState<string | null>(null);
 
-  const failedCount = failedImages.filter(url => value.includes(url)).length
-  const healthyCount = value.length - failedCount
+  const failedCount = failedImages.filter((url) => value.includes(url)).length;
+  const healthyCount = value.length - failedCount;
   const galleryStatus = useMemo(() => {
-    if (!value.length) return { label: 'Needs photography', tone: 'warning' }
-    if (failedCount) return { label: `${healthyCount} ready · ${failedCount} broken`, tone: 'danger' }
-    if (value.length === 1) return { label: 'Lead photo only', tone: 'caution' }
-    return { label: 'Gallery ready', tone: 'success' }
-  }, [value.length, healthyCount, failedCount])
+    if (!value.length) return { label: "Needs photography", tone: "warning" };
+    if (failedCount)
+      return {
+        label: `${healthyCount} ready · ${failedCount} broken`,
+        tone: "danger",
+      };
+    if (value.length === 1)
+      return { label: "Lead photo only", tone: "caution" };
+    return { label: "Gallery ready", tone: "success" };
+  }, [value.length, healthyCount, failedCount]);
 
   function add() {
-    const urls = draft.split(/\r?\n/).map(url => url.trim()).filter(Boolean)
-    if (!urls.length) return
-    if (value.length >= 20) return setError('This vehicle already has the maximum of 20 photos.')
-    const invalid = urls.find(url => !isValidUrl(url))
-    if (invalid) return setError('Use valid http:// or https:// image URLs.')
-    const unique = urls.filter(url => !value.includes(url)).slice(0, 20 - value.length)
-    if (!unique.length) return setError('Those photos are already in the gallery.')
-    onChange([...value, ...unique]); setDraft(''); setError('')
+    const urls = draft
+      .split(/\r?\n/)
+      .map((url) => url.trim())
+      .filter(Boolean);
+    if (!urls.length) return;
+    if (value.length >= 20)
+      return setError("This vehicle already has the maximum of 20 photos.");
+    const invalid = urls.find((url) => !isValidUrl(url));
+    if (invalid) return setError("Use valid http:// or https:// image URLs.");
+    const unique = urls
+      .filter((url) => !value.includes(url))
+      .slice(0, 20 - value.length);
+    if (!unique.length)
+      return setError("Those photos are already in the gallery.");
+    onChange([...value, ...unique]);
+    setDraft("");
+    setError("");
   }
 
   function move(index: number, direction: -1 | 1) {
-    const target = index + direction
-    if (target < 0 || target >= value.length) return
-    const next = [...value]; [next[index], next[target]] = [next[target], next[index]]; onChange(next)
+    const target = index + direction;
+    if (target < 0 || target >= value.length) return;
+    const next = [...value];
+    [next[index], next[target]] = [next[target], next[index]];
+    onChange(next);
   }
 
   function makeLead(index: number) {
-    if (index === 0) return
-    const next = [...value]; const [lead] = next.splice(index, 1); next.unshift(lead); onChange(next)
+    if (index === 0) return;
+    const next = [...value];
+    const [lead] = next.splice(index, 1);
+    next.unshift(lead);
+    onChange(next);
   }
 
   function remove(index: number) {
-    const url = value[index]
-    onChange(value.filter((_, i) => i !== index))
-    setFailedImages(current => current.filter(item => item !== url))
-    if (preview === url) setPreview(null)
+    const url = value[index];
+    onChange(value.filter((_, i) => i !== index));
+    setFailedImages((current) => current.filter((item) => item !== url));
+    if (preview === url) setPreview(null);
   }
 
   return (
     <div className="vehicle-media">
       <section className="vehicle-media-head">
         <div className="vehicle-media-head-main">
-          <div className="vehicle-media-icon"><ImagePlus size={18} /></div>
-          <div><div className="vehicle-media-title-row"><h4>Vehicle media</h4><span className="vehicle-media-count">{value.length}/20 photos</span></div><p>Build the photography set customers will see. Lead with the strongest exterior image.</p></div>
+          <div className="vehicle-media-icon">
+            <ImagePlus size={18} />
+          </div>
+          <div>
+            <div className="vehicle-media-title-row">
+              <h4>Vehicle media</h4>
+              <span className="vehicle-media-count">
+                {value.length}/20 photos
+              </span>
+            </div>
+            <p>
+              Build the photography set customers will see. Lead with the
+              strongest exterior image.
+            </p>
+          </div>
         </div>
-        <div className={`vehicle-media-status ${galleryStatus.tone}`}><span className="vehicle-media-status-dot" /><div><strong>{galleryStatus.label}</strong><small>Media status</small></div></div>
+        <div className={`vehicle-media-status ${galleryStatus.tone}`}>
+          <span className="vehicle-media-status-dot" />
+          <div>
+            <strong>{galleryStatus.label}</strong>
+            <small>Media status</small>
+          </div>
+        </div>
       </section>
 
-      <div className="vehicle-media-guide">{MEDIA_GUIDE.map(item => <div className="vehicle-media-guide-item" key={item.label}><span>{item.label}</span><div><strong>{item.title}</strong><small>{item.hint}</small></div></div>)}</div>
+      <div className="vehicle-media-guide">
+        {MEDIA_GUIDE.map((item) => (
+          <div className="vehicle-media-guide-item" key={item.label}>
+            <span>{item.label}</span>
+            <div>
+              <strong>{item.title}</strong>
+              <small>{item.hint}</small>
+            </div>
+          </div>
+        ))}
+      </div>
 
       <section className="vehicle-media-add">
-        <div className="vehicle-media-section-title"><div><strong>Add photography</strong><small>Paste one URL or multiple URLs, one per line.</small></div><span>Max 20</span></div>
-        <div className="vehicle-media-add-row"><div className="vehicle-media-url-wrap"><Link2 size={15} /><textarea value={draft} onChange={e => setDraft(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); add() } }} placeholder="https://…/vehicle-front.jpg\nhttps://…/vehicle-interior.jpg" rows={3} aria-label="Vehicle image URLs" /></div><button type="button" onClick={add} disabled={value.length >= 20} className="vehicle-media-add-button"><Plus size={15} /> Add photos</button></div>
-        {error && <div className="vehicle-media-error"><X size={13} />{error}</div>}
-        <div className="vehicle-media-add-foot"><span>Duplicates are ignored automatically.</span><span><kbd>Ctrl/⌘ + Enter</kbd> to add quickly.</span></div>
+        <div className="vehicle-media-section-title">
+          <div>
+            <strong>Add photography</strong>
+            <small>Paste one URL or multiple URLs, one per line.</small>
+          </div>
+          <span>Max 20</span>
+        </div>
+        <div className="vehicle-media-add-row">
+          <div className="vehicle-media-url-wrap">
+            <Link2 size={15} />
+            <textarea
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                  e.preventDefault();
+                  add();
+                }
+              }}
+              placeholder="https://…/vehicle-front.jpg\nhttps://…/vehicle-interior.jpg"
+              rows={3}
+              aria-label="Vehicle image URLs"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={add}
+            disabled={value.length >= 20}
+            className="vehicle-media-add-button"
+          >
+            <Plus size={15} /> Add photos
+          </button>
+        </div>
+        {error && (
+          <div className="vehicle-media-error">
+            <X size={13} />
+            {error}
+          </div>
+        )}
+        <div className="vehicle-media-add-foot">
+          <span>Duplicates are ignored automatically.</span>
+          <span>
+            <kbd>Ctrl/⌘ + Enter</kbd> to add quickly.
+          </span>
+        </div>
       </section>
 
-      {!value.length ? <div className="vehicle-media-empty"><div className="vehicle-media-empty-icon"><ImageIcon size={23} /></div><strong>Start the vehicle gallery</strong><p>Add the strongest exterior photo first. The first image becomes the vehicle cover.</p></div> : <section className="vehicle-media-gallery">
-        <header className="vehicle-media-gallery-head"><div><div className="vehicle-media-section-title-inline"><strong>Gallery sequence</strong><span>{value.length} photos</span></div><small>Photo 01 is the customer-facing cover image.</small></div><div className="vehicle-media-order"><GripVertical size={13} /> Ordered gallery</div></header>
-        <div className="vehicle-media-grid">{value.map((url, index) => { const failed = failedImages.includes(url); return <article className={`vehicle-media-card ${index === 0 ? 'is-lead' : ''}`} key={`${url}-${index}`}>
-          <button type="button" className="vehicle-media-photo" onClick={() => !failed && setPreview(url)} aria-label={`Preview vehicle photo ${index + 1}`}>
-            {!failed ? <img src={url} alt={`Vehicle photo ${index + 1}`} loading="lazy" onError={() => setFailedImages(current => current.includes(url) ? current : [...current, url])} /> : <div className="vehicle-media-broken"><ImageIcon size={22} /><strong>Photo unavailable</strong><small>Replace or remove</small></div>}
-            <span className="vehicle-media-number">{String(index + 1).padStart(2, '0')}</span>{index === 0 ? <span className="vehicle-media-lead"><Star size={10} className="fill-current" /> Lead photo</span> : <span className={`vehicle-media-ready ${failed ? 'is-broken' : ''}`}>{failed ? 'Broken' : 'Ready'}</span>}
-          </button>
-          <div className="vehicle-media-card-body"><div className="vehicle-media-card-meta"><div><strong>{index === 0 ? 'Primary vehicle photo' : `Gallery photo ${index + 1}`}</strong><span title={url}>{url}</span></div><GripVertical size={14} /></div>
-            <div className="vehicle-media-actions"><div className="vehicle-media-actions-left"><button type="button" disabled={index === 0} onClick={() => move(index, -1)} aria-label="Move photo up"><ArrowUp size={13} /></button><button type="button" disabled={index === value.length - 1} onClick={() => move(index, 1)} aria-label="Move photo down"><ArrowDown size={13} /></button><button type="button" disabled={index === 0} onClick={() => makeLead(index)} aria-label="Make lead photo"><Star size={13} /></button></div><button type="button" className="vehicle-media-remove" onClick={() => remove(index)}><Trash2 size={13} /> Remove</button></div>
+      {!value.length ? (
+        <div className="vehicle-media-empty">
+          <div className="vehicle-media-empty-icon">
+            <ImageIcon size={23} />
           </div>
-        </article> })}</div>
-        <div className="vehicle-media-tip"><strong>Recommended order:</strong> strongest exterior → front/rear → interior → dashboard → wheels → detail shots.</div>
-      </section>}
+          <strong>Start the vehicle gallery</strong>
+          <p>
+            Add the strongest exterior photo first. The first image becomes the
+            vehicle cover.
+          </p>
+        </div>
+      ) : (
+        <section className="vehicle-media-gallery">
+          <header className="vehicle-media-gallery-head">
+            <div>
+              <div className="vehicle-media-section-title-inline">
+                <strong>Gallery sequence</strong>
+                <span>{value.length} photos</span>
+              </div>
+              <small>Photo 01 is the customer-facing cover image.</small>
+            </div>
+            <div className="vehicle-media-order">
+              <GripVertical size={13} /> Ordered gallery
+            </div>
+          </header>
+          <div className="vehicle-media-grid">
+            {value.map((url, index) => {
+              const failed = failedImages.includes(url);
+              return (
+                <article
+                  className={`vehicle-media-card ${index === 0 ? "is-lead" : ""}`}
+                  key={`${url}-${index}`}
+                >
+                  <button
+                    type="button"
+                    className="vehicle-media-photo"
+                    onClick={() => !failed && setPreview(url)}
+                    aria-label={`Preview vehicle photo ${index + 1}`}
+                  >
+                    {!failed ? (
+                      <img
+                        src={url}
+                        alt={`Vehicle ${index + 1}`}
+                        loading="lazy"
+                        onError={() =>
+                          setFailedImages((current) =>
+                            current.includes(url) ? current : [...current, url],
+                          )
+                        }
+                      />
+                    ) : (
+                      <div className="vehicle-media-broken">
+                        <ImageIcon size={22} />
+                        <strong>Photo unavailable</strong>
+                        <small>Replace or remove</small>
+                      </div>
+                    )}
+                    <span className="vehicle-media-number">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    {index === 0 ? (
+                      <span className="vehicle-media-lead">
+                        <Star size={10} className="fill-current" /> Lead photo
+                      </span>
+                    ) : (
+                      <span
+                        className={`vehicle-media-ready ${failed ? "is-broken" : ""}`}
+                      >
+                        {failed ? "Broken" : "Ready"}
+                      </span>
+                    )}
+                  </button>
+                  <div className="vehicle-media-card-body">
+                    <div className="vehicle-media-card-meta">
+                      <div>
+                        <strong>
+                          {index === 0
+                            ? "Primary vehicle photo"
+                            : `Gallery photo ${index + 1}`}
+                        </strong>
+                        <span title={url}>{url}</span>
+                      </div>
+                      <GripVertical size={14} />
+                    </div>
+                    <div className="vehicle-media-actions">
+                      <div className="vehicle-media-actions-left">
+                        <button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => move(index, -1)}
+                          aria-label="Move photo up"
+                        >
+                          <ArrowUp size={13} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={index === value.length - 1}
+                          onClick={() => move(index, 1)}
+                          aria-label="Move photo down"
+                        >
+                          <ArrowDown size={13} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => makeLead(index)}
+                          aria-label="Make lead photo"
+                        >
+                          <Star size={13} />
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        className="vehicle-media-remove"
+                        onClick={() => remove(index)}
+                      >
+                        <Trash2 size={13} /> Remove
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+          <div className="vehicle-media-tip">
+            <strong>Recommended order:</strong> strongest exterior → front/rear
+            → interior → dashboard → wheels → detail shots.
+          </div>
+        </section>
+      )}
 
-      {preview && <div className="vehicle-media-preview" role="dialog" aria-modal="true" aria-label="Vehicle image preview" onClick={() => setPreview(null)}><button type="button" onClick={() => setPreview(null)} aria-label="Close preview"><X size={20} /></button><img src={preview} alt="Vehicle gallery preview" onClick={e => e.stopPropagation()} /></div>}
-      <input type="hidden" name="galleryUrls" value={value.join('\n')} readOnly />
+      {preview && (
+        <div
+          className="vehicle-media-preview"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Vehicle image preview"
+          onClick={() => setPreview(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setPreview(null)}
+            aria-label="Close preview"
+          >
+            <X size={20} />
+          </button>
+          <img
+            src={preview}
+            alt="Vehicle gallery preview"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+      <input
+        type="hidden"
+        name="galleryUrls"
+        value={value.join("\n")}
+        readOnly
+      />
 
       <style jsx>{`
         .vehicle-media{margin-top:4px;background:#fff;border:1px solid #dfe3e7;border-radius:9px;overflow:hidden;color:#111827}
@@ -108,5 +356,5 @@ export function GalleryManager({ value, onChange }: GalleryManagerProps) {
         @media(max-width:600px){.vehicle-media-head{padding:18px}.vehicle-media-guide{grid-template-columns:1fr}.vehicle-media-add{padding:15px}.vehicle-media-add-row{grid-template-columns:1fr}.vehicle-media-add-button{min-height:44px}.vehicle-media-add-foot{flex-direction:column}.vehicle-media-gallery-head{align-items:flex-start;flex-direction:column;padding:15px}.vehicle-media-grid{grid-template-columns:1fr}.vehicle-media-card-body{padding:12px}}
       `}</style>
     </div>
-  )
+  );
 }

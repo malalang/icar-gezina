@@ -5,14 +5,21 @@
   "exports": {
     "./client": "./src/client.ts",
     "./server": "./src/server.ts",
-    "./admin": "./src/admin.ts"
+    "./middleware": "./src/middleware.ts",
+    "./cache": "./src/cache.ts",
+    "./supabaseType": "./src/supabaseType.ts",
+    "./Queries/*": "./src/Queries/*.ts",
+    "./Mutations/*": "./src/Mutations/*.ts"
   },
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "supabase:types": "supabase gen types typescript --local > src/supabaseType.ts"
   },
   "dependencies": {
+    "@icar-gezina/contracts": "workspace:*",
     "@supabase/ssr": "catalog:",
     "@supabase/supabase-js": "catalog:",
-    "next": "catalog:"
+    "next": "catalog:",
+    "typescript": "catalog:"
   }
 }

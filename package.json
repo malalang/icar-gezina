@@ -2,7 +2,7 @@
   "name": "icar-gezina",
   "version": "0.1.2",
   "private": true,
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@10.0.0",
   "engines": {
     "node": "22.x"
   },
@@ -16,17 +16,17 @@
     "typecheck": "turbo run typecheck",
     "gen:types": "pnpm --filter @icar-gezina/supabase supabase:types",
     "clean": "turbo run clean",
-    "dev:web": "pnpm --filter @icar-gezina/web dev",
+    "dev:client": "pnpm --filter @icar-gezina/client dev",
     "dev:admin": "pnpm --filter @icar-gezina/admin dev",
-    "build:web": "pnpm --filter @icar-gezina/web build",
+    "build:client": "pnpm --filter @icar-gezina/client build",
     "build:admin": "pnpm --filter @icar-gezina/admin build",
-    "lint:web": "pnpm --filter @icar-gezina/web lint",
+    "lint:client": "pnpm --filter @icar-gezina/client lint",
     "lint:admin": "pnpm --filter @icar-gezina/admin lint",
-    "typecheck:web": "pnpm --filter @icar-gezina/web typecheck",
+    "typecheck:client": "pnpm --filter @icar-gezina/client typecheck",
     "typecheck:admin": "pnpm --filter @icar-gezina/admin typecheck"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "turbo": "^2.9.14"
+    "turbo": "catalog:"
   }
 }

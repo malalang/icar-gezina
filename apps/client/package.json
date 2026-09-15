@@ -1,5 +1,5 @@
 {
-  "name": "@icar-gezina/web",
+  "name": "@icar-gezina/client",
   "version": "0.1.0",
   "private": true,
   "scripts": {

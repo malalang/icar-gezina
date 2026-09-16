@@ -8,7 +8,8 @@
     "./testimonial": "./src/testimonial.ts",
     "./article": "./src/article.ts",
     "./actionResult": "./src/actionResult.ts",
-    "./revalidation": "./src/revalidation.ts"
+    "./revalidation": "./src/revalidation.ts",
+    "./env": "./src/env.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

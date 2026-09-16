@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+"use client";
+
+import type { FormAction } from "@icar-gezina/contracts/actionResult";
 import type { ResourceKey } from "./resource-config";
 import { resources } from "./resource-config";
 
@@ -9,13 +11,18 @@ export function ResourceForm({
   cars = [],
 }: {
   resource: ResourceKey;
-  action: (formData: FormData) => void;
+  action: FormAction;
   record?: any;
   cars?: any[];
 }) {
   const config = resources[resource];
+
+  async function handleSubmit(formData: FormData) {
+    await action(formData);
+  }
+
   return (
-    <form action={action} className="form-grid">
+    <form action={handleSubmit} className="form-grid">
       <input type="hidden" name="resource" value={resource} />
       {record?.id && <input type="hidden" name="id" value={record.id} />}
       {config.fields.map((field) => {

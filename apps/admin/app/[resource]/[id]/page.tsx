@@ -1,8 +1,9 @@
 import { requireAdmin } from "@icar-gezina/supabase/server";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { deleteRecord } from "../../crud-actions";
+import { DeleteForm } from "../../delete-form";
 import {
   LeadVehicleDetails,
   LeadVehicleDetailsStyles,
@@ -66,13 +67,7 @@ export default async function ResourceDetailPage({
           <Link href={`/${resource}/${id}/edit`} className="button">
             <Pencil size={16} /> Edit
           </Link>
-          <form action={deleteRecord}>
-            <input type="hidden" name="resource" value={resource} />
-            <input type="hidden" name="id" value={id} />
-            <button className="button danger" type="submit">
-              <Trash2 size={16} /> Delete
-            </button>
-          </form>
+          <DeleteForm action={deleteRecord} id={id} resourceName={resource} />
         </div>
       </div>
       {resource === "leads" && <LeadVehicleDetails vehicle={vehicle} />}

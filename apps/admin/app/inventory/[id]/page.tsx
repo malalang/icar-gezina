@@ -12,11 +12,11 @@ import {
   Gauge,
   Pencil,
   Tag,
-  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { deleteVehicle } from "../actions";
+import { DeleteForm } from "../../delete-form";
 
 function money(input: unknown) {
   const n = Number(input ?? 0);
@@ -95,12 +95,7 @@ export default async function VehicleDetailPage({
           <Link href={`/inventory/${id}/edit`} className="button">
             <Pencil size={15} /> Edit vehicle
           </Link>
-          <form action={deleteVehicle}>
-            <input type="hidden" name="id" value={id} />
-            <button className="button danger" type="submit">
-              <Trash2 size={15} /> Delete
-            </button>
-          </form>
+          <DeleteForm action={deleteVehicle} id={id} resourceName="" />
         </div>
       </div>
 

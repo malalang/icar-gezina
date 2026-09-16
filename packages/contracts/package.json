@@ -5,8 +5,10 @@
   "exports": {
     "./car": "./src/car.ts",
     "./lead": "./src/lead.ts",
+    "./contact": "./src/contact.ts",
     "./testimonial": "./src/testimonial.ts",
     "./article": "./src/article.ts",
+    "./service": "./src/service.ts",
     "./actionResult": "./src/actionResult.ts",
     "./revalidation": "./src/revalidation.ts",
     "./env": "./src/env.ts"

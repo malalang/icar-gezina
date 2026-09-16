@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { deleteRecord } from "../crud-actions";
+import { DeleteForm } from "../delete-form";
 import { LeadVehicleDetailsStyles } from "../lead-vehicle-details";
 import { getResource } from "../resource-config";
 
@@ -127,17 +128,11 @@ export default async function ResourceListPage({
                     >
                       Edit
                     </Link>
-                    <form action={deleteRecord}>
-                      <input type="hidden" name="resource" value={resource} />
-                      <input type="hidden" name="id" value={row.id} />
-                      <button
-                        className="button danger"
-                        style={{ padding: "8px 10px" }}
-                        type="submit"
-                      >
-                        Delete
-                      </button>
-                    </form>
+                    <DeleteForm
+                      action={deleteRecord}
+                      id={row.id}
+                      resourceName={resource}
+                    />
                   </div>
                 </td>
               </tr>

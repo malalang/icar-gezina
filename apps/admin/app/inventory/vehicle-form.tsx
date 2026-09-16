@@ -1,5 +1,6 @@
 "use client";
 
+import type { FormAction } from "@icar-gezina/contracts/actionResult";
 import { Check, Image as ImageIcon, Save, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -24,7 +25,7 @@ export type VehicleFormValues = {
 };
 type VehicleFormProps = {
   values: VehicleFormValues;
-  action: (formData: FormData) => Promise<void>;
+  action: FormAction;
   submitLabel: string;
 };
 const bodyTypes = [

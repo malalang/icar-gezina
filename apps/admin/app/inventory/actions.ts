@@ -1,5 +1,6 @@
 "use server";
 
+import type { ActionResult } from "@icar-gezina/contracts/actionResult";
 import { CACHE_PATHS, CACHE_TAGS } from "@icar-gezina/supabase/cache";
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { revalidatePath } from "next/cache";
@@ -24,24 +25,28 @@ async function adminClient() {
   return ctx.supabase;
 }
 
-function validateVehicle(formData: FormData) {
+function validateVehicle(formData: FormData): string | null {
   const make = text(formData, "make");
   const model = text(formData, "model");
   const year = number(formData, "year");
   const price = number(formData, "price");
   const mileage = number(formData, "mileage");
 
-  if (!make || !model) throw new Error("Make and model are required.");
+  if (!make || !model) return "Make and model are required.";
   if (year < 1900 || year > new Date().getFullYear() + 1)
-    throw new Error("Please enter a valid vehicle year.");
-  if (price < 0) throw new Error("Price cannot be negative.");
-  if (mileage < 0) throw new Error("Mileage cannot be negative.");
+    return "Please enter a valid vehicle year.";
+  if (price < 0) return "Price cannot be negative.";
+  if (mileage < 0) return "Mileage cannot be negative.";
+  return null;
 }
 
-export async function createVehicle(formData: FormData) {
-  const supabase = await adminClient();
-  validateVehicle(formData);
+export async function createVehicle(
+  formData: FormData,
+): Promise<ActionResult> {
+  const validationError = validateVehicle(formData);
+  if (validationError) return { ok: false, error: validationError };
 
+  const supabase = await adminClient();
   const { data, error } = await supabase
     .from("cars")
     .insert({
@@ -62,7 +67,7 @@ export async function createVehicle(formData: FormData) {
     .select("id")
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
 
   revalidatePath("/inventory");
   revalidatePath(`/inventory/${data.id}`);
@@ -74,16 +79,21 @@ export async function createVehicle(formData: FormData) {
   redirect(`/inventory/${data.id}/edit`);
 }
 
-export async function updateVehicle(formData: FormData) {
-  const supabase = await adminClient();
-  validateVehicle(formData);
+export async function updateVehicle(
+  formData: FormData,
+): Promise<ActionResult> {
+  const validationError = validateVehicle(formData);
+  if (validationError) return { ok: false, error: validationError };
 
   const id = text(formData, "id");
   if (!id)
-    throw new Error(
-      "Vehicle ID is missing. Please reopen the edit page and try again.",
-    );
+    return {
+      ok: false,
+      error:
+        "Vehicle ID is missing. Please reopen the edit page and try again.",
+    };
 
+  const supabase = await adminClient();
   const { data, error } = await supabase
     .from("cars")
     .update({
@@ -105,8 +115,12 @@ export async function updateVehicle(formData: FormData) {
     .select("id")
     .maybeSingle();
 
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Vehicle was not found or could not be updated.");
+  if (error) return { ok: false, error: error.message };
+  if (!data)
+    return {
+      ok: false,
+      error: "Vehicle was not found or could not be updated.",
+    };
 
   revalidatePath("/inventory");
   revalidatePath(`/inventory/${id}`);
@@ -119,13 +133,15 @@ export async function updateVehicle(formData: FormData) {
   redirect(`/inventory/${id}`);
 }
 
-export async function deleteVehicle(formData: FormData) {
-  const supabase = await adminClient();
+export async function deleteVehicle(
+  formData: FormData,
+): Promise<ActionResult> {
   const id = text(formData, "id");
-  if (!id) throw new Error("Vehicle ID is missing.");
+  if (!id) return { ok: false, error: "Vehicle ID is missing." };
 
+  const supabase = await adminClient();
   const { error } = await supabase.from("cars").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
 
   revalidatePath("/inventory");
   revalidatePath(`/inventory/${id}`);

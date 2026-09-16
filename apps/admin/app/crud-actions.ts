@@ -1,5 +1,6 @@
 "use server";
 
+import type { ActionResult } from "@icar-gezina/contracts/actionResult";
 import { CACHE_PATHS, CACHE_TAGS } from "@icar-gezina/supabase/cache";
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { redirect } from "next/navigation";
@@ -114,7 +115,9 @@ async function publicRevalidation(
   return undefined;
 }
 
-export async function createRecord(formData: FormData) {
+export async function createRecord(
+  formData: FormData,
+): Promise<ActionResult> {
   const resource = text(formData, "resource");
   const supabase = await client(resource);
   const { data, error }: any = await supabase
@@ -122,7 +125,7 @@ export async function createRecord(formData: FormData) {
     .insert(payload(resource, formData) as any)
     .select("id")
     .single();
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
   const revalidate = await publicRevalidation(
     resource,
     formData,
@@ -133,7 +136,9 @@ export async function createRecord(formData: FormData) {
   redirect(`/${resource}/${data.id}`);
 }
 
-export async function updateRecord(formData: FormData) {
+export async function updateRecord(
+  formData: FormData,
+): Promise<ActionResult> {
   const resource = text(formData, "resource");
   const id = text(formData, "id");
   const supabase = await client(resource);
@@ -141,13 +146,15 @@ export async function updateRecord(formData: FormData) {
     .from(tableFor(resource))
     .update(payload(resource, formData) as any)
     .eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
   const revalidate = await publicRevalidation(resource, formData, supabase, id);
   if (revalidate) await triggerRevalidation(revalidate);
   redirect(`/${resource}/${id}`);
 }
 
-export async function deleteRecord(formData: FormData) {
+export async function deleteRecord(
+  formData: FormData,
+): Promise<ActionResult> {
   const resource = text(formData, "resource");
   const id = text(formData, "id");
   const supabase = await client(resource);
@@ -156,7 +163,7 @@ export async function deleteRecord(formData: FormData) {
     .from(tableFor(resource))
     .delete()
     .eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
   if (revalidate) await triggerRevalidation(revalidate);
   redirect(`/${resource}`);
 }

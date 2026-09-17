@@ -1,13 +1,13 @@
-import type { Lead } from "@icar-gezina/contracts/lead";
+import type { LeadType } from "@icar-gezina/contracts/lead";
 import { createSupabaseServerClient } from "../server";
 import type { Database } from "../supabaseType";
 
 type LeadRow = Database["public"]["Tables"]["leads"]["Row"];
 
-function normalizeLead(row: LeadRow): Lead {
+function normalizeLead(row: LeadRow): LeadType {
   return {
     id: row.id,
-    type: row.type as Lead["type"],
+    type: row.type as LeadType["type"],
     name: row.name,
     email: row.email,
     phone: row.phone,
@@ -19,7 +19,7 @@ function normalizeLead(row: LeadRow): Lead {
   };
 }
 
-export async function getLeads(): Promise<Lead[]> {
+export async function getLeads(): Promise<LeadType[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("leads")

@@ -1,10 +1,10 @@
-import type { Testimonial } from "@icar-gezina/contracts/testimonial";
+import type { TestimonialType } from "@icar-gezina/contracts/testimonial";
 import { createSupabasePublicClient } from "../server";
 import type { Database } from "../supabaseType";
 
 type TestimonialRow = Database["public"]["Tables"]["testimonials"]["Row"];
 
-function normalizeTestimonial(row: TestimonialRow): Testimonial {
+function normalizeTestimonial(row: TestimonialRow): TestimonialType {
   return {
     id: row.id,
     author: row.author,
@@ -15,7 +15,7 @@ function normalizeTestimonial(row: TestimonialRow): Testimonial {
   };
 }
 
-export async function getTestimonials(): Promise<Testimonial[]> {
+export async function getTestimonials(): Promise<TestimonialType[]> {
   const supabase = createSupabasePublicClient();
   const { data, error } = await supabase
     .from("testimonials")

@@ -13,4 +13,4 @@ export const articleSchema = z.object({
   createdAt: z.string().optional(),
 });
 
-export type Article = z.infer<typeof articleSchema>;
+export type ArticleType = z.infer<typeof articleSchema>;

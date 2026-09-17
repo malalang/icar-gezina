@@ -1,4 +1,8 @@
-import type { Car, CarPart, CarReview } from "@icar-gezina/contracts/car";
+import type {
+  CarPartType,
+  CarReviewType,
+  CarType,
+} from "@icar-gezina/contracts/car";
 import { createSupabasePublicClient } from "../server";
 import type { Database } from "../supabaseType";
 
@@ -11,7 +15,7 @@ type CarsRowWithRelations = CarsRow & {
   reviews: CarReviewsRow[];
 };
 
-function normalizePart(row: CarPartsRow): CarPart {
+function normalizePart(row: CarPartsRow): CarPartType {
   return {
     id: row.id,
     name: row.name,
@@ -20,7 +24,7 @@ function normalizePart(row: CarPartsRow): CarPart {
   };
 }
 
-function normalizeReview(row: CarReviewsRow): CarReview {
+function normalizeReview(row: CarReviewsRow): CarReviewType {
   return {
     id: row.id,
     author: row.author,
@@ -30,7 +34,7 @@ function normalizeReview(row: CarReviewsRow): CarReview {
   };
 }
 
-function normalizeCar(row: CarsRowWithRelations): Car {
+function normalizeCar(row: CarsRowWithRelations): CarType {
   return {
     id: row.id,
     make: row.make,
@@ -52,7 +56,7 @@ function normalizeCar(row: CarsRowWithRelations): Car {
   };
 }
 
-export async function getCars(): Promise<Car[]> {
+export async function getCars(): Promise<CarType[]> {
   const supabase = createSupabasePublicClient();
   const { data, error } = await supabase
     .from("cars")
@@ -66,7 +70,7 @@ export async function getCars(): Promise<Car[]> {
   return (data ?? []).map(normalizeCar);
 }
 
-export async function getCarById(id: string): Promise<Car | undefined> {
+export async function getCarById(id: string): Promise<CarType | undefined> {
   const supabase = createSupabasePublicClient();
   const { data, error } = await supabase
     .from("cars")
@@ -81,7 +85,7 @@ export async function getCarById(id: string): Promise<Car | undefined> {
   return data ? normalizeCar(data as CarsRowWithRelations) : undefined;
 }
 
-export async function getCarSummaries(): Promise<Car[]> {
+export async function getCarSummaries(): Promise<CarType[]> {
   const supabase = createSupabasePublicClient();
   const { data, error } = await supabase
     .from("cars")

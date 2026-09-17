@@ -1,12 +1,12 @@
 "use client";
 
-import type { Car } from "@icar-gezina/contracts/car";
+import type { CarType } from "@icar-gezina/contracts/car";
 import { ChevronDown, Search, SlidersHorizontal, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-export default function CarsInventoryClient({ cars }: { cars: Car[] }) {
+export default function CarsInventoryClient({ cars }: { cars: CarType[] }) {
   const [makeFilter, setMakeFilter] = useState("");
   const [modelFilter, setModelFilter] = useState("");
   const [yearFilter, setYearFilter] = useState("");

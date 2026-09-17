@@ -1,10 +1,10 @@
-import type { Article } from "@icar-gezina/contracts/article";
+import type { ArticleType } from "@icar-gezina/contracts/article";
 import { createSupabasePublicClient } from "../server";
 import type { Database } from "../supabaseType";
 
 type ArticleRow = Database["public"]["Tables"]["articles"]["Row"];
 
-function normalizeArticle(row: ArticleRow): Article {
+function normalizeArticle(row: ArticleRow): ArticleType {
   return {
     id: row.id,
     title: row.title,
@@ -19,7 +19,7 @@ function normalizeArticle(row: ArticleRow): Article {
   };
 }
 
-export async function getPublishedArticles(): Promise<Article[]> {
+export async function getPublishedArticles(): Promise<ArticleType[]> {
   const supabase = createSupabasePublicClient();
   const { data, error } = await supabase
     .from("articles")

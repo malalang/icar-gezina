@@ -35,6 +35,6 @@ export const carSchema = z.object({
   reviews: z.array(carReviewSchema).default([]),
 });
 
-export type Car = z.infer<typeof carSchema>;
-export type CarPart = z.infer<typeof carPartSchema>;
-export type CarReview = z.infer<typeof carReviewSchema>;
+export type CarType = z.infer<typeof carSchema>;
+export type CarPartType = z.infer<typeof carPartSchema>;
+export type CarReviewType = z.infer<typeof carReviewSchema>;

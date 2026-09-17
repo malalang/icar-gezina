@@ -24,4 +24,4 @@ export const leadSchema = leadInputSchema.extend({
 });
 
 export type LeadInput = z.infer<typeof leadInputSchema>;
-export type Lead = z.infer<typeof leadSchema>;
+export type LeadType = z.infer<typeof leadSchema>;

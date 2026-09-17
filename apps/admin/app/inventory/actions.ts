@@ -2,7 +2,11 @@
 
 import type { ActionResult } from "@icar-gezina/contracts/actionResult";
 import { CACHE_PATHS, CACHE_TAGS } from "@icar-gezina/supabase/cache";
-import { requireAdmin } from "@icar-gezina/supabase/server";
+import {
+  createCar,
+  deleteCar,
+  updateCar,
+} from "@icar-gezina/supabase/Mutations/cars";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { triggerRevalidation } from "../../lib/revalidation";
@@ -19,12 +23,6 @@ const array = (formData: FormData, name: string) =>
     .map((v) => v.trim())
     .filter(Boolean);
 
-async function adminClient() {
-  const ctx = await requireAdmin();
-  if (!ctx.user || !ctx.profile) throw new Error("Unauthorized");
-  return ctx.supabase;
-}
-
 function validateVehicle(formData: FormData): string | null {
   const make = text(formData, "make");
   const model = text(formData, "model");
@@ -40,48 +38,48 @@ function validateVehicle(formData: FormData): string | null {
   return null;
 }
 
-export async function createVehicle(
-  formData: FormData,
-): Promise<ActionResult> {
+function vehiclePayload(formData: FormData) {
+  return {
+    make: text(formData, "make"),
+    model: text(formData, "model"),
+    year: number(formData, "year"),
+    price: number(formData, "price"),
+    mileage: number(formData, "mileage"),
+    fuelType: text(formData, "fuelType"),
+    transmission: text(formData, "transmission"),
+    bodyType: text(formData, "bodyType"),
+    color: text(formData, "color"),
+    imageUrl: text(formData, "imageUrl"),
+    galleryUrls: array(formData, "galleryUrls"),
+    description: text(formData, "description"),
+    features: array(formData, "features"),
+  };
+}
+
+export async function createVehicle(formData: FormData): Promise<ActionResult> {
   const validationError = validateVehicle(formData);
   if (validationError) return { ok: false, error: validationError };
 
-  const supabase = await adminClient();
-  const { data, error } = await supabase
-    .from("cars")
-    .insert({
-      make: text(formData, "make"),
-      model: text(formData, "model"),
-      year: number(formData, "year"),
-      price: number(formData, "price"),
-      mileage: number(formData, "mileage"),
-      fuel_type: text(formData, "fuelType"),
-      transmission: text(formData, "transmission"),
-      body_type: text(formData, "bodyType"),
-      color: text(formData, "color"),
-      image_url: text(formData, "imageUrl"),
-      gallery_urls: array(formData, "galleryUrls"),
-      description: text(formData, "description"),
-      features: array(formData, "features"),
-    })
-    .select("id")
-    .single();
-
-  if (error) return { ok: false, error: error.message };
+  let vehicle: { id: string };
+  try {
+    const created = await createCar(vehiclePayload(formData));
+    vehicle = created as { id: string };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return { ok: false, error: message };
+  }
 
   revalidatePath("/inventory");
-  revalidatePath(`/inventory/${data.id}`);
-  revalidatePath(`/inventory/${data.id}/edit`);
+  revalidatePath(`/inventory/${vehicle.id}`);
+  revalidatePath(`/inventory/${vehicle.id}/edit`);
   await triggerRevalidation({
     tags: [CACHE_TAGS.cars],
     paths: [CACHE_PATHS.home, CACHE_PATHS.cars],
   });
-  redirect(`/inventory/${data.id}/edit`);
+  redirect(`/inventory/${vehicle.id}/edit`);
 }
 
-export async function updateVehicle(
-  formData: FormData,
-): Promise<ActionResult> {
+export async function updateVehicle(formData: FormData): Promise<ActionResult> {
   const validationError = validateVehicle(formData);
   if (validationError) return { ok: false, error: validationError };
 
@@ -93,34 +91,17 @@ export async function updateVehicle(
         "Vehicle ID is missing. Please reopen the edit page and try again.",
     };
 
-  const supabase = await adminClient();
-  const { data, error } = await supabase
-    .from("cars")
-    .update({
-      make: text(formData, "make"),
-      model: text(formData, "model"),
-      year: number(formData, "year"),
-      price: number(formData, "price"),
-      mileage: number(formData, "mileage"),
-      fuel_type: text(formData, "fuelType"),
-      transmission: text(formData, "transmission"),
-      body_type: text(formData, "bodyType"),
-      color: text(formData, "color"),
-      image_url: text(formData, "imageUrl"),
-      gallery_urls: array(formData, "galleryUrls"),
-      description: text(formData, "description"),
-      features: array(formData, "features"),
-    })
-    .eq("id", id)
-    .select("id")
-    .maybeSingle();
-
-  if (error) return { ok: false, error: error.message };
-  if (!data)
-    return {
-      ok: false,
-      error: "Vehicle was not found or could not be updated.",
-    };
+  try {
+    const updated = await updateCar(id, vehiclePayload(formData));
+    if (!updated)
+      return {
+        ok: false,
+        error: "Vehicle was not found or could not be updated.",
+      };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return { ok: false, error: message };
+  }
 
   revalidatePath("/inventory");
   revalidatePath(`/inventory/${id}`);
@@ -133,15 +114,16 @@ export async function updateVehicle(
   redirect(`/inventory/${id}`);
 }
 
-export async function deleteVehicle(
-  formData: FormData,
-): Promise<ActionResult> {
+export async function deleteVehicle(formData: FormData): Promise<ActionResult> {
   const id = text(formData, "id");
   if (!id) return { ok: false, error: "Vehicle ID is missing." };
 
-  const supabase = await adminClient();
-  const { error } = await supabase.from("cars").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  try {
+    await deleteCar(id);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return { ok: false, error: message };
+  }
 
   revalidatePath("/inventory");
   revalidatePath(`/inventory/${id}`);

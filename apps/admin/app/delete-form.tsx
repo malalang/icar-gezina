@@ -1,7 +1,9 @@
 "use client";
 
-import type { FormAction } from "@icar-gezina/contracts/actionResult";
+import type { ActionResult } from "@icar-gezina/contracts/actionResult";
 import { Trash2 } from "lucide-react";
+
+type FormAction = (formData: FormData) => Promise<ActionResult>;
 
 export function DeleteForm({
   action,

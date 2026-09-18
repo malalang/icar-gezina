@@ -1,4 +1,4 @@
-import { updateSession } from "@icar-gezina/supabase/middleware";
+import { updateSession } from "@icar-gezina/supabase/session";
 import type { NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {

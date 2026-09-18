@@ -1,45 +1,39 @@
 This file is a merged representation of the entire codebase, combined into a single document by Repomix.
 
-<file_summary>
-This section contains a summary of this file.
+# File Summary
 
-<purpose>
+## Purpose
 This file contains a packed representation of the entire repository's contents.
 It is designed to be easily consumable by AI systems for analysis, code review,
 or other automated processes.
-</purpose>
 
-<file_format>
+## File Format
 The content is organized as follows:
 1. This summary section
 2. Repository information
 3. Directory structure
 4. Repository files (if enabled)
 5. Multiple file entries, each consisting of:
-  - File path as an attribute
-  - Full contents of the file
-</file_format>
+  a. A header with the file path (## File: path/to/file)
+  b. The full contents of the file in a code block
 
-<usage_guidelines>
+## Usage Guidelines
 - This file should be treated as read-only. Any changes should be made to the
   original repository files, not this packed version.
 - When processing this file, use the file path to distinguish
   between different files in the repository.
 - Be aware that this file may contain sensitive information. Handle it with
   the same level of security as you would the original repository.
-</usage_guidelines>
 
-<notes>
+## Notes
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Files are sorted by Git change count (files with more changes are at the bottom)
-</notes>
 
-</file_summary>
-
-<directory_structure>
+# Directory Structure
+```
 .gitignore
 apps/admin/.gitignore
 apps/admin/app/[resource]/[id]/edit/page.tsx
@@ -140,7 +134,6 @@ packages/supabase/sql/schema.sql
 packages/supabase/src/auth.ts
 packages/supabase/src/cache.ts
 packages/supabase/src/client.ts
-packages/supabase/src/middleware.ts
 packages/supabase/src/Mutations/articles.ts
 packages/supabase/src/Mutations/carParts.ts
 packages/supabase/src/Mutations/cars.ts
@@ -152,17 +145,18 @@ packages/supabase/src/Queries/cars.ts
 packages/supabase/src/Queries/leads.ts
 packages/supabase/src/Queries/testimonials.ts
 packages/supabase/src/server.ts
+packages/supabase/src/session.ts
 packages/supabase/src/supabaseType.ts
 packages/supabase/tsconfig.json
 pnpm-workspace.yaml
 README.md
 turbo.json
-</directory_structure>
+```
 
-<files>
-This section contains the contents of the repository's files.
+# Files
 
-<file path="apps/admin/tsconfig.json">
+## File: apps/admin/tsconfig.json
+```json
 {
   "compilerOptions": {
     "target": "ES2017",
@@ -184,9 +178,10 @@ This section contains the contents of the repository's files.
   "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
-</file>
+```
 
-<file path="README.md">
+## File: README.md
+```markdown
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
@@ -207,14 +202,16 @@ View your app in AI Studio: https://ai.studio/apps/f3b56690-c0a4-4c08-97e7-e9de5
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
-</file>
+```
 
-<file path="apps/admin/.gitignore">
+## File: apps/admin/.gitignore
+```
 .vercel
 .env*
-</file>
+```
 
-<file path="apps/admin/app/admin-shell.tsx">
+## File: apps/admin/app/admin-shell.tsx
+```typescript
 "use client";
 
 import {
@@ -310,9 +307,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/admin/actions.ts">
+## File: apps/admin/app/admin/actions.ts
+```typescript
 "use server";
 import { createSupabaseServerClient } from "@icar-gezina/supabase/server";
 import { redirect } from "next/navigation";
@@ -329,9 +327,10 @@ export async function logout() {
   await supabase.auth.signOut();
   return redirect("/admin/login");
 }
-</file>
+```
 
-<file path="apps/admin/app/admin/layout.tsx">
+## File: apps/admin/app/admin/layout.tsx
+```typescript
 import { createSupabaseServerClient } from "@icar-gezina/supabase/server";
 import Link from "next/link";
 import { logout } from "./actions";
@@ -370,9 +369,10 @@ export default async function AdminLayout({
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/admin/login/page.tsx">
+## File: apps/admin/app/admin/login/page.tsx
+```typescript
 "use client";
 
 import { createBrowserClient } from "@supabase/ssr";
@@ -453,9 +453,10 @@ export default function AdminLoginPage() {
     </main>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/admin/page.tsx">
+## File: apps/admin/app/admin/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -465,9 +466,10 @@ export default async function AdminHomePage() {
   if (!profile) redirect("/admin/unauthorized");
   redirect("/dashboard");
 }
-</file>
+```
 
-<file path="apps/admin/app/admin/unauthorized/page.tsx">
+## File: apps/admin/app/admin/unauthorized/page.tsx
+```typescript
 import Link from "next/link";
 export default function UnauthorizedPage() {
   return (
@@ -494,9 +496,10 @@ export default function UnauthorizedPage() {
     </main>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/dashboard/page.tsx">
+## File: apps/admin/app/dashboard/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { CarFront, Eye, Plus, TrendingUp } from "lucide-react";
 import Link from "next/link";
@@ -613,9 +616,10 @@ export default async function DashboardPage() {
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/delete-button.tsx">
+## File: apps/admin/app/inventory/delete-button.tsx
+```typescript
 "use client";
 
 import { Trash2 } from "lucide-react";
@@ -650,9 +654,10 @@ export function DeleteVehicleButton({
     </button>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/new/page.tsx">
+## File: apps/admin/app/inventory/new/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { redirect } from "next/navigation";
 import { createVehicle } from "../actions";
@@ -696,9 +701,10 @@ export default async function NewVehiclePage() {
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/lib/revalidation.ts">
+## File: apps/admin/lib/revalidation.ts
+```typescript
 import type { RevalidationRequest } from "@icar-gezina/contracts/revalidation";
 
 const fallbackClientUrls: string[] = [
@@ -727,9 +733,10 @@ export async function triggerRevalidation(request: RevalidationRequest) {
     ),
   );
 }
-</file>
+```
 
-<file path="apps/admin/next.config.ts">
+## File: apps/admin/next.config.ts
+```typescript
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -739,14 +746,16 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-</file>
+```
 
-<file path="apps/client/.gitignore">
+## File: apps/client/.gitignore
+```
 .vercel
 .env*
-</file>
+```
 
-<file path="apps/client/app/_lib/cached-public-data.ts">
+## File: apps/client/app/_lib/cached-public-data.ts
+```typescript
 import { CACHE_TAGS } from "@icar-gezina/supabase/cache";
 import { getPublishedArticles } from "@icar-gezina/supabase/Queries/articles";
 import { getCarById, getCars } from "@icar-gezina/supabase/Queries/cars";
@@ -772,9 +781,10 @@ export const getCachedArticles = async () =>
   unstable_cache(async () => getPublishedArticles(), ["articles"], {
     tags: [CACHE_TAGS.articles],
   })();
-</file>
+```
 
-<file path="apps/client/app/(client)/actions.ts">
+## File: apps/client/app/(client)/actions.ts
+```typescript
 "use server";
 
 import type { ActionResult } from "@icar-gezina/contracts/actionResult";
@@ -818,9 +828,10 @@ export async function submitLead(formData: FormData): Promise<ActionResult> {
       "Thanks! We have received your enquiry and will be in touch shortly.",
   };
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/articles/page.tsx">
+## File: apps/client/app/(client)/articles/page.tsx
+```typescript
 import { ArrowRight, CalendarDays, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -1020,9 +1031,10 @@ export default function ArticlesPage() {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/cars/[id]/page.tsx">
+## File: apps/client/app/(client)/cars/[id]/page.tsx
+```typescript
 import {
   ArrowLeft,
   ArrowRight,
@@ -1504,9 +1516,10 @@ export default async function CarDetailsPage({
     </main>
   );
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/cars/page.tsx">
+## File: apps/client/app/(client)/cars/page.tsx
+```typescript
 import { getCachedCars } from "@/app/_lib/cached-public-data";
 import CarsInventoryClient from "./inventory-client";
 
@@ -1516,9 +1529,10 @@ export default async function CarsInventoryPage() {
   const cars = await getCachedCars();
   return <CarsInventoryClient cars={cars} />;
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/contact/page.tsx">
+## File: apps/client/app/(client)/contact/page.tsx
+```typescript
 import {
   ArrowRight,
   Clock3,
@@ -1759,9 +1773,10 @@ export default function ContactPage() {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/faq/page.tsx">
+## File: apps/client/app/(client)/faq/page.tsx
+```typescript
 import { Banknote, Car, HelpCircle, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
@@ -1859,9 +1874,10 @@ export default function FAQPage() {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/finance/page.tsx">
+## File: apps/client/app/(client)/finance/page.tsx
+```typescript
 import {
   ArrowRight,
   BadgeCheck,
@@ -2053,9 +2069,10 @@ export default function FinancePage() {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/layout.tsx">
+## File: apps/client/app/(client)/layout.tsx
+```typescript
 import Image from "next/image";
 import Link from "next/link";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -2492,9 +2509,10 @@ export default function ClientLayout({
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/page.tsx">
+## File: apps/client/app/(client)/page.tsx
+```typescript
 import {
   ArrowRight,
   BadgeCheck,
@@ -3071,9 +3089,10 @@ export default async function Home() {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/testimonials/page.tsx">
+## File: apps/client/app/(client)/testimonials/page.tsx
+```typescript
 import Image from "next/image";
 import { getCachedTestimonials } from "@/app/_lib/cached-public-data";
 
@@ -3137,9 +3156,10 @@ export default async function TestimonialsPage() {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/app/api/revalidate/route.ts">
+## File: apps/client/app/api/revalidate/route.ts
+```typescript
 import { revalidationPayloadSchema } from "@icar-gezina/contracts/revalidation";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
@@ -3174,13 +3194,15 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({ revalidated: true, now: Date.now() });
 }
-</file>
+```
 
-<file path="apps/client/app/globals.css">
+## File: apps/client/app/globals.css
+```css
 @import "tailwindcss";
-</file>
+```
 
-<file path="apps/client/app/layout.tsx">
+## File: apps/client/app/layout.tsx
+```typescript
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -3212,9 +3234,10 @@ export default function RootLayout({
     </html>
   );
 }
-</file>
+```
 
-<file path="apps/client/components/CarLeadForms.tsx">
+## File: apps/client/components/CarLeadForms.tsx
+```typescript
 "use client";
 
 import { useState } from "react";
@@ -3361,9 +3384,10 @@ export function CarLeadForms({ carId }: { carId: string }) {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/components/ContactForm.tsx">
+## File: apps/client/components/ContactForm.tsx
+```typescript
 "use client";
 
 import { Send } from "lucide-react";
@@ -3494,9 +3518,10 @@ export function ContactForm() {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/client/components/FinanceForm.tsx">
+## File: apps/client/components/FinanceForm.tsx
+```typescript
 "use client";
 
 import { ArrowRight } from "lucide-react";
@@ -3626,9 +3651,10 @@ export function FinanceForm() {
     </form>
   );
 }
-</file>
+```
 
-<file path="apps/client/components/WhatsAppButton.tsx">
+## File: apps/client/components/WhatsAppButton.tsx
+```typescript
 export function WhatsAppButton() {
   return (
     <a
@@ -3647,9 +3673,10 @@ export function WhatsAppButton() {
     </a>
   );
 }
-</file>
+```
 
-<file path="apps/client/hooks/use-mobile.ts">
+## File: apps/client/hooks/use-mobile.ts
+```typescript
 import * as React from "react";
 
 const MOBILE_BREAKPOINT = 768;
@@ -3672,36 +3699,40 @@ export function useIsMobile() {
 
   return !!isMobile;
 }
-</file>
+```
 
-<file path="apps/client/lib/utils.ts">
+## File: apps/client/lib/utils.ts
+```typescript
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-</file>
+```
 
-<file path="apps/client/metadata.json">
+## File: apps/client/metadata.json
+```json
 {
   "name": "Icar gezina",
   "description": "A modern platform for buying and selling certified used cars with detailed specifications and parts.",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }
-</file>
+```
 
-<file path="apps/client/next-env.d.ts">
+## File: apps/client/next-env.d.ts
+```typescript
 /// <reference types="next" />
 /// <reference types="next/image-types/global" />
 /// <reference path="./.next/types/routes.d.ts" />
 
 // NOTE: This file should not be edited
 // see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
-</file>
+```
 
-<file path="apps/client/next.config.ts">
+## File: apps/client/next.config.ts
+```typescript
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -3742,9 +3773,10 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-</file>
+```
 
-<file path="apps/client/package.json">
+## File: apps/client/package.json
+```json
 {
   "name": "@icar-gezina/client",
   "version": "0.1.0",
@@ -3789,9 +3821,10 @@ export default nextConfig;
     "typescript": "catalog:"
   }
 }
-</file>
+```
 
-<file path="apps/client/postcss.config.mjs">
+## File: apps/client/postcss.config.mjs
+```javascript
 /** @type {import('postcss-load-config').Config} */
 const config = {
   plugins: {
@@ -3801,35 +3834,15 @@ const config = {
 };
 
 export default config;
-</file>
+```
 
-<file path="apps/client/proxy.ts">
-import { updateSession } from "@icar-gezina/supabase/middleware";
-import type { NextRequest } from "next/server";
+## File: apps/client/public/.gitkeep
+```
 
-export async function proxy(request: NextRequest) {
-  return await updateSession(request);
-}
+```
 
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
-     */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
-};
-</file>
-
-<file path="apps/client/public/.gitkeep">
-
-</file>
-
-<file path="apps/client/tsconfig.json">
+## File: apps/client/tsconfig.json
+```json
 {
   "compilerOptions": {
     "target": "ES2017",
@@ -3858,9 +3871,10 @@ export const config = {
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
-</file>
+```
 
-<file path="packages/contracts/src/contact.ts">
+## File: packages/contracts/src/contact.ts
+```typescript
 import { z } from "zod";
 
 export const contactSchema = z.object({
@@ -3872,9 +3886,10 @@ export const contactSchema = z.object({
 });
 
 export type ContactType = z.infer<typeof contactSchema>;
-</file>
+```
 
-<file path="packages/contracts/src/env.ts">
+## File: packages/contracts/src/env.ts
+```typescript
 import { z } from "zod";
 
 export const envSchema = z.object({
@@ -3900,9 +3915,10 @@ export const adminEnvSchema = envSchema.extend({
 
 export type ClientEnv = z.infer<typeof clientEnvSchema>;
 export type AdminEnv = z.infer<typeof adminEnvSchema>;
-</file>
+```
 
-<file path="packages/contracts/src/revalidation.ts">
+## File: packages/contracts/src/revalidation.ts
+```typescript
 import { z } from "zod";
 
 export const revalidationModeSchema = z.enum(["max", "immediate"]);
@@ -3918,9 +3934,10 @@ export const revalidationPayloadSchema = z.object({
 
 export type RevalidationPayload = z.infer<typeof revalidationPayloadSchema>;
 export type RevalidationRequest = RevalidationPayload;
-</file>
+```
 
-<file path="packages/contracts/src/service.ts">
+## File: packages/contracts/src/service.ts
+```typescript
 import { z } from "zod";
 
 export const serviceSchema = z.object({
@@ -3933,9 +3950,10 @@ export const serviceSchema = z.object({
 });
 
 export type ServiceType = z.infer<typeof serviceSchema>;
-</file>
+```
 
-<file path="packages/contracts/tsconfig.json">
+## File: packages/contracts/tsconfig.json
+```json
 {
   "compilerOptions": {
     "target": "ES2022",
@@ -3949,9 +3967,10 @@ export type ServiceType = z.infer<typeof serviceSchema>;
   },
   "include": ["src"]
 }
-</file>
+```
 
-<file path="packages/supabase/sql/add_articles_table.sql">
+## File: packages/supabase/sql/add_articles_table.sql
+```sql
 CREATE TABLE articles (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title text NOT NULL,
@@ -3975,9 +3994,10 @@ CREATE POLICY "Allow admin read all articles" ON articles FOR SELECT USING (auth
 CREATE POLICY "Allow admin insert on articles" ON articles FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "Allow admin update on articles" ON articles FOR UPDATE USING (auth.role() = 'authenticated');
 CREATE POLICY "Allow admin delete on articles" ON articles FOR DELETE USING (auth.role() = 'authenticated');
-</file>
+```
 
-<file path="packages/supabase/sql/add_leads_table.sql">
+## File: packages/supabase/sql/add_leads_table.sql
+```sql
 CREATE TABLE leads (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   car_id UUID REFERENCES cars(id) ON DELETE SET NULL,
@@ -4000,9 +4020,10 @@ CREATE POLICY "Allow public inserts on leads" ON leads FOR INSERT WITH CHECK (tr
 CREATE POLICY "Allow admin read on leads" ON leads FOR SELECT USING (auth.role() = 'authenticated');
 CREATE POLICY "Allow admin update on leads" ON leads FOR UPDATE USING (auth.role() = 'authenticated');
 CREATE POLICY "Allow admin delete on leads" ON leads FOR DELETE USING (auth.role() = 'authenticated');
-</file>
+```
 
-<file path="packages/supabase/sql/icargezina_bucket.sql">
+## File: packages/supabase/sql/icargezina_bucket.sql
+```sql
 -- Ensure extensions needed
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -4027,9 +4048,10 @@ USING (bucket_id = 'icargezina' AND auth.role() = 'authenticated');
 CREATE POLICY "Admin access to delete icargezina" 
 ON storage.objects FOR DELETE 
 USING (bucket_id = 'icargezina' AND auth.role() = 'authenticated');
-</file>
+```
 
-<file path="packages/supabase/sql/mockData.sql">
+## File: packages/supabase/sql/mockData.sql
+```sql
 -- Note: This uses standard UUIDs to ensure relationships work.
 -- Remove existing mock data if this script is run multiple times to avoid duplicate key errors.
 DELETE FROM cars WHERE id IN (
@@ -4093,9 +4115,10 @@ VALUES
   ('Mark J.', 'Verified Buyer', 'Bought a Ford Ranger and the experience was seamless from start to finish. Highly recommend Auto Market.', 'https://picsum.photos/seed/user1/100/100'),
   ('Sarah M.', 'Verified Buyer', 'I loved being able to see the detailed condition of the car parts before visiting. It saved me so much time!', 'https://picsum.photos/seed/user2/100/100'),
   ('Johan D.', 'Verified Buyer', 'The 116-point check gave me peace of mind. Traded my old Polo in for a newer model without a single hiccup.', 'https://picsum.photos/seed/user3/100/100');
-</file>
+```
 
-<file path="packages/supabase/sql/schema.sql">
+## File: packages/supabase/sql/schema.sql
+```sql
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -4165,9 +4188,10 @@ CREATE POLICY "Admins have full access" ON cars TO authenticated USING (true) WI
 CREATE POLICY "Admins have full access" ON car_parts TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Admins have full access" ON car_reviews TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Admins have full access" ON testimonials TO authenticated USING (true) WITH CHECK (true);
-</file>
+```
 
-<file path="packages/supabase/src/auth.ts">
+## File: packages/supabase/src/auth.ts
+```typescript
 import { createSupabaseServerClient } from "./server";
 
 export async function requireAdminUser() {
@@ -4189,9 +4213,10 @@ export async function requireAdminUser() {
 
   return user;
 }
-</file>
+```
 
-<file path="packages/supabase/src/cache.ts">
+## File: packages/supabase/src/cache.ts
+```typescript
 import type { RevalidationRequest } from "@icar-gezina/contracts/revalidation";
 
 export const CACHE_TAGS = {
@@ -4219,9 +4244,10 @@ export function mutationResult<T>(
 ): MutationResult<T> {
   return { data, revalidate };
 }
-</file>
+```
 
-<file path="packages/supabase/src/client.ts">
+## File: packages/supabase/src/client.ts
+```typescript
 import { createBrowserClient } from "@supabase/ssr";
 import type { Database } from "./supabaseType";
 
@@ -4237,53 +4263,10 @@ export const createSupabaseBrowserClient = () => {
 
   return createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
 };
-</file>
+```
 
-<file path="packages/supabase/src/middleware.ts">
-import { createServerClient } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
-import type { Database } from "./supabaseType";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-export const createClient = (request: NextRequest) => {
-  let supabaseResponse = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
-
-  const _supabase = createServerClient<Database>(supabaseUrl!, supabaseKey!, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) =>
-          request.cookies.set(name, value),
-        );
-
-        supabaseResponse = NextResponse.next({
-          request,
-        });
-
-        cookiesToSet.forEach(({ name, value, options }) =>
-          supabaseResponse.cookies.set(name, value, options),
-        );
-      },
-    },
-  });
-
-  return supabaseResponse;
-};
-
-export async function updateSession(request: NextRequest) {
-  return createClient(request);
-}
-</file>
-
-<file path="packages/supabase/src/Mutations/articles.ts">
+## File: packages/supabase/src/Mutations/articles.ts
+```typescript
 import type { ArticleType } from "@icar-gezina/contracts/article";
 import { requireAdminUser } from "../auth";
 import { createSupabaseServerClient } from "../server";
@@ -4350,9 +4333,10 @@ export async function deleteArticle(id: string) {
 
   return { id };
 }
-</file>
+```
 
-<file path="packages/supabase/src/Mutations/carParts.ts">
+## File: packages/supabase/src/Mutations/carParts.ts
+```typescript
 import type { CarPartType } from "@icar-gezina/contracts/car";
 import { requireAdminUser } from "../auth";
 import { createSupabaseServerClient } from "../server";
@@ -4418,9 +4402,10 @@ export async function deleteCarPart(id: string) {
 
   return { id, carId: data?.car_id ?? undefined };
 }
-</file>
+```
 
-<file path="packages/supabase/src/Mutations/cars.ts">
+## File: packages/supabase/src/Mutations/cars.ts
+```typescript
 import type { CarType } from "@icar-gezina/contracts/car";
 import { requireAdminUser } from "../auth";
 import { createSupabaseServerClient } from "../server";
@@ -4502,9 +4487,10 @@ export async function deleteCar(id: string) {
 
   return { id };
 }
-</file>
+```
 
-<file path="packages/supabase/src/Mutations/reviews.ts">
+## File: packages/supabase/src/Mutations/reviews.ts
+```typescript
 import type { CarReviewType } from "@icar-gezina/contracts/car";
 import { requireAdminUser } from "../auth";
 import { createSupabaseServerClient } from "../server";
@@ -4575,9 +4561,10 @@ export async function deleteCarReview(id: string) {
 
   return { id, carId: data?.car_id ?? undefined };
 }
-</file>
+```
 
-<file path="packages/supabase/src/Mutations/testimonials.ts">
+## File: packages/supabase/src/Mutations/testimonials.ts
+```typescript
 import type { TestimonialType } from "@icar-gezina/contracts/testimonial";
 import { requireAdminUser } from "../auth";
 import { createSupabaseServerClient } from "../server";
@@ -4642,9 +4629,10 @@ export async function deleteTestimonial(id: string) {
 
   return { id };
 }
-</file>
+```
 
-<file path="packages/supabase/src/server.ts">
+## File: packages/supabase/src/server.ts
+```typescript
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
@@ -4713,9 +4701,55 @@ export async function requireAdmin() {
 
   return { supabase, user, profile };
 }
-</file>
+```
 
-<file path="packages/supabase/src/supabaseType.ts">
+## File: packages/supabase/src/session.ts
+```typescript
+import { createServerClient } from "@supabase/ssr";
+import { type NextRequest, NextResponse } from "next/server";
+import type { Database } from "./supabaseType";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+export const createClient = (request: NextRequest) => {
+  let supabaseResponse = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
+  const _supabase = createServerClient<Database>(supabaseUrl!, supabaseKey!, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) =>
+          request.cookies.set(name, value),
+        );
+
+        supabaseResponse = NextResponse.next({
+          request,
+        });
+
+        cookiesToSet.forEach(({ name, value, options }) =>
+          supabaseResponse.cookies.set(name, value, options),
+        );
+      },
+    },
+  });
+
+  return supabaseResponse;
+};
+
+export async function updateSession(request: NextRequest) {
+  return createClient(request);
+}
+```
+
+## File: packages/supabase/src/supabaseType.ts
+```typescript
 export type Json =
   | string
   | number
@@ -4973,9 +5007,10 @@ export type Database = {
     CompositeTypes: Record<string, never>;
   };
 };
-</file>
+```
 
-<file path="packages/supabase/tsconfig.json">
+## File: packages/supabase/tsconfig.json
+```json
 {
   "compilerOptions": {
     "target": "ES2022",
@@ -4989,9 +5024,10 @@ export type Database = {
   },
   "include": ["src"]
 }
-</file>
+```
 
-<file path=".gitignore">
+## File: .gitignore
+```
 node_modules/
 .next/
 .turbo/
@@ -5002,9 +5038,10 @@ coverage/
 .env*
 !.env.example
 .vercel
-</file>
+```
 
-<file path="apps/admin/app/[resource]/new/page.tsx">
+## File: apps/admin/app/[resource]/new/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -5057,9 +5094,10 @@ export default async function NewResourcePage({
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/admin/[...path]/page.tsx">
+## File: apps/admin/app/admin/[...path]/page.tsx
+```typescript
 import { redirect } from "next/navigation";
 
 const redirects: Record<string, string> = {
@@ -5083,9 +5121,10 @@ export default async function LegacyAdminRoute({
   if (redirects[key]) redirect(redirects[key]);
   redirect("/dashboard");
 }
-</file>
+```
 
-<file path="apps/admin/app/delete-form.tsx">
+## File: apps/admin/app/delete-form.tsx
+```typescript
 "use client";
 
 import type { ActionResult } from "@icar-gezina/contracts/actionResult";
@@ -5118,9 +5157,10 @@ export function DeleteForm({
     </form>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/page.tsx">
+## File: apps/admin/app/inventory/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { CarFront, Eye, Plus, Search } from "lucide-react";
 import Link from "next/link";
@@ -5292,9 +5332,10 @@ export default async function InventoryPage({
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/lead-edit-styles.tsx">
+## File: apps/admin/app/lead-edit-styles.tsx
+```typescript
 "use client";
 
 export function LeadEditStyles() {
@@ -5321,9 +5362,10 @@ export function LeadEditStyles() {
   `}</style>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/lead-vehicle-details.tsx">
+## File: apps/admin/app/lead-vehicle-details.tsx
+```typescript
 "use client";
 
 import {
@@ -5458,9 +5500,10 @@ export function LeadVehicleDetailsStyles() {
   `}</style>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/page.tsx">
+## File: apps/admin/app/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -5470,9 +5513,10 @@ export default async function AdminHomePage() {
   if (!profile) redirect("/admin/unauthorized");
   redirect("/dashboard");
 }
-</file>
+```
 
-<file path="apps/admin/app/settings/page.tsx">
+## File: apps/admin/app/settings/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -5534,9 +5578,10 @@ export default async function SettingsPage() {
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/package.json">
+## File: apps/admin/package.json
+```json
 {
   "name": "@icar-gezina/admin",
   "version": "0.1.0",
@@ -5571,9 +5616,10 @@ export default async function SettingsPage() {
     "typescript": "catalog:"
   }
 }
-</file>
+```
 
-<file path="apps/client/app/(client)/cars/inventory-client.tsx">
+## File: apps/client/app/(client)/cars/inventory-client.tsx
+```typescript
 "use client";
 
 import type { CarType } from "@icar-gezina/contracts/car";
@@ -5875,9 +5921,33 @@ export default function CarsInventoryClient({ cars }: { cars: CarType[] }) {
     </div>
   );
 }
-</file>
+```
 
-<file path="biome.json">
+## File: apps/client/proxy.ts
+```typescript
+import { updateSession } from "@icar-gezina/supabase/session";
+import type { NextRequest } from "next/server";
+
+export async function proxy(request: NextRequest) {
+  return await updateSession(request);
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
+};
+```
+
+## File: biome.json
+```json
 {
   "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
   "vcs": {
@@ -5943,9 +6013,10 @@ export default function CarsInventoryClient({ cars }: { cars: CarType[] }) {
     }
   }
 }
-</file>
+```
 
-<file path="package.json">
+## File: package.json
+```json
 {
   "name": "icar-gezina",
   "version": "0.1.2",
@@ -5978,9 +6049,10 @@ export default function CarsInventoryClient({ cars }: { cars: CarType[] }) {
     "turbo": "catalog:"
   }
 }
-</file>
+```
 
-<file path="packages/contracts/src/article.ts">
+## File: packages/contracts/src/article.ts
+```typescript
 import { z } from "zod";
 
 export const articleSchema = z.object({
@@ -5997,9 +6069,10 @@ export const articleSchema = z.object({
 });
 
 export type ArticleType = z.infer<typeof articleSchema>;
-</file>
+```
 
-<file path="packages/contracts/src/car.ts">
+## File: packages/contracts/src/car.ts
+```typescript
 import { z } from "zod";
 
 export const carPartSchema = z.object({
@@ -6040,9 +6113,10 @@ export const carSchema = z.object({
 export type CarType = z.infer<typeof carSchema>;
 export type CarPartType = z.infer<typeof carPartSchema>;
 export type CarReviewType = z.infer<typeof carReviewSchema>;
-</file>
+```
 
-<file path="packages/contracts/src/lead.ts">
+## File: packages/contracts/src/lead.ts
+```typescript
 import { z } from "zod";
 
 export const leadTypeSchema = z.enum([
@@ -6070,9 +6144,10 @@ export const leadSchema = leadInputSchema.extend({
 
 export type LeadInput = z.infer<typeof leadInputSchema>;
 export type LeadType = z.infer<typeof leadSchema>;
-</file>
+```
 
-<file path="packages/contracts/src/testimonial.ts">
+## File: packages/contracts/src/testimonial.ts
+```typescript
 import { z } from "zod";
 
 export const testimonialSchema = z.object({
@@ -6085,9 +6160,10 @@ export const testimonialSchema = z.object({
 });
 
 export type TestimonialType = z.infer<typeof testimonialSchema>;
-</file>
+```
 
-<file path="packages/supabase/src/Queries/articles.ts">
+## File: packages/supabase/src/Queries/articles.ts
+```typescript
 import type { ArticleType } from "@icar-gezina/contracts/article";
 import { createSupabasePublicClient } from "../server";
 import type { Database } from "../supabaseType";
@@ -6123,9 +6199,10 @@ export async function getPublishedArticles(): Promise<ArticleType[]> {
 
   return (data ?? []).map(normalizeArticle);
 }
-</file>
+```
 
-<file path="packages/supabase/src/Queries/cars.ts">
+## File: packages/supabase/src/Queries/cars.ts
+```typescript
 import type {
   CarPartType,
   CarReviewType,
@@ -6236,9 +6313,10 @@ export async function getCarSummaries(): Promise<CarType[]> {
     }),
   );
 }
-</file>
+```
 
-<file path="packages/supabase/src/Queries/leads.ts">
+## File: packages/supabase/src/Queries/leads.ts
+```typescript
 import type { LeadType } from "@icar-gezina/contracts/lead";
 import { createSupabaseServerClient } from "../server";
 import type { Database } from "../supabaseType";
@@ -6273,9 +6351,10 @@ export async function getLeads(): Promise<LeadType[]> {
 
   return (data ?? []).map(normalizeLead);
 }
-</file>
+```
 
-<file path="packages/supabase/src/Queries/testimonials.ts">
+## File: packages/supabase/src/Queries/testimonials.ts
+```typescript
 import type { TestimonialType } from "@icar-gezina/contracts/testimonial";
 import { createSupabasePublicClient } from "../server";
 import type { Database } from "../supabaseType";
@@ -6306,9 +6385,10 @@ export async function getTestimonials(): Promise<TestimonialType[]> {
 
   return (data ?? []).map(normalizeTestimonial);
 }
-</file>
+```
 
-<file path="apps/admin/app/resource-config.ts">
+## File: apps/admin/app/resource-config.ts
+```typescript
 export type ResourceKey =
   | "leads"
   | "reviews"
@@ -6436,9 +6516,10 @@ export const resources: Record<
 export function getResource(value: string) {
   return (resources as Record<string, (typeof resources)[ResourceKey]>)[value];
 }
-</file>
+```
 
-<file path="packages/contracts/package.json">
+## File: packages/contracts/package.json
+```json
 {
   "name": "@icar-gezina/contracts",
   "version": "0.1.0",
@@ -6464,38 +6545,10 @@ export function getResource(value: string) {
     "typescript": "catalog:"
   }
 }
-</file>
+```
 
-<file path="packages/supabase/package.json">
-{
-  "name": "@icar-gezina/supabase",
-  "version": "0.1.0",
-  "private": true,
-  "exports": {
-    "./client": "./src/client.ts",
-    "./server": "./src/server.ts",
-    "./auth": "./src/auth.ts",
-    "./middleware": "./src/middleware.ts",
-    "./cache": "./src/cache.ts",
-    "./supabaseType": "./src/supabaseType.ts",
-    "./Queries/*": "./src/Queries/*.ts",
-    "./Mutations/*": "./src/Mutations/*.ts"
-  },
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "supabase:types": "supabase gen types typescript --local > src/supabaseType.ts"
-  },
-  "dependencies": {
-    "@icar-gezina/contracts": "workspace:*",
-    "@supabase/ssr": "catalog:",
-    "@supabase/supabase-js": "catalog:",
-    "next": "catalog:",
-    "typescript": "catalog:"
-  }
-}
-</file>
-
-<file path="packages/supabase/src/Mutations/leads.ts">
+## File: packages/supabase/src/Mutations/leads.ts
+```typescript
 import type { LeadInput } from "@icar-gezina/contracts/lead";
 import { requireAdminUser } from "../auth";
 import {
@@ -6601,9 +6654,10 @@ export async function deleteLead(id: string) {
 
   return { id };
 }
-</file>
+```
 
-<file path="pnpm-workspace.yaml">
+## File: pnpm-workspace.yaml
+```yaml
 packages:
   - "apps/*"
   - "packages/*"
@@ -6634,9 +6688,10 @@ catalog:
   "motion": "^12.23.24"
   "tw-animate-css": "^1.4.0"
   "turbo": "^2.9.14"
-</file>
+```
 
-<file path="turbo.json">
+## File: turbo.json
+```json
 {
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": [
@@ -6666,9 +6721,10 @@ catalog:
     }
   }
 }
-</file>
+```
 
-<file path="apps/admin/app/[resource]/[id]/page.tsx">
+## File: apps/admin/app/[resource]/[id]/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
@@ -6767,9 +6823,10 @@ export default async function ResourceDetailPage({
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/[resource]/page.tsx">
+## File: apps/admin/app/[resource]/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -6928,9 +6985,10 @@ export default async function ResourceListPage({
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/globals.css">
+## File: apps/admin/app/globals.css
+```css
 @import "tailwindcss";
 
 :root {
@@ -7959,9 +8017,10 @@ select.input {
     padding: 0 14px;
   }
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/actions.ts">
+## File: apps/admin/app/inventory/actions.ts
+```typescript
 "use server";
 
 import type { ActionResult } from "@icar-gezina/contracts/actionResult";
@@ -8097,9 +8156,10 @@ export async function deleteVehicle(formData: FormData): Promise<ActionResult> {
   });
   redirect("/inventory");
 }
-</file>
+```
 
-<file path="apps/admin/app/resource-form.tsx">
+## File: apps/admin/app/resource-form.tsx
+```typescript
 "use client";
 
 import type { ActionResult } from "@icar-gezina/contracts/actionResult";
@@ -8206,9 +8266,10 @@ export function ResourceForm({
     </form>
   );
 }
-</file>
+```
 
-<file path="packages/contracts/src/actionResult.ts">
+## File: packages/contracts/src/actionResult.ts
+```typescript
 import { z } from "zod";
 
 export const actionErrorSchema = z.object({
@@ -8247,9 +8308,40 @@ export type ActionResult<TData = undefined> =
       error: string;
       fieldErrors?: Record<string, string[]>;
     };
-</file>
+```
 
-<file path="apps/admin/app/[resource]/[id]/edit/page.tsx">
+## File: packages/supabase/package.json
+```json
+{
+  "name": "@icar-gezina/supabase",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./client": "./src/client.ts",
+    "./server": "./src/server.ts",
+    "./auth": "./src/auth.ts",
+    "./session": "./src/session.ts",
+    "./cache": "./src/cache.ts",
+    "./supabaseType": "./src/supabaseType.ts",
+    "./Queries/*": "./src/Queries/*.ts",
+    "./Mutations/*": "./src/Mutations/*.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "supabase:types": "supabase gen types typescript --local > src/supabaseType.ts"
+  },
+  "dependencies": {
+    "@icar-gezina/contracts": "workspace:*",
+    "@supabase/ssr": "catalog:",
+    "@supabase/supabase-js": "catalog:",
+    "next": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+```
+
+## File: apps/admin/app/[resource]/[id]/edit/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -8401,9 +8493,10 @@ export default async function EditResourcePage({
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/layout.tsx">
+## File: apps/admin/app/layout.tsx
+```typescript
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
@@ -8423,9 +8516,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </html>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/crud-actions.ts">
+## File: apps/admin/app/crud-actions.ts
+```typescript
 "use server";
 
 import type { ActionResult } from "@icar-gezina/contracts/actionResult";
@@ -8649,9 +8743,10 @@ export async function deleteRecord(formData: FormData): Promise<ActionResult> {
   if (revalidate) await triggerRevalidation(revalidate);
   redirect(`/${resource}`);
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/components/feature-manager.tsx">
+## File: apps/admin/app/inventory/components/feature-manager.tsx
+```typescript
 "use client";
 
 import { Check, Plus, Search, X } from "lucide-react";
@@ -8993,9 +9088,10 @@ export function FeatureManager({ value, onChange }: FeatureManagerProps) {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/[id]/edit/page.tsx">
+## File: apps/admin/app/inventory/[id]/edit/page.tsx
+```typescript
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import {
   ArrowLeft,
@@ -9155,9 +9251,10 @@ function Summary({
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/[id]/page.tsx">
+## File: apps/admin/app/inventory/[id]/page.tsx
+```typescript
 import { getCarById } from "@icar-gezina/supabase/Queries/cars";
 import { requireAdmin } from "@icar-gezina/supabase/server";
 import {
@@ -9564,9 +9661,10 @@ export default async function VehicleDetailPage({
     </>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/components/gallery-manager.tsx">
+## File: apps/admin/app/inventory/components/gallery-manager.tsx
+```typescript
 "use client";
 
 import {
@@ -9927,9 +10025,10 @@ export function GalleryManager({ value, onChange }: GalleryManagerProps) {
     </div>
   );
 }
-</file>
+```
 
-<file path="apps/admin/app/inventory/vehicle-form.tsx">
+## File: apps/admin/app/inventory/vehicle-form.tsx
+```typescript
 "use client";
 
 import type { ActionResult } from "@icar-gezina/contracts/actionResult";
@@ -10352,6 +10451,4 @@ function SelectField({
     </label>
   );
 }
-</file>
-
-</files>
+```

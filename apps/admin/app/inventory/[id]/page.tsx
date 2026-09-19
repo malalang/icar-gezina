@@ -15,8 +15,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { deleteVehicle } from "../actions";
 import { DeleteForm } from "../../delete-form";
+import { deleteVehicle } from "../actions";
 
 function money(input: unknown) {
   const n = Number(input ?? 0);
